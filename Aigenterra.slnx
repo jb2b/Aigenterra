@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Aigenterra.Adapters.Codex/Aigenterra.Adapters.Codex.csproj" />
+    <Project Path="src/Aigenterra.Api/Aigenterra.Api.csproj" />
+    <Project Path="src/Aigenterra.AppHost/Aigenterra.AppHost.csproj" />
+    <Project Path="src/Aigenterra.Application/Aigenterra.Application.csproj" />
+    <Project Path="src/Aigenterra.Collector/Aigenterra.Collector.csproj" />
+    <Project Path="src/Aigenterra.Domain/Aigenterra.Domain.csproj" />
+    <Project Path="src/Aigenterra.Infrastructure/Aigenterra.Infrastructure.csproj" />
+    <Project Path="src/Aigenterra.ServiceDefaults/Aigenterra.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Aigenterra.Application.Tests/Aigenterra.Application.Tests.csproj" />
+    <Project Path="tests/Aigenterra.Architecture.Tests/Aigenterra.Architecture.Tests.csproj" />
+    <Project Path="tests/Aigenterra.Codex.Tests/Aigenterra.Codex.Tests.csproj" />
+    <Project Path="tests/Aigenterra.Domain.Tests/Aigenterra.Domain.Tests.csproj" />
+    <Project Path="tests/Aigenterra.Infrastructure.Tests/Aigenterra.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>

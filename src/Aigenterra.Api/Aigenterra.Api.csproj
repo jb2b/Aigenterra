@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aigenterra.Adapters.Codex\Aigenterra.Adapters.Codex.csproj" />
+    <ProjectReference Include="..\Aigenterra.Application\Aigenterra.Application.csproj" />
+    <ProjectReference Include="..\Aigenterra.Infrastructure\Aigenterra.Infrastructure.csproj" />
+    <ProjectReference Include="..\Aigenterra.ServiceDefaults\Aigenterra.ServiceDefaults.csproj" />
+  </ItemGroup>
+
+</Project>

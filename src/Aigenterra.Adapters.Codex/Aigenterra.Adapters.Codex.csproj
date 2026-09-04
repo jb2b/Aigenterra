@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aigenterra.Application\Aigenterra.Application.csproj" />
+  </ItemGroup>
+
+</Project>
