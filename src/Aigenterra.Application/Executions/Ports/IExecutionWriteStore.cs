@@ -2,6 +2,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions.Ports;
 
+/// <summary>Reports whether a store accepted or rejected a new aggregate.</summary>
 public enum StoreAddResult
 {
     Added,
@@ -9,15 +10,18 @@ public enum StoreAddResult
     DuplicateRuntimeReference
 }
 
+/// <summary>Reports the ingest metadata assigned by an atomic observation append.</summary>
 public sealed record AppendObservationReceipt(
     ObservationId ObservationId,
     long Sequence,
     DateTimeOffset RecordedAt);
 
+/// <summary>Combines the store outcome with an optional observation receipt.</summary>
 public sealed record AppendObservationStoreResult(
     StoreAddResult Result,
     AppendObservationReceipt? Receipt);
 
+/// <summary>Defines persistence capabilities required by execution write use cases.</summary>
 public interface IExecutionWriteStore
 {
     ValueTask<StoreAddResult> AddConversationAsync(

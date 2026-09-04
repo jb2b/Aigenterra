@@ -4,6 +4,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions;
 
+/// <summary>Validates and atomically appends a normalized execution observation.</summary>
 public sealed class RecordObservation(IExecutionWriteStore store, TimeProvider timeProvider)
 {
     public async ValueTask<UseCaseResult<ObservationRecorded>> ExecuteAsync(

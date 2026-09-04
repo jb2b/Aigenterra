@@ -4,6 +4,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Tests;
 
+/// <summary>Provides a deterministic in-memory port implementation for application tests.</summary>
 internal sealed class TestExecutionStore : IExecutionWriteStore, ITaskExecutionTimelineReader
 {
     private readonly Dictionary<ConversationId, Conversation> conversations = [];
@@ -193,6 +194,7 @@ internal sealed class TestExecutionStore : IExecutionWriteStore, ITaskExecutionT
                 reference.ResourceKind,
                 reference.ExternalId);
 
+    /// <summary>Combines an observed event with test-owned ingest metadata.</summary>
     private sealed record StoredObservation(
         Observation Observation,
         long Sequence,
@@ -200,6 +202,7 @@ internal sealed class TestExecutionStore : IExecutionWriteStore, ITaskExecutionT
         bool HasRawEvidence);
 }
 
+/// <summary>Supplies a fixed UTC instant to deterministic application tests.</summary>
 internal sealed class TestTimeProvider(DateTimeOffset utcNow) : TimeProvider
 {
     public override DateTimeOffset GetUtcNow() => utcNow;

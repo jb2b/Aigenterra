@@ -1,5 +1,6 @@
 namespace Aigenterra.Domain.Executions;
 
+/// <summary>Represents one agent's participation in a task execution.</summary>
 public sealed class AgentExecution
 {
     public AgentExecution(

@@ -2,6 +2,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Domain.Tests;
 
+/// <summary>Verifies typed execution identities and runtime-reference invariants.</summary>
 public sealed class ExecutionIdentityTests
 {
     [Fact]

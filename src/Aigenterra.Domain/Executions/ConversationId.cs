@@ -1,5 +1,6 @@
 namespace Aigenterra.Domain.Executions;
 
+/// <summary>Identifies a conversation within Aigenterra.</summary>
 public readonly record struct ConversationId
 {
     public ConversationId(Guid value)

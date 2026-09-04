@@ -2,6 +2,7 @@ using Aigenterra.Application.Common;
 
 namespace Aigenterra.Adapters.Codex;
 
+/// <summary>Describes how the adapter handled a Codex hook delivery.</summary>
 public enum CodexIngestDisposition
 {
     Recorded,
@@ -9,6 +10,7 @@ public enum CodexIngestDisposition
     Ignored
 }
 
+/// <summary>Reports the Aigenterra identities affected by a Codex hook delivery.</summary>
 public sealed record CodexHookIngestReceipt(
     CodexIngestDisposition Disposition,
     Guid? ConversationId,
@@ -16,6 +18,7 @@ public sealed record CodexHookIngestReceipt(
     Guid? AgentExecutionId,
     Guid? ObservationId);
 
+/// <summary>Translates opaque Codex hook payloads into execution use cases.</summary>
 public interface ICodexHookIngestor
 {
     ValueTask<UseCaseResult<CodexHookIngestReceipt>> IngestAsync(

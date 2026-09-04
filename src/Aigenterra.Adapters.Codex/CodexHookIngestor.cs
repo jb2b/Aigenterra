@@ -6,6 +6,7 @@ using Aigenterra.Application.Executions;
 
 namespace Aigenterra.Adapters.Codex;
 
+/// <summary>Acts as the anti-corruption layer between Codex hooks and execution use cases.</summary>
 public sealed class CodexHookIngestor(
     CreateConversation createConversation,
     StartTaskExecution startTaskExecution,
@@ -586,5 +587,6 @@ public sealed class CodexHookIngestor(
     private static UseCaseResult<CodexHookIngestReceipt> CopyFailure<T>(UseCaseResult<T> result) =>
         Failure(result.Error!.Type, result.Error.Code, result.Error.Message);
 
+    /// <summary>Tracks whether an execution identity was resolved or newly created.</summary>
     private sealed record EnsuredExecution(Guid Id, bool Created);
 }

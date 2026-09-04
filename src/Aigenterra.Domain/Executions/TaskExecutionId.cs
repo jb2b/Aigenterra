@@ -1,5 +1,6 @@
 namespace Aigenterra.Domain.Executions;
 
+/// <summary>Identifies a task execution within Aigenterra.</summary>
 public readonly record struct TaskExecutionId
 {
     public TaskExecutionId(Guid value)

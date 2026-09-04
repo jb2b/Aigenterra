@@ -4,6 +4,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Infrastructure.Executions;
 
+/// <summary>Provides a thread-safe, process-local adapter for execution writes and timeline reads.</summary>
 public sealed class InMemoryExecutionStore :
     IExecutionWriteStore,
     ITaskExecutionTimelineReader,
@@ -355,13 +356,16 @@ public sealed class InMemoryExecutionStore :
         where TEnum : struct, Enum =>
         value.ToString().ToLowerInvariant();
 
+    /// <summary>Scopes a runtime reference to one stored execution resource type.</summary>
     private sealed record RuntimeIdentity(string ResourceType, RuntimeReference Reference);
 
+    /// <summary>Combines an observation with adapter-owned ingest metadata and evidence.</summary>
     private sealed record StoredObservation(
         Observation Observation,
         long Sequence,
         DateTimeOffset RecordedAt,
         StoredEvidence? Evidence);
 
+    /// <summary>Owns a defensive copy of opaque source evidence.</summary>
     private sealed record StoredEvidence(string MediaType, byte[] Content);
 }

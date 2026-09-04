@@ -1,5 +1,6 @@
 namespace Aigenterra.Domain.Executions;
 
+/// <summary>Groups task executions that belong to one logical interaction context.</summary>
 public sealed class Conversation
 {
     public Conversation(

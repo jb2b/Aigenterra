@@ -4,6 +4,7 @@ using Aigenterra.Application.Executions;
 
 namespace Aigenterra.Application.Tests;
 
+/// <summary>Verifies execution use cases across complete and exceptional application flows.</summary>
 public sealed class ExecutionFlowTests
 {
     private static readonly DateTimeOffset Now = new(2026, 9, 4, 12, 0, 0, TimeSpan.Zero);
@@ -197,6 +198,7 @@ public sealed class ExecutionFlowTests
             second.Value!.TaskExecutionId);
     }
 
+    /// <summary>Provides two related task executions for cross-aggregate validation tests.</summary>
     private sealed record TwoTaskContext(
         TestExecutionStore Store,
         TestTimeProvider Clock,

@@ -2,6 +2,7 @@ using System.Text.Json;
 
 namespace Aigenterra.Adapters.Codex;
 
+/// <summary>Represents the validated fields needed from a supported Codex hook payload.</summary>
 internal sealed record CodexHookEvent(
     string HookEventName,
     string? SessionId,

@@ -4,6 +4,7 @@ using Aigenterra.Api.Executions;
 
 namespace Aigenterra.Api.Codex;
 
+/// <summary>Maps HTTP endpoints that accept opaque Codex hook deliveries.</summary>
 internal static class CodexIngestEndpoints
 {
     private const int MaxPayloadBytes = 1024 * 1024;

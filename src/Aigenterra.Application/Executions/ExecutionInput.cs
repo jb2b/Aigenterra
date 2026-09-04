@@ -3,6 +3,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions;
 
+/// <summary>Centralizes conversion and validation of primitive execution inputs.</summary>
 internal static class ExecutionInput
 {
     public static bool TryCreateRuntimeReference(

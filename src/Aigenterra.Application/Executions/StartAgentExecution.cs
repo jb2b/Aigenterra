@@ -4,6 +4,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions;
 
+/// <summary>Starts an agent execution after validating its task and optional parent.</summary>
 public sealed class StartAgentExecution(IExecutionWriteStore store, TimeProvider timeProvider)
 {
     public async ValueTask<UseCaseResult<AgentExecutionStarted>> ExecuteAsync(

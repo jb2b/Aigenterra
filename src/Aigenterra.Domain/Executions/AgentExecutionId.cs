@@ -1,5 +1,6 @@
 namespace Aigenterra.Domain.Executions;
 
+/// <summary>Identifies an agent execution within Aigenterra.</summary>
 public readonly record struct AgentExecutionId
 {
     public AgentExecutionId(Guid value)

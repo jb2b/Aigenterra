@@ -10,9 +10,7 @@ using OpenTelemetry.Trace;
 
 namespace Microsoft.Extensions.Hosting;
 
-// Adds common Aspire services: service discovery, resilience, health checks, and OpenTelemetry.
-// This project should be referenced by each service project in your solution.
-// To learn more about using this project, see https://aka.ms/aspire/service-defaults
+/// <summary>Provides shared service discovery, resilience, telemetry and health defaults.</summary>
 public static class Extensions
 {
     private const string HealthEndpointPath = "/health";

@@ -4,6 +4,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions;
 
+/// <summary>Starts a task execution for an existing conversation.</summary>
 public sealed class StartTaskExecution(IExecutionWriteStore store, TimeProvider timeProvider)
 {
     public async ValueTask<UseCaseResult<TaskExecutionStarted>> ExecuteAsync(

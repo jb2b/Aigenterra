@@ -4,6 +4,7 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions;
 
+/// <summary>Applies an idempotent terminal transition to an agent execution.</summary>
 public sealed class FinishAgentExecution(IExecutionWriteStore store, TimeProvider timeProvider)
 {
     public async ValueTask<UseCaseResult<ExecutionFinished>> ExecuteAsync(

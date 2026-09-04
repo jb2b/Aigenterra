@@ -1,5 +1,6 @@
 namespace Aigenterra.Domain.Executions;
 
+/// <summary>Correlates an Aigenterra record with a provider-neutral runtime identity.</summary>
 public sealed record RuntimeReference
 {
     public RuntimeReference(string runtime, string resourceKind, string externalId)

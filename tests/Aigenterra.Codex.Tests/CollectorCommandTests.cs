@@ -4,6 +4,7 @@ using Aigenterra.Collector;
 
 namespace Aigenterra.Codex.Tests;
 
+/// <summary>Verifies byte-preserving and fail-open Collector behavior.</summary>
 public sealed class CollectorCommandTests
 {
     private static readonly DateTimeOffset ObservedAt =
@@ -69,6 +70,7 @@ public sealed class CollectorCommandTests
         Assert.Equal($"{{}}{Environment.NewLine}", output.ToString());
     }
 
+    /// <summary>Captures outgoing Collector requests for transport assertions.</summary>
     private sealed class CapturingHandler : HttpMessageHandler
     {
         public byte[]? Body { get; private set; }
@@ -88,6 +90,7 @@ public sealed class CollectorCommandTests
         }
     }
 
+    /// <summary>Simulates an unavailable ingest endpoint.</summary>
     private sealed class ThrowingHandler : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(

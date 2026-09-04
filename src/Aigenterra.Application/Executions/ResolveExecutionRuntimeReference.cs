@@ -3,6 +3,7 @@ using Aigenterra.Application.Executions.Ports;
 
 namespace Aigenterra.Application.Executions;
 
+/// <summary>Identifies the execution concept addressed by a runtime reference.</summary>
 public enum ExecutionResourceType
 {
     Conversation,
@@ -11,12 +12,15 @@ public enum ExecutionResourceType
     Observation
 }
 
+/// <summary>Requests resolution of an execution identity from a runtime reference.</summary>
 public sealed record ResolveExecutionRuntimeReferenceQuery(
     ExecutionResourceType ResourceType,
     RuntimeReferenceInput RuntimeReference);
 
+/// <summary>Reports the Aigenterra identity resolved from a runtime reference.</summary>
 public sealed record ExecutionRuntimeReferenceResolved(Guid ExecutionId);
 
+/// <summary>Resolves provider-neutral runtime references to Aigenterra identities.</summary>
 public sealed class ResolveExecutionRuntimeReference(IExecutionRuntimeReferenceReader reader)
 {
     public async ValueTask<UseCaseResult<ExecutionRuntimeReferenceResolved>> ExecuteAsync(
