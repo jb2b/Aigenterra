@@ -2,7 +2,9 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions.Ports;
 
-/// <summary>Resolves runtime references without exposing persistence details.</summary>
+/// <summary>
+/// Resolves runtime references without exposing persistence details.
+/// </summary>
 public interface IExecutionRuntimeReferenceReader
 {
     ValueTask<ConversationId?> FindConversationIdAsync(

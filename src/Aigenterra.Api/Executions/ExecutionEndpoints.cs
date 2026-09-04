@@ -4,7 +4,9 @@ using Aigenterra.Application.Executions;
 
 namespace Aigenterra.Api.Executions;
 
-/// <summary>Maps HTTP contracts to execution application use cases.</summary>
+/// <summary>
+/// Maps HTTP contracts to execution application use cases.
+/// </summary>
 internal static class ExecutionEndpoints
 {
     private const int MaxRawEvidenceBytes = 1024 * 1024;
@@ -298,49 +300,65 @@ internal static class ExecutionEndpoints
                 observation.HasRawEvidence)).ToArray());
 }
 
-/// <summary>Accepts runtime-correlation values from an HTTP request.</summary>
+/// <summary>
+/// Accepts runtime-correlation values from an HTTP request.
+/// </summary>
 internal sealed record RuntimeReferenceRequest(
     string? Runtime,
     string? ResourceKind,
     string? ExternalId);
 
-/// <summary>Returns runtime-correlation values through HTTP.</summary>
+/// <summary>
+/// Returns runtime-correlation values through HTTP.
+/// </summary>
 internal sealed record RuntimeReferenceResponse(
     string Runtime,
     string ResourceKind,
     string ExternalId);
 
-/// <summary>Defines the HTTP request for creating a conversation.</summary>
+/// <summary>
+/// Defines the HTTP request for creating a conversation.
+/// </summary>
 internal sealed record CreateConversationRequest(
     DateTimeOffset? StartedAt,
     RuntimeReferenceRequest? RuntimeReference);
 
-/// <summary>Defines the HTTP response for a newly created conversation.</summary>
+/// <summary>
+/// Defines the HTTP response for a newly created conversation.
+/// </summary>
 internal sealed record ConversationCreatedResponse(
     Guid ConversationId,
     DateTimeOffset StartedAt,
     RuntimeReferenceResponse? RuntimeReference);
 
-/// <summary>Defines the HTTP request for starting a task execution.</summary>
+/// <summary>
+/// Defines the HTTP request for starting a task execution.
+/// </summary>
 internal sealed record StartTaskExecutionRequest(
     string? Objective,
     DateTimeOffset? StartedAt,
     RuntimeReferenceRequest? RuntimeReference);
 
-/// <summary>Defines the HTTP response for a started task execution.</summary>
+/// <summary>
+/// Defines the HTTP response for a started task execution.
+/// </summary>
 internal sealed record TaskExecutionStartedResponse(
     Guid TaskExecutionId,
     Guid ConversationId,
     string Status,
     DateTimeOffset StartedAt);
 
-/// <summary>Defines the HTTP request for starting an agent execution.</summary>
+/// <summary>
+/// Defines the HTTP request for starting an agent execution.
+/// </summary>
 internal sealed record StartAgentExecutionRequest(
     Guid? ParentAgentExecutionId,
     DateTimeOffset? StartedAt,
     RuntimeReferenceRequest? RuntimeReference);
 
-/// <summary>Defines the HTTP response for a started agent execution.</summary>
+/// <summary>
+/// Defines the HTTP response for a started agent execution.
+/// </summary>
 internal sealed record AgentExecutionStartedResponse(
     Guid AgentExecutionId,
     Guid TaskExecutionId,
@@ -348,7 +366,9 @@ internal sealed record AgentExecutionStartedResponse(
     string Status,
     DateTimeOffset StartedAt);
 
-/// <summary>Defines the HTTP request for recording a normalized observation.</summary>
+/// <summary>
+/// Defines the HTTP request for recording a normalized observation.
+/// </summary>
 internal sealed record RecordObservationRequest(
     Guid? AgentExecutionId,
     DateTimeOffset? ObservedAt,
@@ -357,24 +377,32 @@ internal sealed record RecordObservationRequest(
     RuntimeReferenceRequest? RuntimeReference,
     JsonElement? RawSourcePayload);
 
-/// <summary>Returns the identity and ingest metadata of a recorded observation.</summary>
+/// <summary>
+/// Returns the identity and ingest metadata of a recorded observation.
+/// </summary>
 internal sealed record ObservationRecordedResponse(
     Guid ObservationId,
     long Sequence,
     DateTimeOffset RecordedAt);
 
-/// <summary>Defines the HTTP request for finishing an execution.</summary>
+/// <summary>
+/// Defines the HTTP request for finishing an execution.
+/// </summary>
 internal sealed record FinishExecutionRequest(
     string? Outcome,
     DateTimeOffset? EndedAt);
 
-/// <summary>Returns the effective terminal state of an execution.</summary>
+/// <summary>
+/// Returns the effective terminal state of an execution.
+/// </summary>
 internal sealed record ExecutionFinishedResponse(
     Guid ExecutionId,
     string Status,
     DateTimeOffset EndedAt);
 
-/// <summary>Returns a complete inspectable task-execution timeline.</summary>
+/// <summary>
+/// Returns a complete inspectable task-execution timeline.
+/// </summary>
 internal sealed record TaskExecutionTimelineResponse(
     Guid TaskExecutionId,
     Guid ConversationId,
@@ -386,7 +414,9 @@ internal sealed record TaskExecutionTimelineResponse(
     IReadOnlyList<AgentExecutionTimelineResponse> Agents,
     IReadOnlyList<ObservationTimelineResponse> Observations);
 
-/// <summary>Represents an agent within an HTTP timeline response.</summary>
+/// <summary>
+/// Represents an agent within an HTTP timeline response.
+/// </summary>
 internal sealed record AgentExecutionTimelineResponse(
     Guid AgentExecutionId,
     Guid? ParentAgentExecutionId,
@@ -395,7 +425,9 @@ internal sealed record AgentExecutionTimelineResponse(
     DateTimeOffset? EndedAt,
     RuntimeReferenceResponse? RuntimeReference);
 
-/// <summary>Represents an observation within an HTTP timeline response.</summary>
+/// <summary>
+/// Represents an observation within an HTTP timeline response.
+/// </summary>
 internal sealed record ObservationTimelineResponse(
     Guid ObservationId,
     Guid? AgentExecutionId,

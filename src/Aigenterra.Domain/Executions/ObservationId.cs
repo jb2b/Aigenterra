@@ -1,6 +1,8 @@
 namespace Aigenterra.Domain.Executions;
 
-/// <summary>Identifies an observation within Aigenterra.</summary>
+/// <summary>
+/// Identifies an observation within Aigenterra.
+/// </summary>
 public readonly record struct ObservationId
 {
     public ObservationId(Guid value)

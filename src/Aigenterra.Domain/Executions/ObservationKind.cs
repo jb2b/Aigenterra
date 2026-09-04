@@ -1,6 +1,8 @@
 namespace Aigenterra.Domain.Executions;
 
-/// <summary>Classifies normalized observations independently of their runtime source.</summary>
+/// <summary>
+/// Classifies normalized observations independently of their runtime source.
+/// </summary>
 public enum ObservationKind
 {
     Message,

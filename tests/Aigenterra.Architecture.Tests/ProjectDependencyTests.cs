@@ -2,7 +2,9 @@ using System.Xml.Linq;
 
 namespace Aigenterra.Architecture.Tests;
 
-/// <summary>Guards the intended project dependency graph and technology boundaries.</summary>
+/// <summary>
+/// Guards the intended project dependency graph and technology boundaries.
+/// </summary>
 public sealed class ProjectDependencyTests
 {
     private static readonly IReadOnlyDictionary<string, string[]> ExpectedProjectReferences =

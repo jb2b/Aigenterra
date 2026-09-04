@@ -6,7 +6,9 @@ using Aigenterra.Infrastructure.Executions;
 
 namespace Aigenterra.Codex.Tests;
 
-/// <summary>Verifies Codex hook translation, correlation and idempotency end to end.</summary>
+/// <summary>
+/// Verifies Codex hook translation, correlation and idempotency end to end.
+/// </summary>
 public sealed class CodexHookIngestorTests
 {
     private static readonly DateTimeOffset Now = new(2026, 9, 4, 12, 0, 0, TimeSpan.Zero);
@@ -177,7 +179,9 @@ public sealed class CodexHookIngestorTests
     private static string PromptJson(string turnId) =>
         $$"""{"hook_event_name":"UserPromptSubmit","session_id":"session-1","turn_id":"{{turnId}}","prompt":"Observe this task"}""";
 
-    /// <summary>Composes the real Codex adapter with in-memory execution ports for tests.</summary>
+    /// <summary>
+    /// Composes the real Codex adapter with in-memory execution ports for tests.
+    /// </summary>
     private sealed class IngestFixture
     {
         private readonly GetTaskExecutionTimeline getTimeline;

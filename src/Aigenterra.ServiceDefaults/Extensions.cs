@@ -10,7 +10,9 @@ using OpenTelemetry.Trace;
 
 namespace Microsoft.Extensions.Hosting;
 
-/// <summary>Provides shared service discovery, resilience, telemetry and health defaults.</summary>
+/// <summary>
+/// Provides shared service discovery, resilience, telemetry and health defaults.
+/// </summary>
 public static class Extensions
 {
     private const string HealthEndpointPath = "/health";

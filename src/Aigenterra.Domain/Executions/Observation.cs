@@ -1,6 +1,8 @@
 namespace Aigenterra.Domain.Executions;
 
-/// <summary>Captures one immutable, normalized event observed during a task execution.</summary>
+/// <summary>
+/// Captures one immutable, normalized event observed during a task execution.
+/// </summary>
 public sealed class Observation
 {
     public Observation(

@@ -3,7 +3,9 @@ using System.Net.Http.Headers;
 
 namespace Aigenterra.Collector;
 
-/// <summary>Forwards one hook payload to Aigenterra without blocking the observed runtime.</summary>
+/// <summary>
+/// Forwards one hook payload to Aigenterra without blocking the observed runtime.
+/// </summary>
 public static class CollectorCommand
 {
     public const int MaxPayloadBytes = 1024 * 1024;

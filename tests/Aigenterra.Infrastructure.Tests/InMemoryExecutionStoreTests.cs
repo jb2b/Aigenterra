@@ -6,7 +6,9 @@ using Aigenterra.Infrastructure.Executions;
 
 namespace Aigenterra.Infrastructure.Tests;
 
-/// <summary>Verifies concurrency, evidence ownership and read behavior of the in-memory adapter.</summary>
+/// <summary>
+/// Verifies concurrency, evidence ownership and read behavior of the in-memory adapter.
+/// </summary>
 public sealed class InMemoryExecutionStoreTests
 {
     private static readonly DateTimeOffset Now = new(2026, 9, 4, 12, 0, 0, TimeSpan.Zero);

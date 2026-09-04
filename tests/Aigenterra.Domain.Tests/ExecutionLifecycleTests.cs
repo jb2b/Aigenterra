@@ -2,7 +2,9 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Domain.Tests;
 
-/// <summary>Verifies task and agent lifecycle transition rules.</summary>
+/// <summary>
+/// Verifies task and agent lifecycle transition rules.
+/// </summary>
 public sealed class ExecutionLifecycleTests
 {
     private static readonly DateTimeOffset StartedAt = new(2026, 9, 4, 10, 0, 0, TimeSpan.Zero);

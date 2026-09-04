@@ -1,6 +1,8 @@
 namespace Aigenterra.Domain.Executions;
 
-/// <summary>Represents one execution of a concrete user objective.</summary>
+/// <summary>
+/// Represents one execution of a concrete user objective.
+/// </summary>
 public sealed class TaskExecution
 {
     public TaskExecution(

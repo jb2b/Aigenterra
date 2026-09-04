@@ -2,7 +2,9 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Domain.Tests;
 
-/// <summary>Verifies aggregate relationships and observation invariants.</summary>
+/// <summary>
+/// Verifies aggregate relationships and observation invariants.
+/// </summary>
 public sealed class ExecutionStructureTests
 {
     [Fact]

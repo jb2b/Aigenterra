@@ -4,7 +4,9 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions;
 
-/// <summary>Retrieves an inspection timeline by Aigenterra task identity.</summary>
+/// <summary>
+/// Retrieves an inspection timeline by Aigenterra task identity.
+/// </summary>
 public sealed class GetTaskExecutionTimeline(ITaskExecutionTimelineReader reader)
 {
     public async ValueTask<UseCaseResult<TaskExecutionTimeline>> ExecuteAsync(

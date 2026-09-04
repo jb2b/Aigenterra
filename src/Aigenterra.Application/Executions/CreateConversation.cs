@@ -4,7 +4,9 @@ using Aigenterra.Domain.Executions;
 
 namespace Aigenterra.Application.Executions;
 
-/// <summary>Creates a conversation after validating its application input.</summary>
+/// <summary>
+/// Creates a conversation after validating its application input.
+/// </summary>
 public sealed class CreateConversation(IExecutionWriteStore store, TimeProvider timeProvider)
 {
     public async ValueTask<UseCaseResult<ConversationCreated>> ExecuteAsync(

@@ -1,6 +1,8 @@
 namespace Aigenterra.Application.Common;
 
-/// <summary>Represents either a successful use-case value or an expected application error.</summary>
+/// <summary>
+/// Represents either a successful use-case value or an expected application error.
+/// </summary>
 public sealed record UseCaseResult<T>
 {
     private UseCaseResult(T? value, ApplicationError? error)
