@@ -106,11 +106,11 @@ Dit document bevat alleen beslissingen die de structuur of ontwikkelrichting van
 
 **Status:** Accepted
 
-**Context:** Instrumentation mag een Codex-taak niet blokkeren en moet zonder credentials of runtime-SDK kunnen werken.
+**Context:** Instrumentation mag een Codex-taak niet blokkeren en moet zonder credentials of Codex runtime-SDK kunnen werken. Collector-transport moet lokaal wel observeerbaar zijn zonder payloads prijs te geven.
 
-**Keuze:** De repo-lokale hook start een vooraf gebouwde, kortlevende framework-dependent Collector die stdin byte-identiek via HTTP doorstuurt, nooit payloads logt en altijd succesvol eindigt. Er is nog geen queue of retry.
+**Keuze:** De repo-lokale hook start een vooraf gebouwde, kortlevende framework-dependent Collector die stdin byte-identiek via HTTP doorstuurt, nooit payloads logt en altijd succesvol eindigt. De Collector exporteert uitsluitend veilige transportmetadata via OpenTelemetry OTLP. Er is nog geen queue of retry.
 
-**Consequentie:** De integratie blijft klein en ontkoppeld, met bewust geaccepteerd telemetryverlies wanneer de lokale API niet beschikbaar is.
+**Consequentie:** De integratie blijft klein en ontkoppeld, met bewust geaccepteerd telemetryverlies wanneer de lokale API of het telemetry-endpoint niet beschikbaar is. OTLP-export en flush blijven begrensd en fail-open.
 
 ## 2026-09-07 — PostgreSQL implementeert Application-capabilities
 

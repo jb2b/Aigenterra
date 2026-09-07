@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 using Aigenterra.Collector;
@@ -15,6 +16,7 @@ public sealed class CollectorCommandTests
     [Fact]
     public async Task Collector_forwards_exact_bytes_and_observation_time()
     {
+        using var activities = new CollectorActivityCapture();
         var handler = new CapturingHandler();
         using var client = new HttpClient(handler);
         var payload = "{ \"exact\" : true }\r\n"u8.ToArray();
@@ -32,11 +34,18 @@ public sealed class CollectorCommandTests
         Assert.Equal(payload, handler.Body);
         Assert.Equal("2026-09-04T12:34:56.0000000+00:00", handler.ObservedAt);
         Assert.Equal($"{{}}{Environment.NewLine}", output.ToString());
+        Assert.Equal("forwarded", activities.Single.GetTagItem("aigenterra.collector.result"));
+        Assert.Equal((long)payload.Length, activities.Single.GetTagItem("aigenterra.collector.payload.size"));
+        Assert.Equal(200, activities.Single.GetTagItem("http.response.status_code"));
+        Assert.DoesNotContain(
+            activities.Single.TagObjects,
+            tag => string.Equals(tag.Value?.ToString(), Encoding.UTF8.GetString(payload), StringComparison.Ordinal));
     }
 
     [Fact]
     public async Task Collector_fails_open_when_delivery_throws()
     {
+        using var activities = new CollectorActivityCapture();
         using var client = new HttpClient(new ThrowingHandler());
         await using var input = new MemoryStream("{}"u8.ToArray());
         using var output = new StringWriter();
@@ -50,11 +59,15 @@ public sealed class CollectorCommandTests
 
         Assert.Equal(0, exitCode);
         Assert.Equal($"{{}}{Environment.NewLine}", output.ToString());
+        Assert.Equal(ActivityStatusCode.Error, activities.Single.Status);
+        Assert.Equal("transport_error", activities.Single.GetTagItem("aigenterra.collector.result"));
+        Assert.Equal(typeof(HttpRequestException).FullName, activities.Single.GetTagItem("error.type"));
     }
 
     [Fact]
     public async Task Oversized_payload_is_not_sent_and_still_fails_open()
     {
+        using var activities = new CollectorActivityCapture();
         var handler = new CapturingHandler();
         using var client = new HttpClient(handler);
         await using var input = new MemoryStream(new byte[CollectorCommand.MaxPayloadBytes + 1]);
@@ -70,6 +83,30 @@ public sealed class CollectorCommandTests
         Assert.Equal(0, exitCode);
         Assert.Equal(0, handler.RequestCount);
         Assert.Equal($"{{}}{Environment.NewLine}", output.ToString());
+        Assert.Equal(ActivityStatusCode.Error, activities.Single.Status);
+        Assert.Equal("payload_too_large", activities.Single.GetTagItem("aigenterra.collector.result"));
+        Assert.True((long)activities.Single.GetTagItem("aigenterra.collector.payload.size")! > CollectorCommand.MaxPayloadBytes);
+    }
+
+    private sealed class CollectorActivityCapture : IDisposable
+    {
+        private readonly List<Activity> stoppedActivities = [];
+        private readonly ActivityListener listener;
+
+        public CollectorActivityCapture()
+        {
+            listener = new ActivityListener
+            {
+                ShouldListenTo = source => source.Name == "Aigenterra.Collector",
+                Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllData,
+                ActivityStopped = stoppedActivities.Add
+            };
+            ActivitySource.AddActivityListener(listener);
+        }
+
+        public Activity Single => Assert.Single(stoppedActivities);
+
+        public void Dispose() => listener.Dispose();
     }
 
     /// <summary>

@@ -64,16 +64,27 @@ public sealed class ProjectDependencyTests
     }
 
     [Fact]
-    public void Collector_has_no_aigenterra_or_external_runtime_dependencies()
+    public void Collector_depends_only_on_opentelemetry_transport_packages()
     {
         var project = LoadProject(FindSolutionRoot(), "Aigenterra.Collector");
-        var dependencies = project
+        var projectOrFrameworkReferences = project
             .Descendants()
             .Where(element => element.Name.LocalName is
-                "ProjectReference" or "FrameworkReference" or "PackageReference")
+                "ProjectReference" or "FrameworkReference")
+            .ToArray();
+        var packages = project
+            .Descendants()
+            .Where(element => element.Name.LocalName == "PackageReference")
+            .Select(element => element.Attribute("Include")?.Value)
+            .Where(package => !string.IsNullOrWhiteSpace(package))
+            .Select(package => package!)
+            .Order(StringComparer.Ordinal)
             .ToArray();
 
-        Assert.Empty(dependencies);
+        Assert.Empty(projectOrFrameworkReferences);
+        Assert.Equal(
+            ["OpenTelemetry", "OpenTelemetry.Exporter.OpenTelemetryProtocol"],
+            packages);
     }
 
     [Theory]

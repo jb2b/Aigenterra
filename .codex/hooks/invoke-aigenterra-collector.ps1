@@ -10,6 +10,15 @@ try {
         exit 0
     }
 
+    if ([string]::IsNullOrWhiteSpace($env:OTEL_EXPORTER_OTLP_ENDPOINT)) {
+        $env:OTEL_EXPORTER_OTLP_ENDPOINT = if ([string]::IsNullOrWhiteSpace($env:AIGENTERRA_OTLP_ENDPOINT)) {
+            'http://localhost:19286'
+        }
+        else {
+            $env:AIGENTERRA_OTLP_ENDPOINT
+        }
+    }
+
     & $collectorPath
     exit 0
 }
