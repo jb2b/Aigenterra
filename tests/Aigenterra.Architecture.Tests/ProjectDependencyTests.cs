@@ -99,6 +99,7 @@ public sealed class ProjectDependencyTests
             "Aigenterra.ServiceDefaults",
             "Microsoft.AspNetCore",
             "Microsoft.EntityFrameworkCore",
+            "Npgsql",
             "Aspire.Hosting",
             "System.Text.Json"
         ];

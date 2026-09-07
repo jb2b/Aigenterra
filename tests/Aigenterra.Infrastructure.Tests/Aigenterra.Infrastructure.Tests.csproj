@@ -12,12 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Testcontainers.PostgreSql" Version="4.15.0" />
     <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Aigenterra.Infrastructure\Aigenterra.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Aigenterra.Application\Aigenterra.Application.csproj" />
+    <ProjectReference Include="..\..\src\Aigenterra.Adapters.Codex\Aigenterra.Adapters.Codex.csproj" />
   </ItemGroup>
 
 </Project>

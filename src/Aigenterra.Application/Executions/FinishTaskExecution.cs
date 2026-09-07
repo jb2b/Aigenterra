@@ -45,9 +45,17 @@ public sealed class FinishTaskExecution(IExecutionWriteStore store, TimeProvider
             return failure;
         }
 
-        if (finishResult == ExecutionFinishResult.Applied)
+        if (finishResult == ExecutionFinishResult.Applied
+            && !await store.TryFinishTaskExecutionAsync(execution, cancellationToken))
         {
-            await store.SaveTaskExecutionAsync(execution, cancellationToken);
+            // A terminal state is immutable: one fresh read resolves a lost finish race.
+            execution = await store.FindTaskExecutionAsync(taskId, cancellationToken)
+                ?? throw new InvalidOperationException("The execution disappeared during finish.");
+            failure = MapFinishFailure(execution.Finish(status, command.EndedAt ?? timeProvider.GetUtcNow()));
+            if (failure is not null)
+            {
+                return failure;
+            }
         }
 
         return UseCaseResult<ExecutionFinished>.Success(new ExecutionFinished(

@@ -60,7 +60,7 @@ public sealed class InMemoryExecutionStore :
                 taskExecution.Id,
                 taskExecution.RuntimeReference,
                 taskExecutions,
-                taskExecution));
+                ExecutionCopies.Copy(taskExecution)));
         }
     }
 
@@ -71,11 +71,11 @@ public sealed class InMemoryExecutionStore :
         cancellationToken.ThrowIfCancellationRequested();
         lock (gate)
         {
-            return ValueTask.FromResult(taskExecutions.GetValueOrDefault(taskExecutionId));
+            return ValueTask.FromResult(taskExecutions.TryGetValue(taskExecutionId, out var value) ? ExecutionCopies.Copy(value) : null);
         }
     }
 
-    public ValueTask SaveTaskExecutionAsync(
+    public ValueTask<bool> TryFinishTaskExecutionAsync(
         TaskExecution taskExecution,
         CancellationToken cancellationToken = default)
     {
@@ -83,8 +83,10 @@ public sealed class InMemoryExecutionStore :
         lock (gate)
         {
             EnsureKnown(taskExecutions, taskExecution.Id, "task execution");
-            taskExecutions[taskExecution.Id] = taskExecution;
-            return ValueTask.CompletedTask;
+            var stored = taskExecutions[taskExecution.Id];
+            var result = stored.Finish(taskExecution.Status, taskExecution.EndedAt
+                ?? throw new ArgumentException("A terminal execution is required.", nameof(taskExecution)));
+            return ValueTask.FromResult(result == ExecutionFinishResult.Applied);
         }
     }
 
@@ -100,7 +102,7 @@ public sealed class InMemoryExecutionStore :
                 agentExecution.Id,
                 agentExecution.RuntimeReference,
                 agentExecutions,
-                agentExecution));
+                ExecutionCopies.Copy(agentExecution)));
         }
     }
 
@@ -111,11 +113,11 @@ public sealed class InMemoryExecutionStore :
         cancellationToken.ThrowIfCancellationRequested();
         lock (gate)
         {
-            return ValueTask.FromResult(agentExecutions.GetValueOrDefault(agentExecutionId));
+            return ValueTask.FromResult(agentExecutions.TryGetValue(agentExecutionId, out var value) ? ExecutionCopies.Copy(value) : null);
         }
     }
 
-    public ValueTask SaveAgentExecutionAsync(
+    public ValueTask<bool> TryFinishAgentExecutionAsync(
         AgentExecution agentExecution,
         CancellationToken cancellationToken = default)
     {
@@ -123,8 +125,10 @@ public sealed class InMemoryExecutionStore :
         lock (gate)
         {
             EnsureKnown(agentExecutions, agentExecution.Id, "agent execution");
-            agentExecutions[agentExecution.Id] = agentExecution;
-            return ValueTask.CompletedTask;
+            var stored = agentExecutions[agentExecution.Id];
+            var result = stored.Finish(agentExecution.Status, agentExecution.EndedAt
+                ?? throw new ArgumentException("A terminal execution is required.", nameof(agentExecution)));
+            return ValueTask.FromResult(result == ExecutionFinishResult.Applied);
         }
     }
 

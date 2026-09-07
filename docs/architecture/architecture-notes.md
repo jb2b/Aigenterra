@@ -111,3 +111,43 @@ Dit document bevat alleen beslissingen die de structuur of ontwikkelrichting van
 **Keuze:** De repo-lokale hook start een vooraf gebouwde, kortlevende framework-dependent Collector die stdin byte-identiek via HTTP doorstuurt, nooit payloads logt en altijd succesvol eindigt. Er is nog geen queue of retry.
 
 **Consequentie:** De integratie blijft klein en ontkoppeld, met bewust geaccepteerd telemetryverlies wanneer de lokale API niet beschikbaar is.
+
+## 2026-09-07 — PostgreSQL implementeert Application-capabilities
+
+**Status:** Accepted
+
+**Context:** Execution-data moet API- en AppHost-herstarts overleven, terwijl in-memory bruikbaar blijft voor tests.
+
+**Keuze:** De module Executions.Postgres binnen Infrastructure implementeert de bestaande write-, runtime-reference- en timeline-ports. Api kiest PostgreSQL via composition; Aspire orkestreert de database met een persistent volume. TryFinishTaskExecutionAsync en TryFinishAgentExecutionAsync beschrijven de benodigde terminale overgang, geen algemene Save-operatie.
+
+**Consequentie:** Infrastructure is afhankelijk van Application omdat Application de benodigde capabilities bezit. Domain en Application blijven frameworkvrij. Een extra PostgreSQL-project levert nu onvoldoende isolatiewaarde; tests die Infrastructure refereren krijgen de technische packages transitief mee.
+
+## 2026-09-07 — Persistence-entities beschermen de zelfstandige aggregates
+
+**Status:** Accepted
+
+**Context:** Domain gebruikt readonly constructors, typed IDs en RuntimeReference; ingestmetadata hoort al buiten Domain.
+
+**Keuze:** Vier platte persistence-entities met expliciete mappings staan uitsluitend in Infrastructure. Domain-objecten worden via constructors en de bestaande Finish-regel hersteld; timelines worden rechtstreeks naar Application-readmodels geprojecteerd.
+
+**Consequentie:** Er zijn kleine mappings te onderhouden, maar geen EF-constructors, tracking of navigation-collecties in Domain. Een relationele relatie of gedeelde database-transactie maakt zelfstandige aggregates niet tot één aggregate. Observations worden niet gebruikt om actuele state te reconstrueren: dit is geen event sourcing.
+
+## 2026-09-07 — Database-atomiciteit ondersteunt execution-semantiek
+
+**Status:** Accepted
+
+**Context:** Gelijktijdige requests mogen geen dubbele feiten, verloren lifecycle-overgangen of onjuiste ingest-sequences veroorzaken.
+
+**Keuze:** Append verhoogt last_sequence op de taskrij en schrijft observation plus evidence in één transactie. last_sequence is uitsluitend een persistence-mechanisme en komt niet in TaskExecution. Per resourcetabel bewaken unique runtime-reference-indexes identiteit; foreign keys bewaken relaties. Finish wijzigt alleen een nog Running opgeslagen execution. De timeline gebruikt intern een read-only REPEATABLE READ-snapshot.
+
+**Consequentie:** Row locks serialiseren appends per task; een rollback verbruikt geen sequence. Application bepaalt de use-case en gebruikt Domain voor lifecycle-regels; databaseconstraints bewaken gelijktijdige writes. Verloren finish-races leiden tot opnieuw lezen en behoud van de eerste eindtijd. Isolation level en queryvorm zijn Infrastructure-details die onafhankelijk kunnen veranderen. Codex-hooks blijven afzonderlijke idempotente stappen, zonder volledige hooktransactie of nieuwe Unit of Work.
+
+## 2026-09-07 — Exacte evidence en tijd, begrensde opslagkeuze
+
+**Status:** Accepted
+
+**Context:** Bronbytes moeten inspecteerbaar behouden blijven en .NET-tijdprecisie mag timeline-ordering niet veranderen.
+
+**Keuze:** Infrastructure bewaart opaque evidence als bytea met media type op de observationrij en UTC-tijden als bigint-ticks. De bestaande transportlimiet van 1 MiB en evidence-scope blijven gelden; timelines tonen alleen aanwezigheid. Er komt geen retrievalendpoint of ontvangstarchief bij.
+
+**Consequentie:** Bytefidelity en 100-ns-precisie blijven behouden, tegen minder direct leesbare SQL-tijden. bytea op observations is de huidige keuze voor kleine payloads, geen uitspraak dat toekomstige grote artifacts ook in PostgreSQL thuishoren. Er wordt geen JSON-kopie onderhouden en payloadlogging blijft uitgeschakeld.

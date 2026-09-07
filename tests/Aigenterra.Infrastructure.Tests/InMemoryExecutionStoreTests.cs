@@ -14,6 +14,28 @@ public sealed class InMemoryExecutionStoreTests
     private static readonly DateTimeOffset Now = new(2026, 9, 4, 12, 0, 0, TimeSpan.Zero);
 
     [Fact]
+    public async Task Mutable_execution_snapshots_cannot_change_stored_state_or_overwrite_a_finish()
+    {
+        var (store, original) = await CreateTask();
+        original.Finish(ExecutionStatus.Failed, Now.AddSeconds(1));
+        var first = (await store.FindTaskExecutionAsync(original.Id))!;
+        var second = (await store.FindTaskExecutionAsync(original.Id))!;
+        Assert.Equal(ExecutionStatus.Running, first.Status);
+        first.Finish(ExecutionStatus.Completed, Now.AddSeconds(2));
+        Assert.Equal(ExecutionStatus.Running, second.Status);
+        Assert.True(await store.TryFinishTaskExecutionAsync(first));
+        Assert.False(await store.TryFinishTaskExecutionAsync(original));
+        Assert.Equal(ExecutionStatus.Completed, (await store.FindTaskExecutionAsync(original.Id))!.Status);
+
+        var agent = new AgentExecution(AgentExecutionId.New(), original.Id, null, Now);
+        await store.AddAgentExecutionAsync(agent);
+        agent.Finish(ExecutionStatus.Interrupted, Now.AddSeconds(3));
+        Assert.Equal(ExecutionStatus.Running, (await store.FindAgentExecutionAsync(agent.Id))!.Status);
+        Assert.True(await store.TryFinishAgentExecutionAsync(agent));
+        Assert.False(await store.TryFinishAgentExecutionAsync(agent));
+    }
+
+    [Fact]
     public async Task Parallel_appends_receive_unique_monotone_sequences()
     {
         var (store, task) = await CreateTask();

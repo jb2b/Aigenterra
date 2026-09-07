@@ -48,7 +48,11 @@ public interface IExecutionWriteStore
         TaskExecutionId taskExecutionId,
         CancellationToken cancellationToken = default);
 
-    ValueTask SaveTaskExecutionAsync(
+    /// <summary>
+    /// Persists only a validated terminal status and end time if the stored task is still running.
+    /// Returns false when another finish won; callers must reload to obtain the effective state.
+    /// </summary>
+    ValueTask<bool> TryFinishTaskExecutionAsync(
         TaskExecution taskExecution,
         CancellationToken cancellationToken = default);
 
@@ -60,7 +64,11 @@ public interface IExecutionWriteStore
         AgentExecutionId agentExecutionId,
         CancellationToken cancellationToken = default);
 
-    ValueTask SaveAgentExecutionAsync(
+    /// <summary>
+    /// Persists only a validated terminal status and end time if the stored agent is still running.
+    /// Returns false when another finish won; callers must reload to obtain the effective state.
+    /// </summary>
+    ValueTask<bool> TryFinishAgentExecutionAsync(
         AgentExecution agentExecution,
         CancellationToken cancellationToken = default);
 

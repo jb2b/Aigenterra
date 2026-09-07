@@ -15,6 +15,9 @@ internal sealed class TestExecutionStore : IExecutionWriteStore, ITaskExecutionT
     private readonly Dictionary<TaskExecutionId, List<StoredObservation>> observations = [];
     private readonly HashSet<(string Type, RuntimeReference Reference)> runtimeReferences = [];
 
+    internal Action? BeforeTaskFinish { get; set; }
+    internal Action? BeforeAgentFinish { get; set; }
+
     public ValueTask<StoreAddResult> AddConversationAsync(
         Conversation conversation,
         CancellationToken cancellationToken = default) =>
@@ -38,19 +41,23 @@ internal sealed class TestExecutionStore : IExecutionWriteStore, ITaskExecutionT
             taskExecution.Id,
             taskExecution.RuntimeReference,
             tasks,
-            taskExecution));
+            Copy(taskExecution)));
 
     public ValueTask<TaskExecution?> FindTaskExecutionAsync(
         TaskExecutionId taskExecutionId,
         CancellationToken cancellationToken = default) =>
-        ValueTask.FromResult(tasks.GetValueOrDefault(taskExecutionId));
+        ValueTask.FromResult(tasks.TryGetValue(taskExecutionId, out var value) ? Copy(value) : null);
 
-    public ValueTask SaveTaskExecutionAsync(
+    public ValueTask<bool> TryFinishTaskExecutionAsync(
         TaskExecution taskExecution,
         CancellationToken cancellationToken = default)
     {
-        tasks[taskExecution.Id] = taskExecution;
-        return ValueTask.CompletedTask;
+        var before = BeforeTaskFinish;
+        BeforeTaskFinish = null;
+        before?.Invoke();
+        var result = tasks[taskExecution.Id].Finish(taskExecution.Status, taskExecution.EndedAt
+            ?? throw new ArgumentException("A terminal execution is required.", nameof(taskExecution)));
+        return ValueTask.FromResult(result == ExecutionFinishResult.Applied);
     }
 
     public ValueTask<StoreAddResult> AddAgentExecutionAsync(
@@ -61,19 +68,23 @@ internal sealed class TestExecutionStore : IExecutionWriteStore, ITaskExecutionT
             agentExecution.Id,
             agentExecution.RuntimeReference,
             agents,
-            agentExecution));
+            Copy(agentExecution)));
 
     public ValueTask<AgentExecution?> FindAgentExecutionAsync(
         AgentExecutionId agentExecutionId,
         CancellationToken cancellationToken = default) =>
-        ValueTask.FromResult(agents.GetValueOrDefault(agentExecutionId));
+        ValueTask.FromResult(agents.TryGetValue(agentExecutionId, out var value) ? Copy(value) : null);
 
-    public ValueTask SaveAgentExecutionAsync(
+    public ValueTask<bool> TryFinishAgentExecutionAsync(
         AgentExecution agentExecution,
         CancellationToken cancellationToken = default)
     {
-        agents[agentExecution.Id] = agentExecution;
-        return ValueTask.CompletedTask;
+        var before = BeforeAgentFinish;
+        BeforeAgentFinish = null;
+        before?.Invoke();
+        var result = agents[agentExecution.Id].Finish(agentExecution.Status, agentExecution.EndedAt
+            ?? throw new ArgumentException("A terminal execution is required.", nameof(agentExecution)));
+        return ValueTask.FromResult(result == ExecutionFinishResult.Applied);
     }
 
     public ValueTask<AppendObservationStoreResult> AppendObservationAsync(
@@ -157,6 +168,30 @@ internal sealed class TestExecutionStore : IExecutionWriteStore, ITaskExecutionT
             ToModel(task.RuntimeReference),
             agentItems,
             observationItems));
+    }
+
+    private static TaskExecution Copy(TaskExecution source)
+    {
+        var copy = new TaskExecution(source.Id, source.ConversationId, source.Objective,
+            source.StartedAt, source.RuntimeReference);
+        if (source.EndedAt is { } endedAt)
+        {
+            copy.Finish(source.Status, endedAt);
+        }
+
+        return copy;
+    }
+
+    private static AgentExecution Copy(AgentExecution source)
+    {
+        var copy = new AgentExecution(source.Id, source.TaskExecutionId, source.ParentAgentExecutionId,
+            source.StartedAt, source.RuntimeReference);
+        if (source.EndedAt is { } endedAt)
+        {
+            copy.Finish(source.Status, endedAt);
+        }
+
+        return copy;
     }
 
     private StoreAddResult Add<TKey, TValue>(

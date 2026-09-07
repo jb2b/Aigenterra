@@ -2,8 +2,7 @@ using Aigenterra.Adapters.Codex;
 using Aigenterra.Api.Codex;
 using Aigenterra.Api.Executions;
 using Aigenterra.Application.Executions;
-using Aigenterra.Application.Executions.Ports;
-using Aigenterra.Infrastructure.Executions;
+using Aigenterra.Infrastructure.Executions.Postgres;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +10,8 @@ builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 
-builder.Services.AddSingleton<InMemoryExecutionStore>();
-builder.Services.AddSingleton<IExecutionWriteStore>(services =>
-    services.GetRequiredService<InMemoryExecutionStore>());
-builder.Services.AddSingleton<ITaskExecutionTimelineReader>(services =>
-    services.GetRequiredService<InMemoryExecutionStore>());
-builder.Services.AddSingleton<IExecutionRuntimeReferenceReader>(services =>
-    services.GetRequiredService<InMemoryExecutionStore>());
+builder.Services.AddPostgresExecutions(builder.Configuration.GetConnectionString("aigenterra")
+    ?? throw new InvalidOperationException("ConnectionStrings:aigenterra is required. Start the API through AppHost or supply PostgreSQL configuration."));
 
 builder.Services.AddTransient<CreateConversation>();
 builder.Services.AddTransient<StartTaskExecution>();
@@ -31,6 +25,11 @@ builder.Services.AddTransient<GetTaskExecutionTimelineByRuntimeReference>();
 builder.Services.AddTransient<ICodexHookIngestor, CodexHookIngestor>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await app.Services.MigrateExecutionDevelopmentDatabaseAsync();
+}
 
 app.MapDefaultEndpoints();
 
