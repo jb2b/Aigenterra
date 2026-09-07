@@ -151,3 +151,33 @@ Dit document bevat alleen beslissingen die de structuur of ontwikkelrichting van
 **Keuze:** Infrastructure bewaart opaque evidence als bytea met media type op de observationrij en UTC-tijden als bigint-ticks. De bestaande transportlimiet van 1 MiB en evidence-scope blijven gelden; timelines tonen alleen aanwezigheid. Er komt geen retrievalendpoint of ontvangstarchief bij.
 
 **Consequentie:** Bytefidelity en 100-ns-precisie blijven behouden, tegen minder direct leesbare SQL-tijden. bytea op observations is de huidige keuze voor kleine payloads, geen uitspraak dat toekomstige grote artifacts ook in PostgreSQL thuishoren. Er wordt geen JSON-kopie onderhouden en payloadlogging blijft uitgeschakeld.
+
+## 2026-09-07 — Flight Recorder is een HTTP outer adapter
+
+**Status:** Accepted
+
+**Keuze:** Angular gebruikt expliciete API-contracten. Api vertaalt Application-readmodels naar HTTP-DTOs; Domain en Application kennen Angular en browserrouting niet.
+
+**DDD / Clean Architecture:** De gebruikersinterface is een outer adapter. Een transportcontract is geen gedeeld Domain-model.
+
+**Trade-off:** Kleine expliciete contractmappings blijven nodig, maar frontend en domein kunnen onafhankelijk veranderen.
+
+## 2026-09-07 — Overzichtsreads ontstaan uit een concrete inspectiebehoefte
+
+**Status:** Accepted
+
+**Keuze:** Application bezit een begrensde recente-executions-read naast de bestaande timeline-read. PostgreSQL projecteert metadata en aantallen rechtstreeks zonder aggregates of evidence te laden.
+
+**DDD / Clean Architecture:** Een readmodel mag meerdere aggregates beschrijven zonder ze als één aggregate te behandelen. Een UI-use-case rechtvaardigt een concrete port, geen generieke repository.
+
+**Trade-off:** Een gespecialiseerde query en index vragen onderhoud; grote objectgrafieken en een algemeen queryframework blijven achterwege.
+
+## 2026-09-07 — Browserrouting blijft onafhankelijk van procesdiscovery
+
+**Status:** Accepted
+
+**Keuze:** De browser gebruikt relatieve `/api`-URLs. Een webproxy vertaalt die naar de bestaande API-routes; Aspire levert tijdens development het API-endpoint aan het webproces.
+
+**DDD / Clean Architecture:** Aspire is technische orchestratie buiten Domain/Application. Browser-URL-resolutie is geen Application-capability.
+
+**Trade-off:** Development vereist proxyconfiguratie; een latere self-hosted webserver kan hetzelfde browsercontract behouden.

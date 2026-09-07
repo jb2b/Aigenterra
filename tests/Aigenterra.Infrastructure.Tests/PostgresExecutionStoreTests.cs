@@ -43,6 +43,44 @@ public sealed class PostgresExecutionStoreTests(PostgresFixture fixture) : IClas
     private static readonly DateTimeOffset Now = new DateTimeOffset(2026, 9, 7, 12, 0, 0, TimeSpan.Zero).AddTicks(3);
 
     [Fact]
+    public async Task Recent_read_is_bounded_stable_and_counts_without_fetching_evidence()
+    {
+        var connection = await fixture.CreateDatabaseAsync();
+        var capture = new QueryCapture();
+        await using var db = PostgresFixture.Context(connection, capture);
+        var reader = new PostgresRecentTaskExecutionReader(db);
+        Assert.Empty(await reader.GetRecentAsync(50));
+        var store = new PostgresExecutionStore(db);
+        var conversation = new Conversation(ConversationId.New(), Now);
+        await store.AddConversationAsync(conversation);
+        var low = new TaskExecution(new(Guid.Parse("00000000-0000-0000-0000-000000000001")), conversation.Id, "Lower ID", Now);
+        var high = new TaskExecution(new(Guid.Parse("00000000-0000-0000-0000-000000000002")), conversation.Id, "Higher ID", Now, Reference("turn"));
+        var newer = new TaskExecution(TaskExecutionId.New(), conversation.Id, "Newer", Now.AddTicks(1));
+        foreach (var task in new[] { low, newer, high }) await store.AddTaskExecutionAsync(task);
+        var agent = new AgentExecution(AgentExecutionId.New(), high.Id, null, Now);
+        await store.AddAgentExecutionAsync(agent);
+        await store.AppendObservationAsync(Observation(high.Id, agent.Id), new SourceEvidence("text/plain", new byte[] { 1, 2, 3 }), Now);
+        await store.AppendObservationAsync(Observation(high.Id), null, Now);
+        capture.Queries.Clear();
+
+        var items = await reader.GetRecentAsync(2);
+        Assert.Equal(new[] { newer.Id.Value, high.Id.Value }, items.Select(item => item.TaskExecutionId));
+        Assert.Null(items[0].RuntimeReference);
+        Assert.Equal(0, items[0].AgentCount);
+        Assert.Equal(0, items[0].ObservationCount);
+        Assert.Equal(1, items[1].AgentCount);
+        Assert.Equal(2, items[1].ObservationCount);
+        Assert.Equal(conversation.Id.Value, items[1].ConversationId);
+        Assert.Equal("running", items[1].Status);
+        Assert.Equal(Now, items[1].StartedAt);
+        Assert.Equal(high.RuntimeReference!.ExternalId, items[1].RuntimeReference!.ExternalId);
+        Assert.Single(capture.Queries);
+        Assert.DoesNotContain("evidence", capture.Queries[0], StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("LIMIT", capture.Queries[0], StringComparison.Ordinal);
+        Assert.Equal(low.Id.Value, (await reader.GetRecentAsync(100))[2].TaskExecutionId);
+    }
+
+    [Fact]
     public async Task Scopes_round_trip_lifecycle_relations_exact_ticks_and_binary_evidence()
     {
         var connection = await fixture.CreateDatabaseAsync();

@@ -20,6 +20,8 @@ public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> opti
         var tasks = modelBuilder.Entity<TaskExecutionRow>();
         ConfigureIdentity(tasks, "task_executions");
         ConfigureLifecycle(tasks, "task_executions");
+        tasks.HasIndex(row => new { row.StartedAtTicks, row.Id })
+            .IsDescending().HasDatabaseName("ix_tasks_recent");
         tasks.ToTable(table =>
         {
             table.HasCheckConstraint("ck_task_sequence", "last_sequence >= 0");

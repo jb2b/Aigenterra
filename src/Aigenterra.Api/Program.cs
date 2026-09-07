@@ -20,11 +20,13 @@ builder.Services.AddTransient<RecordObservation>();
 builder.Services.AddTransient<FinishAgentExecution>();
 builder.Services.AddTransient<FinishTaskExecution>();
 builder.Services.AddTransient<GetTaskExecutionTimeline>();
+builder.Services.AddTransient<GetRecentTaskExecutions>();
 builder.Services.AddTransient<ResolveExecutionRuntimeReference>();
 builder.Services.AddTransient<GetTaskExecutionTimelineByRuntimeReference>();
 builder.Services.AddTransient<ICodexHookIngestor, CodexHookIngestor>();
 
 var app = builder.Build();
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {

@@ -6,9 +6,16 @@ var database = builder.AddPostgres("postgres", password: password)
     .WithDataVolume("aigenterra-postgres-data")
     .AddDatabase("aigenterra");
 
-builder.AddProject<Projects.Aigenterra_Api>("api")
+var api = builder.AddProject<Projects.Aigenterra_Api>("api")
     .WithReference(database)
     .WaitFor(database)
     .WithHttpHealthCheck("/health");
+
+builder.AddJavaScriptApp("web", "../Aigenterra.Web")
+    .WithNpm(installCommand: "ci")
+    .WithHttpEndpoint(env: "PORT")
+    .WithReference(api)
+    .WithEnvironment("API_HTTP", api.GetEndpoint("http"))
+    .WaitFor(api);
 
 builder.Build().Run();

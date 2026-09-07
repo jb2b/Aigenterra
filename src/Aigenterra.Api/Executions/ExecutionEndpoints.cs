@@ -13,6 +13,7 @@ internal static class ExecutionEndpoints
 
     public static IEndpointRouteBuilder MapExecutionEndpoints(this IEndpointRouteBuilder endpoints)
     {
+        endpoints.MapGet("/task-executions", GetRecentAsync);
         endpoints.MapPost("/conversations", CreateConversationAsync);
         endpoints.MapPost(
             "/conversations/{conversationId:guid}/task-executions",
@@ -37,6 +38,16 @@ internal static class ExecutionEndpoints
             GetTimelineByRuntimeReferenceAsync);
 
         return endpoints;
+    }
+
+    private static async Task<IResult> GetRecentAsync(
+        GetRecentTaskExecutions useCase, CancellationToken cancellationToken, int limit = 50)
+    {
+        var result = await useCase.ExecuteAsync(new GetRecentTaskExecutionsQuery(limit), cancellationToken);
+        return ToHttpResult(result, items => Results.Ok(new RecentTaskExecutionsResponse(
+            items.Select(item => new RecentTaskExecutionResponse(
+                item.TaskExecutionId, item.ConversationId, item.Objective, item.Status,
+                item.StartedAt, ToResponse(item.RuntimeReference), item.AgentCount, item.ObservationCount)).ToArray())));
     }
 
     private static async Task<IResult> CreateConversationAsync(
@@ -299,6 +310,12 @@ internal static class ExecutionEndpoints
                 ToResponse(observation.RuntimeReference),
                 observation.HasRawEvidence)).ToArray());
 }
+
+internal sealed record RecentTaskExecutionsResponse(IReadOnlyList<RecentTaskExecutionResponse> Items);
+
+internal sealed record RecentTaskExecutionResponse(
+    Guid TaskExecutionId, Guid ConversationId, string Objective, string Status,
+    DateTimeOffset StartedAt, RuntimeReferenceResponse? RuntimeReference, int AgentCount, int ObservationCount);
 
 /// <summary>
 /// Accepts runtime-correlation values from an HTTP request.

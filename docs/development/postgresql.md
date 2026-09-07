@@ -20,7 +20,8 @@ De API wacht op de database en ontvangt de connection string via Aspire. Bewaar 
 en volume bij herstarts. Een ander wachtwoord wijzigt niet automatisch de credentials in
 een bestaande PostgreSQL-datadirectory. Verwijder het volume niet om een startupfout te repareren.
 
-Development-startup past alleen de expliciet toegestane eerste migration toe. Een onbekende
+Development-startup past alleen de expliciet toegestane migrations `InitialExecutionPersistence`
+en `RecentTaskExecutionsIndex` toe. De tweede voegt uitsluitend de index voor het recente-executions-overzicht toe. Een onbekende
 pending migration stopt startup; beoordeel en pas die expliciet toe, of voeg een gereviewde,
 niet-destructieve migration toe aan de allowlist. Buiten Development voert API-startup geen migrations uit.
 Database- of migrationfouten veroorzaken geen fallback naar in-memory.

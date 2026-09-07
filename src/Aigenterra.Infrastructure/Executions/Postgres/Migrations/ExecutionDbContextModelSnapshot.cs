@@ -284,6 +284,10 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
 
                     b.HasIndex("ConversationId");
 
+                    b.HasIndex("StartedAtTicks", "Id")
+                        .IsDescending()
+                        .HasDatabaseName("ix_tasks_recent");
+
                     b.HasIndex("Runtime", "ResourceKind", "ExternalId")
                         .IsUnique()
                         .HasDatabaseName("ux_task_executions_runtime_reference")

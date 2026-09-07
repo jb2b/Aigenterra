@@ -15,6 +15,7 @@ public static class PostgresExecutionServices
         services.AddScoped<IExecutionWriteStore>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<IExecutionRuntimeReferenceReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<ITaskExecutionTimelineReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
+        services.AddScoped<IRecentTaskExecutionReader, PostgresRecentTaskExecutionReader>();
         return services;
     }
 
@@ -25,7 +26,8 @@ public static class PostgresExecutionServices
         var db = scope.ServiceProvider.GetRequiredService<ExecutionDbContext>();
         var pending = await db.Database.GetPendingMigrationsAsync(cancellationToken);
         // Explicit allowlist: future migrations require review before automatic startup execution.
-        if (pending.Any(id => !id.EndsWith("_InitialExecutionPersistence", StringComparison.Ordinal)))
+        if (pending.Any(id => !id.EndsWith("_InitialExecutionPersistence", StringComparison.Ordinal)
+            && !id.EndsWith("_RecentTaskExecutionsIndex", StringComparison.Ordinal)))
         {
             throw new InvalidOperationException("Unapproved execution migrations are pending. Apply a reviewed migration script explicitly.");
         }
