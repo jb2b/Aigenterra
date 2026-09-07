@@ -17,6 +17,12 @@ Vanuit de repositoryroot:
 dotnet run --project src/Aigenterra.AppHost --launch-profile http
 ```
 
+Het `http`-profiel is de standaard voor lokale ontwikkeling. Start in VS Code de volledige
+applicatie met **Aspire: Launch AppHost**. Iedere kortlevende Collector-run verschijnt in het
+Aspire-dashboard onder **Traces** als service `aigenterra-collector`. Stel
+`AIGENTERRA_OTLP_ENDPOINT` in om het standaard OTLP-endpoint `http://localhost:19286` te
+overschrijven. Collector-traces bevatten alleen transportstatus en payloadgrootte, nooit de payload.
+
 AppHost start PostgreSQL, Api, npm ci en de Angular-developmentserver. Open het HTTP-endpoint
 van **web** in het Aspire-dashboard. De webpoort wordt door Aspire toegewezen; bookmark
 bij herstarts zo nodig hetzelfde executionpad op het nieuwe webendpoint.
