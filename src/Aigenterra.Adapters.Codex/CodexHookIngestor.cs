@@ -85,6 +85,7 @@ public sealed class CodexHookIngestor(
                 "subagent-start",
                 hookEvent.AgentId!,
                 $"Codex subagent started: {hookEvent.AgentType}.",
+                null,
                 cancellationToken),
             "SubagentStop" => await IngestSubagentSignalAsync(
                 hookEvent,
@@ -93,6 +94,7 @@ public sealed class CodexHookIngestor(
                 "subagent-stop",
                 CreateStopIdentity(hookEvent),
                 $"Codex subagent emitted a stop signal: {hookEvent.AgentType}.",
+                "completed",
                 cancellationToken),
             "Stop" => await IngestRootSignalAsync(
                 hookEvent,
@@ -101,7 +103,7 @@ public sealed class CodexHookIngestor(
                 "turn-stop",
                 CreateStopIdentity(hookEvent),
                 "Codex turn emitted a stop signal.",
-                false,
+                "completed",
                 cancellationToken),
             "Interrupt" => await IngestRootSignalAsync(
                 hookEvent,
@@ -110,7 +112,7 @@ public sealed class CodexHookIngestor(
                 "turn-interrupt",
                 hookEvent.TurnId!,
                 "Codex turn was interrupted.",
-                true,
+                "interrupted",
                 cancellationToken),
             _ => throw new InvalidOperationException("Unsupported Codex hook event reached ingestion.")
         };
@@ -239,6 +241,7 @@ public sealed class CodexHookIngestor(
         string observationResourceKind,
         string observationExternalId,
         string summary,
+        string? terminalOutcome,
         CancellationToken cancellationToken)
     {
         var task = await ResolveAsync(
@@ -271,15 +274,33 @@ public sealed class CodexHookIngestor(
             observationExternalId,
             payload,
             cancellationToken);
-        return observation.IsSuccess
-            ? Success(
-                observation.Value!.Created
-                    ? CodexIngestDisposition.Recorded
-                    : CodexIngestDisposition.Duplicate,
-                taskExecutionId: task.Value.ExecutionId,
-                agentExecutionId: agent.Value.Id,
-                observationId: observation.Value.Id)
-            : CopyFailure(observation);
+        if (!observation.IsSuccess)
+        {
+            return CopyFailure(observation);
+        }
+
+        if (terminalOutcome is not null)
+        {
+            var finishAgent = await finishAgentExecution.ExecuteAsync(
+                new FinishAgentExecutionCommand(
+                    task.Value.ExecutionId,
+                    agent.Value.Id,
+                    terminalOutcome,
+                    observedAt),
+                cancellationToken);
+            if (!finishAgent.IsSuccess)
+            {
+                return CopyFailure(finishAgent);
+            }
+        }
+
+        return Success(
+            observation.Value!.Created
+                ? CodexIngestDisposition.Recorded
+                : CodexIngestDisposition.Duplicate,
+            taskExecutionId: task.Value.ExecutionId,
+            agentExecutionId: agent.Value.Id,
+            observationId: observation.Value.Id);
     }
 
     private async ValueTask<UseCaseResult<CodexHookIngestReceipt>> IngestRootSignalAsync(
@@ -289,7 +310,7 @@ public sealed class CodexHookIngestor(
         string observationResourceKind,
         string observationExternalId,
         string summary,
-        bool interrupt,
+        string terminalOutcome,
         CancellationToken cancellationToken)
     {
         var task = await ResolveAsync(
@@ -327,30 +348,27 @@ public sealed class CodexHookIngestor(
             return CopyFailure(observation);
         }
 
-        if (interrupt)
+        var finishAgent = await finishAgentExecution.ExecuteAsync(
+            new FinishAgentExecutionCommand(
+                task.Value.ExecutionId,
+                rootAgent.Value.Id,
+                terminalOutcome,
+                observedAt),
+            cancellationToken);
+        if (!finishAgent.IsSuccess)
         {
-            var finishAgent = await finishAgentExecution.ExecuteAsync(
-                new FinishAgentExecutionCommand(
-                    task.Value.ExecutionId,
-                    rootAgent.Value.Id,
-                    "interrupted",
-                    observedAt),
-                cancellationToken);
-            if (!finishAgent.IsSuccess)
-            {
-                return CopyFailure(finishAgent);
-            }
+            return CopyFailure(finishAgent);
+        }
 
-            var finishTask = await finishTaskExecution.ExecuteAsync(
-                new FinishTaskExecutionCommand(
-                    task.Value.ExecutionId,
-                    "interrupted",
-                    observedAt),
-                cancellationToken);
-            if (!finishTask.IsSuccess)
-            {
-                return CopyFailure(finishTask);
-            }
+        var finishTask = await finishTaskExecution.ExecuteAsync(
+            new FinishTaskExecutionCommand(
+                task.Value.ExecutionId,
+                terminalOutcome,
+                observedAt),
+            cancellationToken);
+        if (!finishTask.IsSuccess)
+        {
+            return CopyFailure(finishTask);
         }
 
         return Success(

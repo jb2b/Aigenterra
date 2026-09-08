@@ -11,7 +11,7 @@ import { ExecutionApi, localTimeZone, RecentExecution, requestError } from './ex
       <div>
         <p class="eyebrow">Flight recorder</p>
         <h1>Executions</h1>
-        <p class="lede">Explore the work your agents have recorded.</p>
+        <p class="lede">Explore recorded prompt turns across agent conversations.</p>
       </div>
       <button class="primary" (click)="load()" [disabled]="loading()">
         {{ loading() ? 'Refreshing…' : 'Refresh' }}

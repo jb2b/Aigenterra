@@ -31,7 +31,7 @@ public sealed class CodexHookIngestorTests
     }
 
     [Fact]
-    public async Task Normal_turn_records_prompt_tools_and_stop_without_completing_execution()
+    public async Task Normal_turn_records_prompt_tools_and_stop_then_completes_execution()
     {
         var fixture = new IngestFixture();
 
@@ -51,9 +51,11 @@ public sealed class CodexHookIngestorTests
         Assert.Equal(CodexIngestDisposition.Recorded, stop.Value!.Disposition);
         var timeline = await fixture.GetTimelineAsync(prompt.Value!.TaskExecutionId!.Value);
         Assert.Equal("Run dotnet --version", timeline.Objective);
-        Assert.Equal("running", timeline.Status);
+        Assert.Equal("completed", timeline.Status);
         Assert.Single(timeline.Agents);
-        Assert.Equal("running", timeline.Agents[0].Status);
+        Assert.Equal("completed", timeline.Agents[0].Status);
+        Assert.Equal(Now.AddSeconds(3), timeline.EndedAt);
+        Assert.Equal(Now.AddSeconds(3), timeline.Agents[0].EndedAt);
         Assert.Equal(4, timeline.Observations.Count);
         Assert.All(timeline.Observations, observation => Assert.True(observation.HasRawEvidence));
         Assert.Null(timeline.Observations.Single(item => item.Kind == "toolinvocation").AgentExecutionId);
@@ -61,7 +63,7 @@ public sealed class CodexHookIngestorTests
     }
 
     [Fact]
-    public async Task Interrupt_is_the_only_hook_that_terminates_the_task_and_root_agent()
+    public async Task Interrupt_terminates_the_task_and_root_agent_as_interrupted()
     {
         var fixture = new IngestFixture();
         var prompt = await fixture.IngestAsync(PromptJson("turn-interrupt"), Now);
@@ -79,7 +81,7 @@ public sealed class CodexHookIngestorTests
     }
 
     [Fact]
-    public async Task Subagent_stop_before_start_reconstructs_one_running_agent_and_keeps_both_signals()
+    public async Task Subagent_stop_before_start_reconstructs_one_completed_agent_and_keeps_both_signals()
     {
         var fixture = new IngestFixture();
         var prompt = await fixture.IngestAsync(PromptJson("turn-subagent"), Now);
@@ -96,7 +98,8 @@ public sealed class CodexHookIngestorTests
             timeline.Agents,
             item => item.RuntimeReference?.ResourceKind == "subagent");
         Assert.Null(subagent.ParentAgentExecutionId);
-        Assert.Equal("running", subagent.Status);
+        Assert.Equal("completed", subagent.Status);
+        Assert.Equal(Now.AddSeconds(1), subagent.EndedAt);
         Assert.Equal(2, timeline.Observations.Count(item => item.AgentExecutionId == subagent.AgentExecutionId));
     }
 

@@ -43,12 +43,15 @@ npm start
 ```
 
 De override geldt alleen in deze shell. Zonder API_HTTP stopt de devserver met een uitleg.
-Een toekomstige self-hosted webproxy kan dezelfde relatieve `/api`-routing en SPA-fallback
-aanbieden; deze slice bevat geen productiecontainer, Compose of SSR.
+De Linux self-hosted webcontainer biedt dezelfde relatieve `/api`-routing en SPA-fallback;
+zie de [README](../../README.md) voor Docker Compose. Deze developmentproxy blijft alleen voor
+de lokale Angular-server. Aspire behoudt zijn eigen databasevolume en observability.
 
 ## Semantiek en grenzen
 
-- Status is de laatst geregistreerde backendstatus. Codex Stop is geen completion.
+- Een Codex execution is één promptturn binnen een Conversation (de blijvende chat).
+  Codex Stop voltooit die task execution en de bijbehorende root-agent; SubagentStop voltooit
+  de betreffende subagent. Interrupt beëindigt de task en root-agent als Interrupted.
 - Timelinevolgorde blijft de servervolgorde (ObservedAt, dan Sequence). Sequence is ingestvolgorde;
   ObservedAt is Collector-observatietijd, niet een gereconstrueerde runtimebrontijd.
 - Lokale tijd wordt met tijdzone getoond; exacte timestamps blijven in metadata beschikbaar.

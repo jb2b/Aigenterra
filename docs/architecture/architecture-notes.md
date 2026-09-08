@@ -84,13 +84,31 @@ Dit document bevat alleen beslissingen die de structuur of ontwikkelrichting van
 
 ## 2026-09-04 — Stop-signalen zijn niet autoritatief
 
-**Status:** Accepted
+**Status:** Superseded by “Codex-turns bepalen de executiongrens” (2026-09-08)
 
 **Context:** Een Codex Stop- of SubagentStop-hook kan worden gevolgd door verdere uitvoering en bevat geen completed/failed-outcome.
 
 **Keuze:** Stop en SubagentStop worden alleen immutable observations. Alleen Interrupt mag vanuit de huidige hookintegratie een execution op Interrupted zetten.
 
 **Consequentie:** Normale hook-geobserveerde turns blijven eerlijk op Running totdat een latere autoritatieve bron een terminale outcome levert.
+
+## 2026-09-08 — Codex-turns bepalen de executiongrens
+
+**Status:** Accepted
+
+**Context:** Meerdere `UserPromptSubmit`-events in dezelfde Codex-sessie hebben ieder een eigen
+`turn_id` en verschijnen als afzonderlijke TaskExecutions binnen dezelfde Conversation. In echte
+opnames wordt `Stop` aan het einde van zo'n promptturn uitgezonden. De execution daarna op Running
+houden suggereert ten onrechte dat die prompt nog wordt verwerkt.
+
+**Keuze:** De Codex-adapter behandelt `Stop` als Completed voor de TaskExecution en root-agent die
+door dezelfde `turn_id` zijn geïdentificeerd. `SubagentStop` voltooit de betreffende subagent en
+`Interrupt` blijft de task en root-agent als Interrupted beëindigen. De providersemantiek blijft
+binnen de Codex-adapter; het generieke executionmodel verandert niet.
+
+**Consequentie:** Conversation correspondeert met de blijvende chat en TaskExecution met één
+promptturn. Het overzicht toont geen blijvend Running meer nadat Codex het einde van die turn heeft
+gemeld. Late observations blijven volgens de bestaande domeinregel registreerbaar.
 
 ## 2026-09-04 — Ingestmetadata reconstrueert geen bronvolgorde
 
@@ -181,3 +199,43 @@ Dit document bevat alleen beslissingen die de structuur of ontwikkelrichting van
 **DDD / Clean Architecture:** Aspire is technische orchestratie buiten Domain/Application. Browser-URL-resolutie is geen Application-capability.
 
 **Trade-off:** Development vereist proxyconfiguratie; een latere self-hosted webserver kan hetzelfde browsercontract behouden.
+
+## 2026-09-08 — Twee outer composition modes
+
+**Status:** Accepted
+
+**Keuze:** Aspire orkestreert development; Docker Compose draait de self-hosted Web, Api en PostgreSQL als Linux-containers. Api blijft de composition root en kiest de bestaande Infrastructure-adapter.
+
+**DDD / Clean Architecture:** Deploymenttopologie is een outer concern. Domain en Application kennen geen Docker of orchestrator. Self-hosting verandert de ubiquitous language niet: Conversation blijft één chat en TaskExecution één promptturn.
+
+**Trade-off:** Twee kleine composition-configuraties vragen onderhoud. Single-instance self-hosted startup voert expliciet gereviewde migrations vóór serving uit; meerdere instances of gescheiden migratierechten vragen later een apart deployment-uitvoerpad.
+
+## 2026-09-08 — Web-origin is de self-hosted HTTP-boundary
+
+**Status:** Accepted
+
+**Keuze:** Alleen Web publiceert een hostpoort en reverse-proxyt `/api` naar de interne Api, zowel voor browserreads als Collector-ingest. PostgreSQL blijft intern.
+
+**DDD / Clean Architecture:** De reverse proxy en browserrouting zijn outer adapters. Het HTTP-prefix wijzigt geen Application-contract of domeinbegrip.
+
+**Trade-off:** Eén ingang vereenvoudigt configuratie, maar Web wordt ook onderdeel van het ingestpad. Container-DNS wordt opnieuw opgelost wanneer Api wordt vervangen.
+
+## 2026-09-08 — Collector blijft een edge component
+
+**Status:** Accepted
+
+**Keuze:** De repo-hook start Collector bij de lokale agentruntime, buiten de centrale Compose-stack. Het bestaande ingestadres bepaalt de bestemming; fail-open gedrag blijft behouden.
+
+**DDD / Clean Architecture:** Collector verzorgt transport; de Codex Adapter blijft de anti-corruption layer die providersemantiek vertaalt naar use-cases. Deploymentgemak verplaatst deze boundaries niet.
+
+**Trade-off:** De huidige launcher ondersteunt Windows en vereist een vooraf gebouwde binary. Netwerkuitval of timeout kan events verliezen, zonder de geobserveerde turn te blokkeren.
+
+## 2026-09-08 — Self-hosted v1 is local/private by default
+
+**Status:** Accepted
+
+**Keuze:** Web bindt standaard op localhost. Breder netwerkgebruik vereist een bewuste configuratiewijziging; directe publieke blootstelling zonder authentication/TLS-boundary is niet ondersteund.
+
+**DDD / Clean Architecture:** Netwerkpublicatie en secrets zijn infrastructuurconfiguratie, geen Application-policy. Runtime-secrets behoren niet tot een image of browserbundle.
+
+**Trade-off:** De lokale installatie blijft klein. Publiek gebruik en sterkere scheiding van databaseprivileges vereisen latere infrastructuur- en securitykeuzes.

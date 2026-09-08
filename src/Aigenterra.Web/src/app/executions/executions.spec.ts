@@ -137,7 +137,7 @@ describe('Execution screens', () => {
     expect(harness.routeNativeElement!.textContent).toContain('Second execution');
   });
 
-  it('does not interpret a Stop observation as completion', async () => {
+  it('explains that a Codex execution is one prompt turn', async () => {
     const harness = await RouterTestingHarness.create(`/executions/${id}`);
     http.expectOne(`/api/task-executions/${id}/timeline`).flush(timeline);
     await harness.fixture.whenStable();
@@ -145,7 +145,7 @@ describe('Execution screens', () => {
       harness.routeNativeElement!.querySelector('.execution-summary .badge')!.textContent,
     ).toBe('running');
     expect(harness.routeNativeElement!.textContent).toContain(
-      'stop signal does not confirm completion',
+      'one prompt turn within its conversation',
     );
   });
 });

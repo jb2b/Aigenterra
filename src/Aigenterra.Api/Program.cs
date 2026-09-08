@@ -1,6 +1,7 @@
 using Aigenterra.Adapters.Codex;
 using Aigenterra.Api.Codex;
 using Aigenterra.Api.Executions;
+using Aigenterra.Api.Health;
 using Aigenterra.Application.Executions;
 using Aigenterra.Infrastructure.Executions.Postgres;
 
@@ -12,6 +13,8 @@ builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 
 builder.Services.AddPostgresExecutions(builder.Configuration.GetConnectionString("aigenterra")
     ?? throw new InvalidOperationException("ConnectionStrings:aigenterra is required. Start the API through AppHost or supply PostgreSQL configuration."));
+builder.Services.AddHealthChecks()
+    .AddCheck<ExecutionDatabaseHealthCheck>("postgres", timeout: TimeSpan.FromSeconds(3));
 
 builder.Services.AddTransient<CreateConversation>();
 builder.Services.AddTransient<StartTaskExecution>();
@@ -28,9 +31,10 @@ builder.Services.AddTransient<ICodexHookIngestor, CodexHookIngestor>();
 var app = builder.Build();
 app.UseExceptionHandler();
 
-if (app.Environment.IsDevelopment())
+if (builder.Configuration.GetValue<bool?>("Database:ApplyMigrationsOnStartup")
+    ?? app.Environment.IsDevelopment())
 {
-    await app.Services.MigrateExecutionDevelopmentDatabaseAsync();
+    await app.Services.MigrateExecutionDatabaseAsync();
 }
 
 app.MapDefaultEndpoints();

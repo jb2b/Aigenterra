@@ -55,7 +55,7 @@ import { ObservationTimeline } from './observation-timeline';
         </div>
         <h2 class="full-objective">{{ task.objective }}</h2>
         <p class="status-explanation">
-          Status is the last recorded state. A stop signal does not confirm completion.
+          Each Codex execution represents one prompt turn within its conversation.
         </p>
         <dl class="task-metadata">
           <div>

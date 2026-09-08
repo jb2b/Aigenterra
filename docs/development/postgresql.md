@@ -20,11 +20,16 @@ De API wacht op de database en ontvangt de connection string via Aspire. Bewaar 
 en volume bij herstarts. Een ander wachtwoord wijzigt niet automatisch de credentials in
 een bestaande PostgreSQL-datadirectory. Verwijder het volume niet om een startupfout te repareren.
 
-Development-startup past alleen de expliciet toegestane migrations `InitialExecutionPersistence`
-en `RecentTaskExecutionsIndex` toe. De tweede voegt uitsluitend de index voor het recente-executions-overzicht toe. Een onbekende
-pending migration stopt startup; beoordeel en pas die expliciet toe, of voeg een gereviewde,
-niet-destructieve migration toe aan de allowlist. Buiten Development voert API-startup geen migrations uit.
+Startup controleert de exacte gereviewde migration-ID's voor `InitialExecutionPersistence`,
+`RecentTaskExecutionsIndex` en `CompleteStoppedCodexTurns`. Die laatste corrigeert eerder opgeslagen
+Running Codex-turns/agents met een Stop-observation naar Completed. Een onbekende pending migration
+stopt startup vóór uitvoering van enige pending migration; review SQL en tests voordat de allowlist
+wordt uitgebreid. `Database:ApplyMigrationsOnStartup` bepaalt automatische uitvoering: standaard
+aan in Development en uit daarbuiten, expliciet aan in de self-hosted Compose-stack.
 Database- of migrationfouten veroorzaken geen fallback naar in-memory.
+
+Self-hosted gebruikt dezelfde migrations, maar een afzonderlijk volume en lokale `.env`-configuratie;
+zie de [README](../../README.md). Aspire user secrets blijven uitsluitend developmentconfiguratie.
 
 ## Migrations
 

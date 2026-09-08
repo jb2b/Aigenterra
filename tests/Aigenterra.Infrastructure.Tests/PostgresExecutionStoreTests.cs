@@ -7,6 +7,8 @@ using Aigenterra.Domain.Executions;
 using Aigenterra.Infrastructure.Executions.Postgres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Testcontainers.PostgreSql;
@@ -20,7 +22,7 @@ public sealed class PostgresFixture : IAsyncLifetime
     public Task InitializeAsync() => container.StartAsync();
     public Task DisposeAsync() => container.DisposeAsync().AsTask();
 
-    public async Task<string> CreateDatabaseAsync()
+    public async Task<string> CreateDatabaseAsync(string? targetMigration = null)
     {
         var database = $"test_{Guid.NewGuid():N}";
         await using var connection = new NpgsqlConnection(container.GetConnectionString());
@@ -29,8 +31,11 @@ public sealed class PostgresFixture : IAsyncLifetime
         await command.ExecuteNonQueryAsync();
         var connectionString = new NpgsqlConnectionStringBuilder(container.GetConnectionString()) { Database = database }.ConnectionString;
         await using var db = Context(connectionString);
-        await db.Database.MigrateAsync();
-        Assert.False(db.Database.HasPendingModelChanges());
+        await db.GetService<IMigrator>().MigrateAsync(targetMigration);
+        if (targetMigration is null)
+        {
+            Assert.False(db.Database.HasPendingModelChanges());
+        }
         return connectionString;
     }
 
@@ -41,6 +46,44 @@ public sealed class PostgresFixture : IAsyncLifetime
 public sealed class PostgresExecutionStoreTests(PostgresFixture fixture) : IClassFixture<PostgresFixture>
 {
     private static readonly DateTimeOffset Now = new DateTimeOffset(2026, 9, 7, 12, 0, 0, TimeSpan.Zero).AddTicks(3);
+
+    [Fact]
+    public async Task Migration_completes_existing_codex_turns_and_agents_with_stop_observations()
+    {
+        var connection = await fixture.CreateDatabaseAsync("20260907145324_RecentTaskExecutionsIndex");
+        var conversation = new Conversation(ConversationId.New(), Now, Reference("session"));
+        var task = new TaskExecution(TaskExecutionId.New(), conversation.Id, "Previously stopped turn", Now,
+            Reference("turn"));
+        var root = new AgentExecution(AgentExecutionId.New(), task.Id, null, Now, Reference("turn-root-agent"));
+        var subagent = new AgentExecution(AgentExecutionId.New(), task.Id, root.Id, Now.AddTicks(1),
+            Reference("subagent"));
+        await using (var before = PostgresFixture.Context(connection))
+        {
+            var store = new PostgresExecutionStore(before);
+            await store.AddConversationAsync(conversation);
+            await store.AddTaskExecutionAsync(task);
+            await store.AddAgentExecutionAsync(root);
+            await store.AddAgentExecutionAsync(subagent);
+            await store.AppendObservationAsync(
+                Observation(task.Id, subagent.Id, Now.AddTicks(2), Reference("subagent-stop")), null, Now);
+            await store.AppendObservationAsync(
+                Observation(task.Id, root.Id, Now.AddTicks(3), Reference("turn-stop")), null, Now);
+        }
+
+        await using (var migrate = PostgresFixture.Context(connection))
+        {
+            await migrate.Database.MigrateAsync();
+        }
+
+        await using var after = PostgresFixture.Context(connection);
+        var timeline = (await new PostgresExecutionStore(after).GetTimelineAsync(task.Id))!;
+        Assert.Equal("completed", timeline.Status);
+        Assert.Equal(Now.AddTicks(3), timeline.EndedAt);
+        Assert.Equal("completed", timeline.Agents.Single(agent => agent.AgentExecutionId == root.Id.Value).Status);
+        Assert.Equal(Now.AddTicks(3), timeline.Agents.Single(agent => agent.AgentExecutionId == root.Id.Value).EndedAt);
+        Assert.Equal("completed", timeline.Agents.Single(agent => agent.AgentExecutionId == subagent.Id.Value).Status);
+        Assert.Equal(Now.AddTicks(2), timeline.Agents.Single(agent => agent.AgentExecutionId == subagent.Id.Value).EndedAt);
+    }
 
     [Fact]
     public async Task Recent_read_is_bounded_stable_and_counts_without_fetching_evidence()
@@ -109,7 +152,7 @@ public sealed class PostgresExecutionStoreTests(PostgresFixture fixture) : IClas
             Assert.True(await store.TryFinishAgentExecutionAsync(child));
         }
 
-        await services.MigrateExecutionDevelopmentDatabaseAsync();
+        await services.MigrateExecutionDatabaseAsync();
         await using (var scope = services.CreateAsyncScope())
         {
             var store = scope.ServiceProvider.GetRequiredService<IExecutionWriteStore>();

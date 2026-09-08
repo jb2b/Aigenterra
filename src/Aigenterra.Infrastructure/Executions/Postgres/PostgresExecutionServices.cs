@@ -19,15 +19,20 @@ public static class PostgresExecutionServices
         return services;
     }
 
-    public static async Task MigrateExecutionDevelopmentDatabaseAsync(this IServiceProvider services,
+    public static async Task MigrateExecutionDatabaseAsync(this IServiceProvider services,
         CancellationToken cancellationToken = default)
     {
         await using var scope = services.CreateAsyncScope();
         var db = scope.ServiceProvider.GetRequiredService<ExecutionDbContext>();
         var pending = await db.Database.GetPendingMigrationsAsync(cancellationToken);
         // Explicit allowlist: future migrations require review before automatic startup execution.
-        if (pending.Any(id => !id.EndsWith("_InitialExecutionPersistence", StringComparison.Ordinal)
-            && !id.EndsWith("_RecentTaskExecutionsIndex", StringComparison.Ordinal)))
+        string[] approved =
+        [
+            "20260907142101_InitialExecutionPersistence",
+            "20260907145324_RecentTaskExecutionsIndex",
+            "20260908000000_CompleteStoppedCodexTurns"
+        ];
+        if (pending.Any(id => !approved.Contains(id, StringComparer.Ordinal)))
         {
             throw new InvalidOperationException("Unapproved execution migrations are pending. Apply a reviewed migration script explicitly.");
         }
