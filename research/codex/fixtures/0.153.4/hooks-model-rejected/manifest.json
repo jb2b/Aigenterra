@@ -1,0 +1,94 @@
+{
+  "files": [
+    {
+      "stage": "HookVisible",
+      "sourceBytes": 451,
+      "sourceSha256": "58F92A4431117C88A1E0111FD1785652B134E4D8009EEA84A9CC218AB1638CD7",
+      "sanitized": true,
+      "file": "SessionStart-1.json"
+    },
+    {
+      "stage": "HookVisible",
+      "sourceBytes": 769,
+      "sourceSha256": "EF043F363682856B2EC1AE6B5C8BDB7AB3A446465B3F0E249A1E4621C048DD26",
+      "sanitized": true,
+      "file": "UserPromptSubmit-1.json"
+    },
+    {
+      "stage": "HookVisible",
+      "sourceBytes": 387,
+      "sourceSha256": "5831A1EB1C0B48D7CC226AE80DDC91D51473C249D70B3ABF02EBA56512756A4D",
+      "sanitized": true,
+      "file": "SessionEnd-1.json"
+    }
+  ],
+  "model": "gpt-6.1-sol",
+  "elapsedMs": 9319.3732,
+  "codeMode": false,
+  "note": "Sanitized copies; original bytes are retained locally. Ordering here is collector receipt order, not causality.",
+  "binaryVersion": "codex-cli 0.153.4",
+  "timedOut": false,
+  "inventory": [
+    {
+      "eventName": "preToolUse",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "permissionRequest",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "postToolUse",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "preCompact",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "postCompact",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "sessionStart",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "sessionEnd",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "userPromptSubmit",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "subagentStart",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "subagentStop",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "stop",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "interrupt",
+      "enabled": true,
+      "trustStatus": "trusted"
+    }
+  ],
+  "exitCode": 1
+}

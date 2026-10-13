@@ -1,0 +1,72 @@
+{
+  "exitCode": 0,
+  "note": "Sanitized copies; original bytes are retained locally. Ordering here is collector receipt order, not causality.",
+  "inventory": [
+    {
+      "eventName": "preToolUse",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "permissionRequest",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "postToolUse",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "preCompact",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "postCompact",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "sessionStart",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "sessionEnd",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "userPromptSubmit",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "subagentStart",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "subagentStop",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "stop",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    },
+    {
+      "eventName": "interrupt",
+      "enabled": true,
+      "trustStatus": "untrusted"
+    }
+  ],
+  "binaryVersion": "codex-cli 0.160.1",
+  "elapsedMs": 17022.8876,
+  "files": [],
+  "model": "gpt-6.1-sol",
+  "codeMode": false,
+  "timedOut": false
+}

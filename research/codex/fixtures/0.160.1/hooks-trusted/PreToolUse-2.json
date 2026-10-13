@@ -1,0 +1,14 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000001",
+  "turn_id": "00000000-0000-4000-8000-000000000002",
+  "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-13-34-00000000-0000-4000-8000-000000000001.jsonl",
+  "cwd": "C:\\probe\\repo",
+  "hook_event_name": "PreToolUse",
+  "model": "gpt-6.1-sol",
+  "permission_mode": "bypassPermissions",
+  "tool_name": "apply_patch",
+  "tool_input": {
+    "command": "*** Begin Patch\n*** Add File: probe.txt\n+AIGENTERRA_PROBE_PATCH\n*** End Patch"
+  },
+  "tool_use_id": "exec-00000000-0000-4000-8000-000000000004"
+}

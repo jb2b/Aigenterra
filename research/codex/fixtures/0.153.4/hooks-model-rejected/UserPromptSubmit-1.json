@@ -1,0 +1,10 @@
+{
+  "session_id": "00000000-0000-4000-8000-000000000001",
+  "turn_id": "00000000-0000-4000-8000-000000000002",
+  "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-13-34-00000000-0000-4000-8000-000000000001.jsonl",
+  "cwd": "C:\\probe\\repo",
+  "hook_event_name": "UserPromptSubmit",
+  "model": "gpt-6.1-sol",
+  "permission_mode": "bypassPermissions",
+  "prompt": "Use exactly one shell tool to execute Write-Output 'AIGENTERRA_PROBE_SHELL'. Then use apply_patch to create probe.txt containing AIGENTERRA_PROBE_PATCH. This is a disposable repository. Do not inspect other files, use network tools or spawn agents. Finish with PROBE_DONE."
+}

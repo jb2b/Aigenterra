@@ -1,0 +1,108 @@
+{
+  "timedOut": false,
+  "inventory": [
+    {
+      "eventName": "preToolUse",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "permissionRequest",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "postToolUse",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "preCompact",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "postCompact",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "sessionStart",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "sessionEnd",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "userPromptSubmit",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "subagentStart",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "subagentStop",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "stop",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "interrupt",
+      "enabled": true,
+      "trustStatus": "trusted"
+    }
+  ],
+  "binaryVersion": "codex-cli 0.153.4",
+  "note": "Sanitized copies; original bytes are retained locally. Ordering here is collector receipt order, not causality.",
+  "exitCode": 0,
+  "codeMode": false,
+  "model": "gpt-6-astra",
+  "elapsedMs": 21126.2307,
+  "files": [
+    {
+      "sourceBytes": 463,
+      "file": "SessionStart-1.json",
+      "sanitized": true,
+      "stage": "HookVisible",
+      "sourceSha256": "5F0D59EEBCE7759AA84C99919EC14AA7FC4E6944062F7EBEDB80EC267EA0821F"
+    },
+    {
+      "sourceBytes": 625,
+      "file": "UserPromptSubmit-1.json",
+      "sanitized": true,
+      "stage": "HookVisible",
+      "sourceSha256": "EF93D9B6A213AB4078015350429578F80C8FEB3D5F388C2EE11923B69B23A7EC"
+    },
+    {
+      "sourceBytes": 608,
+      "file": "PreToolUse-1.json",
+      "sanitized": true,
+      "stage": "HookVisible",
+      "sourceSha256": "F4F43CBF5AE7BA61A2E930B2B9E97DABC2A0CB341E53FB09D37DA2E32F697AE7"
+    },
+    {
+      "sourceBytes": 548,
+      "file": "Stop-1.json",
+      "sanitized": true,
+      "stage": "HookVisible",
+      "sourceSha256": "4CB6C24DB21E80BFD8D93B79E3DCA1F7A6683D16901D2B6CA77324B3AC3A1CA0"
+    },
+    {
+      "sourceBytes": 399,
+      "file": "SessionEnd-1.json",
+      "sanitized": true,
+      "stage": "HookVisible",
+      "sourceSha256": "3B3D1464FC606DA026AB68AC4FDF2D6C228A9C7717800635CD3F145FB7113658"
+    }
+  ]
+}
