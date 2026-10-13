@@ -563,6 +563,31 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.ToTable("raw_captures", (string)null);
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeEvidenceRow", b =>
+                {
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<string>("NormalizerVersion")
+                        .HasColumnType("text")
+                        .HasColumnName("normalizer_version");
+
+                    b.Property<string>("Batch")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("batch");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("fingerprint");
+
+                    b.HasKey("CaptureId", "NormalizerVersion");
+
+                    b.ToTable("runtime_evidence", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeFactRow", b =>
                 {
                     b.Property<Guid>("AttemptId")
@@ -927,6 +952,15 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.SourceHealthEventRow", null)
                         .WithMany()
                         .HasForeignKey("LatestCaptureId", "DetectorVersion")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeEvidenceRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", null)
+                        .WithMany()
+                        .HasForeignKey("CaptureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

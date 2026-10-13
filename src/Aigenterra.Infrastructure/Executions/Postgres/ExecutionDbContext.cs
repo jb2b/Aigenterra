@@ -73,6 +73,7 @@ public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> opti
         RuntimeFactRows.Configure(modelBuilder);
         RuntimeHealthRows.Configure(modelBuilder);
         RuntimeProcessingRows.Configure(modelBuilder);
+        PostgresRuntimeEvidenceStore.Configure(modelBuilder);
 
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {

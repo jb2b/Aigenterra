@@ -38,6 +38,7 @@ builder.Services.AddTransient<ArchiveRuntimeCapture>();
 builder.Services.AddTransient<IRuntimeCaptureNormalizer, CodexHistoryNormalizer>();
 builder.Services.AddTransient<NormalizeRuntimeCapture>();
 builder.Services.AddTransient<IRuntimeRequestContextDecoder, CodexRequestContextDecoder>();
+builder.Services.AddTransient<IRuntimeEvidenceNormalizer, CodexEvidenceNormalizer>();
 builder.Services.AddTransient<ProcessRuntimeCapture>();
 builder.Services.AddHostedService<RuntimeProcessingWorker>();
 builder.Services.AddTransient<GetRuntimeTurn>();

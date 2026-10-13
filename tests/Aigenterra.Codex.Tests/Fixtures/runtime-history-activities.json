@@ -1,0 +1,87 @@
+{
+  "runtimeVersion": "0.162.1",
+  "threadId": "00000000-0000-4000-8000-000000000001",
+  "origin": "research6.5 CLI sanitized history",
+  "response": {
+    "result": {
+      "nextCursor": null,
+      "data": [
+        {
+          "id": "00000000-0000-4000-8000-000000000011",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000011",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0035",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000012",
+              "server": "observability_probe",
+              "tool": "echo",
+              "status": "completed",
+              "error": null,
+              "arguments": {
+                "marker": "CLI_MCP_OK"
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"padding\":\"\",\"result\":\"PROBE_OK\",\"marker\":\"CLI_MCP_OK\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "padding": "",
+                  "result": "PROBE_OK",
+                  "marker": "CLI_MCP_OK"
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000013",
+              "server": "observability_probe",
+              "tool": "fail",
+              "status": "failed",
+              "error": null,
+              "arguments": {
+                "marker": "CLI_MCP_FAIL"
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"padding\":\"\",\"result\":\"PROBE_ERROR\",\"marker\":\"CLI_MCP_FAIL\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "padding": "",
+                  "result": "PROBE_ERROR",
+                  "marker": "CLI_MCP_FAIL"
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0036",
+              "text": "CLI_TOOLS_DONE"
+            }
+          ]
+        }
+      ]
+    },
+    "id": 7
+  }
+}

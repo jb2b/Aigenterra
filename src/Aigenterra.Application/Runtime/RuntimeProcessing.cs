@@ -42,7 +42,8 @@ public static class RuntimeIdentity
 
 public sealed class ProcessRuntimeCapture(IRawCaptureStore archive, IRuntimeFactStore facts,
     IRuntimeCaptureNormalizer normalizer, IRuntimeRequestContextDecoder decoder,
-    IRuntimeRequestStore requests, RecordRuntimeSourceHealth health)
+    IRuntimeRequestStore requests, RecordRuntimeSourceHealth health,
+    IRuntimeEvidenceNormalizer evidenceNormalizer, IRuntimeEvidenceStore evidenceStore)
 {
     public async Task<string> ExecuteAsync(Guid captureId, CancellationToken token = default)
     {
@@ -70,6 +71,8 @@ public sealed class ProcessRuntimeCapture(IRawCaptureStore archive, IRuntimeFact
         var attempt = new NormalizationAttempt(RuntimeIdentity.Id(captureId.ToString(), normalizer.Version), captureId,
             normalizer.Version, saved.RecordedAt, result.Status, result.Reason, result.Facts);
         await facts.AppendAsync(attempt, token);
-        return result.Status;
+        var evidence = evidenceNormalizer.Normalize(capture, linked);
+        await evidenceStore.AppendAsync(evidence, token);
+        return result.Status == "normalized" || evidence.Outcome == "normalized" ? "normalized" : result.Status;
     }
 }

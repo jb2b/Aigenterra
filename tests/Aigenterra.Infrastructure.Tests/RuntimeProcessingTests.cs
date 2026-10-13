@@ -97,6 +97,7 @@ public sealed class RuntimeProcessingTests(PostgresFixture fixture) : IClassFixt
     {
         var archive = new PostgresRawCaptureStore(db);
         return new(archive, new PostgresRuntimeFactStore(db), new CodexLifecycleNormalizer(), new CodexRequestContextDecoder(),
-            new PostgresRuntimeWorkStore(db), new RecordRuntimeSourceHealth(archive, new CodexCapabilityDetector(), new PostgresRuntimeSourceHealthStore(db)));
+            new PostgresRuntimeWorkStore(db), new RecordRuntimeSourceHealth(archive, new CodexCapabilityDetector(), new PostgresRuntimeSourceHealthStore(db)),
+            new CodexEvidenceNormalizer(), new PostgresRuntimeEvidenceStore(db));
     }
 }

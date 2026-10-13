@@ -19,6 +19,7 @@ public static class PostgresExecutionServices
         services.AddScoped<Application.Runtime.IRuntimeSourceHealthStore, PostgresRuntimeSourceHealthStore>();
         services.AddScoped<Application.Runtime.IRuntimeWorkStore, PostgresRuntimeWorkStore>();
         services.AddScoped<Application.Runtime.IRuntimeRequestStore, PostgresRuntimeWorkStore>();
+        services.AddScoped<Application.Runtime.IRuntimeEvidenceStore, PostgresRuntimeEvidenceStore>();
         services.AddScoped<IExecutionWriteStore>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<IExecutionRuntimeReferenceReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<ITaskExecutionTimelineReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
@@ -46,7 +47,8 @@ public static class PostgresExecutionServices
             "20261013185755_VersionedRuntimeEvidence",
             "20261013190506_RuntimeLifecycleFacts",
             "20261013191550_RuntimeSourceHealth",
-            "20261013220002_DurableRuntimeProcessing"
+            "20261013220002_DurableRuntimeProcessing",
+            "20261013221151_RuntimeActivityEvidence"
         ];
         if (pending.Any(id => !approved.Contains(id, StringComparer.Ordinal)))
         {

@@ -73,3 +73,31 @@ Verification 10b: solution restore/build/format-check, 208 tests, isolated hook
 probe and both isolated real-runtime history reads passed. No new live capability
 is claimed. Request context, pagination, partial/oversize frames, timeout, EOF,
 malformed/unmatched responses and unexpected server requests are covered.
+
+## Activity correlation (11)
+
+`codex.evidence/1` appends versioned activity evidence separately from lifecycle
+facts. Supported input is PreToolUse/PostToolUse hooks and explicitly contextualized
+history MCP, commandExecution and fileChange items. Field locators reference the
+original capture, request and context; output text is never reclassified as model
+input. Unknown events/versions produce an auditable unsupported batch with no facts.
+
+Activity identity is namespace + thread + turn + exact call/item ID. Child hook
+agent_id owns its activity; session_id is not substituted. Missing turn/call IDs
+produce unresolved, capture-specific activities. Names and timestamps never merge
+calls. Repeated history adds provenance to one activity; four independent captures
+may support one call. Evidence references include capture, normalizer version and
+ordinal. Normalizer versions remain immutable and coexist.
+
+PreToolUse means Requested, not proven execution. PostToolUse without explicit
+isError remains ResultObserved. Explicit history terminal status outranks hook
+terminal evidence; equal-authority disagreement remains TerminalUnknown/conflict.
+Missing PostToolUse, absent errors, idle and error:null never imply success.
+Coverage remains Partial. Upgrade requeues archived v2 inputs for the new evidence
+interpreter, preserving old facts and original bytes; v1/legacy aggregates are not
+modified. No new public inspection API is introduced.
+
+Verification 11: solution restore/build/format-check, 213 tests and the isolated
+hook probe passed. Includes sanitized research MCP history, explicit command/file
+terminal conflicts, replay ordering/duplicates, namespace isolation and immutable
+PostgreSQL evidence batches.
