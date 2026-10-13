@@ -32,7 +32,9 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
             using var http = new HttpClient();
             var source = new RuntimeCaptureSource(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "codex", "diagnostic", "RecorderDiagnostic", "inventory", Guid.NewGuid());
             using var receipt = await http.PostAsJsonAsync(origin + "/ingest/runtime/captures/v2", RuntimeSourceHealthTests.Capture(source, false));
-            Assert.Equal("health_recorded", (await receipt.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("normalization").GetString());
+            Assert.Equal("pending", (await receipt.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("normalization").GetString());
+            await using var db = PostgresFixture.Context(connection);
+            for (var i = 0; i < 100 && !await db.Set<SourceHealthEventRow>().AnyAsync(); i++) await Task.Delay(100);
             using var response = await http.GetAsync($"{origin}/runtime/sources/{source.SourceId}/health?runtimeNamespaceId={source.RuntimeNamespaceId}");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.True(response.Headers.CacheControl!.NoStore);
@@ -74,7 +76,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
             var url = origin + "/ingest/runtime/captures/v2";
             using var first = await http.PostAsJsonAsync(url, capture);
             Assert.Equal(HttpStatusCode.OK, first.StatusCode);
-            Assert.Equal("rejected", (await first.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("normalization").GetString());
+            Assert.Equal("pending", (await first.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("normalization").GetString());
             using var retry = await http.PostAsJsonAsync(url, capture);
             Assert.True((await retry.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("duplicate").GetBoolean());
             using var conflict = await http.PostAsJsonAsync(url, capture with { CapturedAt = capture.CapturedAt.AddTicks(1) });
@@ -85,6 +87,8 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
             Assert.Equal(HttpStatusCode.RequestEntityTooLarge, oversized.StatusCode);
             await using var db = PostgresFixture.Context(connection);
             Assert.Equal(capture.Payload, (await db.Set<RawCaptureRow>().SingleAsync()).Payload);
+            for (var i = 0; i < 100 && !await db.Set<RuntimeWorkRow>().AnyAsync(x => x.Complete); i++) await Task.Delay(100);
+            Assert.Equal("rejected", (await db.Set<RuntimeWorkRow>().SingleAsync()).Outcome);
         }
         finally { StopApi(api); }
     }

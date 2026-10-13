@@ -72,6 +72,7 @@ public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> opti
         CaptureRows.Configure(modelBuilder);
         RuntimeFactRows.Configure(modelBuilder);
         RuntimeHealthRows.Configure(modelBuilder);
+        RuntimeProcessingRows.Configure(modelBuilder);
 
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {
