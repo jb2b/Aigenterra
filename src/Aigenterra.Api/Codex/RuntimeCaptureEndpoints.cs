@@ -11,7 +11,7 @@ internal static class RuntimeCaptureEndpoints
     public static void MapRuntimeCaptureEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPost("/ingest/runtime/captures/v2", async (HttpRequest request, IConfiguration configuration,
-            ArchiveRuntimeCapture archive, NormalizeRuntimeCapture normalize, CancellationToken cancellationToken) =>
+            ArchiveRuntimeCapture archive, NormalizeRuntimeCapture normalize, RecordRuntimeSourceHealth health, CancellationToken cancellationToken) =>
         {
             var maximum = configuration.GetValue<int?>("Capture:MaxPayloadBytes") ?? 16 * 1024 * 1024;
             if (maximum <= 0 || maximum > 256 * 1024 * 1024)
@@ -33,6 +33,11 @@ internal static class RuntimeCaptureEndpoints
             if (capture?.Payload is null) return Results.BadRequest(new { code = "invalid_capture_envelope" });
             if (capture.Payload.Length > maximum) return Results.StatusCode(413);
             var result = await archive.ExecuteAsync(capture, cancellationToken);
+            if (result.IsSuccess && capture.Source.SourceKind == "diagnostic" && configuration.GetValue<bool>("Runtime:RecordSourceHealth"))
+            {
+                var diagnostic = await health.ExecuteAsync(capture.CaptureId, cancellationToken);
+                return Results.Ok(result.Value! with { Normalization = diagnostic.IsSuccess ? "health_recorded" : "health_rejected" });
+            }
             if (!result.IsSuccess || !configuration.GetValue<bool>("Runtime:NormalizeCaptures"))
                 return ExecutionEndpoints.ToHttpResult(result, Results.Ok);
             // The archive transaction has already committed, even if normalization/storage fails below.

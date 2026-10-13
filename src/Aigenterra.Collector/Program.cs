@@ -8,6 +8,13 @@ var spoolPath = Environment.GetEnvironmentVariable("AIGENTERRA_SPOOL_PATH")
 var maxBytes = int.TryParse(Environment.GetEnvironmentVariable("AIGENTERRA_CAPTURE_MAX_BYTES"), out var configuredLimit)
     && configuredLimit > 0 ? configuredLimit : 16 * 1024 * 1024;
 var spool = new CaptureSpool(spoolPath, maxBytes);
+if (args.Take(2).SequenceEqual(new[] { "codex", "doctor" }))
+    return await CodexDoctorCommand.ExecuteAsync(args.Skip(2).ToArray(), Console.Out, Console.Error, spool);
+if (args.FirstOrDefault() is "codex" or "observe")
+{
+    Console.Error.WriteLine("Only codex doctor inventory is available. Runtime observation transport is not enabled.");
+    return 1;
+}
 if (args.FirstOrDefault() == "status")
 {
     Console.WriteLine(JsonSerializer.Serialize(spool.Status(), CaptureSpool.JsonOptions));

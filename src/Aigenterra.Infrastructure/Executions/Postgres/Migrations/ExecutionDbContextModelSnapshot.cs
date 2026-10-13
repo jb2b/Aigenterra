@@ -488,6 +488,40 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.ObservationSourceRow", b =>
+                {
+                    b.Property<Guid>("RuntimeNamespaceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_namespace_id");
+
+                    b.Property<Guid>("SourceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("source_id");
+
+                    b.Property<string>("DetectorVersion")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("detector_version");
+
+                    b.Property<Guid>("LatestCaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("latest_capture_id");
+
+                    b.Property<long>("LatestPosition")
+                        .HasColumnType("bigint")
+                        .HasColumnName("latest_position");
+
+                    b.Property<Guid?>("RuntimeInstanceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_instance_id");
+
+                    b.HasKey("RuntimeNamespaceId", "SourceId");
+
+                    b.HasIndex("LatestCaptureId", "DetectorVersion");
+
+                    b.ToTable("observation_sources", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RawCaptureRow", b =>
                 {
                     b.Property<Guid>("CaptureId")
@@ -564,6 +598,67 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.HasIndex("RuntimeNamespaceId", "ThreadId", "TurnId");
 
                     b.ToTable("runtime_facts", (string)null);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeInstanceRow", b =>
+                {
+                    b.Property<Guid>("RuntimeNamespaceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_namespace_id");
+
+                    b.Property<Guid>("RuntimeInstanceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_instance_id");
+
+                    b.Property<string>("DetectorVersion")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("detector_version");
+
+                    b.Property<Guid>("LatestCaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("latest_capture_id");
+
+                    b.Property<long>("LatestPosition")
+                        .HasColumnType("bigint")
+                        .HasColumnName("latest_position");
+
+                    b.HasKey("RuntimeNamespaceId", "RuntimeInstanceId");
+
+                    b.HasIndex("LatestCaptureId", "DetectorVersion");
+
+                    b.HasIndex("RuntimeNamespaceId", "LatestPosition");
+
+                    b.ToTable("runtime_instances", (string)null);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.SourceHealthEventRow", b =>
+                {
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<string>("DetectorVersion")
+                        .HasColumnType("text")
+                        .HasColumnName("detector_version");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("fingerprint");
+
+                    b.Property<string>("Health")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("health");
+
+                    b.Property<long>("IngestPosition")
+                        .HasColumnType("bigint")
+                        .HasColumnName("ingest_position");
+
+                    b.HasKey("CaptureId", "DetectorVersion");
+
+                    b.ToTable("source_health_events", (string)null);
                 });
 
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.TaskExecutionRow", b =>
@@ -766,11 +861,38 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.ObservationSourceRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.SourceHealthEventRow", null)
+                        .WithMany()
+                        .HasForeignKey("LatestCaptureId", "DetectorVersion")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeFactRow", b =>
                 {
                     b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.NormalizationAttemptRow", null)
                         .WithMany()
                         .HasForeignKey("AttemptId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeInstanceRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.SourceHealthEventRow", null)
+                        .WithMany()
+                        .HasForeignKey("LatestCaptureId", "DetectorVersion")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.SourceHealthEventRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", null)
+                        .WithMany()
+                        .HasForeignKey("CaptureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

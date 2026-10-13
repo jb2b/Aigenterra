@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using Aigenterra.Application.Executions;
+using Aigenterra.Application.Recording;
 using Aigenterra.Infrastructure.Executions.Postgres;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,46 @@ namespace Aigenterra.Infrastructure.Tests;
 /// <summary>Real processes and two real worktrees; no model, user repository, or user database required.</summary>
 public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture<PostgresFixture>
 {
+    [Fact]
+    public async Task Health_ingest_and_bounded_read_endpoints_preserve_namespace_and_unknown_fields()
+    {
+        var connection = await fixture.CreateDatabaseAsync();
+        var solution = FindSolution();
+        var configuration = new DirectoryInfo(AppContext.BaseDirectory).Parent!.Name;
+        var apiDll = Path.Combine(solution, "src", "Aigenterra.Api", "bin", configuration, "net10.0", "Aigenterra.Api.dll");
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var origin = $"http://127.0.0.1:{((IPEndPoint)listener.LocalEndpoint).Port}";
+        listener.Stop();
+        using var api = StartApi(apiDll, solution, origin, connection, recordHealth: true);
+        try
+        {
+            await Ready(origin);
+            using var http = new HttpClient();
+            var source = new RuntimeCaptureSource(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "codex", "diagnostic", "RecorderDiagnostic", "inventory", Guid.NewGuid());
+            using var receipt = await http.PostAsJsonAsync(origin + "/ingest/runtime/captures/v2", RuntimeSourceHealthTests.Capture(source, false));
+            Assert.Equal("health_recorded", (await receipt.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("normalization").GetString());
+            using var response = await http.GetAsync($"{origin}/runtime/sources/{source.SourceId}/health?runtimeNamespaceId={source.RuntimeNamespaceId}");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.True(response.Headers.CacheControl!.NoStore);
+            var health = (await response.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("snapshot");
+            Assert.Equal("Disconnected", health.GetProperty("connectionState").GetString());
+            Assert.Equal("Untrusted", health.GetProperty("hooks")[0].GetProperty("trust").GetString());
+            Assert.Equal(JsonValueKind.Null, health.GetProperty("binary").GetProperty("executableVersion").ValueKind);
+            using var wrongNamespace = await http.GetAsync($"{origin}/runtime/sources/{source.SourceId}/health?runtimeNamespaceId={Guid.NewGuid()}");
+            Assert.Equal(HttpStatusCode.NotFound, wrongNamespace.StatusCode);
+            using var page = await http.GetAsync($"{origin}/runtime/instances?runtimeNamespaceId={source.RuntimeNamespaceId}&limit=1");
+            var instances = await page.Content.ReadFromJsonAsync<JsonElement>();
+            Assert.Equal(1, instances.GetProperty("instances").GetArrayLength());
+            var next = instances.GetProperty("next").GetInt64();
+            using var finalPage = await http.GetAsync($"{origin}/runtime/instances?runtimeNamespaceId={source.RuntimeNamespaceId}&after={next}");
+            Assert.Equal(0, (await finalPage.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("instances").GetArrayLength());
+            using var excessive = await http.GetAsync($"{origin}/runtime/instances?runtimeNamespaceId={source.RuntimeNamespaceId}&limit=501");
+            Assert.Equal(HttpStatusCode.BadRequest, excessive.StatusCode);
+        }
+        finally { StopApi(api); }
+    }
+
     [Fact]
     public async Task Runtime_ingress_acknowledges_raw_bytes_rejects_conflicts_and_enforces_size_without_false_ack()
     {
@@ -148,7 +189,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         }
     }
 
-    private static Process StartApi(string dll, string cwd, string origin, string connection, int? maxPayloadBytes = null, bool normalizeRuntime = false)
+    private static Process StartApi(string dll, string cwd, string origin, string connection, int? maxPayloadBytes = null, bool normalizeRuntime = false, bool recordHealth = false)
     {
         var start = Info("dotnet", cwd, [dll]);
         start.Environment["ASPNETCORE_URLS"] = origin;
@@ -157,6 +198,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         start.Environment["Database__ApplyMigrationsOnStartup"] = "true";
         if (maxPayloadBytes is not null) start.Environment["Capture__MaxPayloadBytes"] = maxPayloadBytes.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         start.Environment["Runtime__NormalizeCaptures"] = normalizeRuntime.ToString();
+        start.Environment["Runtime__RecordSourceHealth"] = recordHealth.ToString();
         start.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
         var process = Process.Start(start)!;
         _ = process.StandardOutput.BaseStream.CopyToAsync(Stream.Null);
