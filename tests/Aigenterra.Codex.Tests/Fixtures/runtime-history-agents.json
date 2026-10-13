@@ -1,0 +1,489 @@
+{
+  "rootThreadId": "00000000-0000-4000-8000-000000000001",
+  "rootResponse": {
+    "result": {
+      "nextCursor": null,
+      "data": [
+        {
+          "id": "00000000-0000-4000-8000-000000000010",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000010",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0034",
+              "text": "CLI_BASELINE_READY"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000011",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000011",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0035",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000012",
+              "server": "observability_probe",
+              "tool": "echo",
+              "status": "completed",
+              "error": null,
+              "arguments": {
+                "marker": "CLI_MCP_OK"
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"padding\":\"\",\"result\":\"PROBE_OK\",\"marker\":\"CLI_MCP_OK\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "padding": "",
+                  "result": "PROBE_OK",
+                  "marker": "CLI_MCP_OK"
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000013",
+              "server": "observability_probe",
+              "tool": "fail",
+              "status": "failed",
+              "error": null,
+              "arguments": {
+                "marker": "CLI_MCP_FAIL"
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"padding\":\"\",\"result\":\"PROBE_ERROR\",\"marker\":\"CLI_MCP_FAIL\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "padding": "",
+                  "result": "PROBE_ERROR",
+                  "marker": "CLI_MCP_FAIL"
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0036",
+              "text": "CLI_TOOLS_DONE"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000004",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0037",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "subAgentActivity",
+              "id": "call_SaL3N548AoBaX0QzI09bEMet",
+              "agentThreadId": "00000000-0000-4000-8000-000000000002",
+              "agentPath": "/root/probe_child",
+              "kind": "started",
+              "model": "gpt-6-astra",
+              "reasoningEffort": "low"
+            },
+            {
+              "type": "subAgentActivity",
+              "id": "subagent-completed-00000000-0000-4000-8000-000000000003",
+              "agentThreadId": "00000000-0000-4000-8000-000000000002",
+              "agentPath": "/root/probe_child",
+              "kind": "completed",
+              "model": null,
+              "reasoningEffort": null
+            },
+            {
+              "type": "collabAgentToolCall",
+              "id": "call_paBZjTucoDDc6qadRaWJ1DJk",
+              "tool": "wait",
+              "status": "completed",
+              "model": null,
+              "reasoningEffort": null,
+              "senderThreadId": "00000000-0000-4000-8000-000000000001",
+              "receiverThreadIds": []
+            },
+            {
+              "type": "subAgentActivity",
+              "id": "call_hlj7kEDqS9JQ2otEzlRDUhvS",
+              "agentThreadId": "00000000-0000-4000-8000-000000000002",
+              "agentPath": "/root/probe_child",
+              "kind": "interacted",
+              "model": null,
+              "reasoningEffort": null
+            },
+            {
+              "type": "subAgentActivity",
+              "id": "subagent-completed-00000000-0000-4000-8000-000000000005",
+              "agentThreadId": "00000000-0000-4000-8000-000000000002",
+              "agentPath": "/root/probe_child",
+              "kind": "completed",
+              "model": null,
+              "reasoningEffort": null
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000014",
+              "server": "observability_probe",
+              "tool": "echo",
+              "status": "completed",
+              "error": null,
+              "arguments": {
+                "marker": "CLI_PARALLEL"
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"padding\":\"\",\"result\":\"PROBE_OK\",\"marker\":\"CLI_PARALLEL\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "padding": "",
+                  "result": "PROBE_OK",
+                  "marker": "CLI_PARALLEL"
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0038",
+              "text": "[model prose omitted]"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000007",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000007",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0039",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "subAgentActivity",
+              "id": "call_rbPFt92Oj6O5Yz7VZZnonql8",
+              "agentThreadId": "00000000-0000-4000-8000-000000000002",
+              "agentPath": "/root/probe_child",
+              "kind": "interacted",
+              "model": null,
+              "reasoningEffort": null
+            },
+            {
+              "type": "collabAgentToolCall",
+              "id": "call_GqWq3lCo5cM5Hg8Ke9a2nWvu",
+              "tool": "wait",
+              "status": "completed",
+              "model": null,
+              "reasoningEffort": null,
+              "senderThreadId": "00000000-0000-4000-8000-000000000001",
+              "receiverThreadIds": []
+            },
+            {
+              "type": "subAgentActivity",
+              "id": "subagent-completed-00000000-0000-4000-8000-000000000006",
+              "agentThreadId": "00000000-0000-4000-8000-000000000002",
+              "agentPath": "/root/probe_child",
+              "kind": "completed",
+              "model": null,
+              "reasoningEffort": null
+            },
+            {
+              "type": "collabAgentToolCall",
+              "id": "call_Jc6mRqaESqvYpU9yigmPRsfW",
+              "tool": "wait",
+              "status": "completed",
+              "model": null,
+              "reasoningEffort": null,
+              "senderThreadId": "00000000-0000-4000-8000-000000000001",
+              "receiverThreadIds": []
+            },
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0040",
+              "text": "CLI_CHILD_MCP_DONE"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000015",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000015",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0041",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0042",
+              "text": "CLI_APPROVAL_PROBE"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000016",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000016",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0043",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000017",
+              "server": "observability_probe",
+              "tool": "echo",
+              "status": "completed",
+              "error": null,
+              "arguments": {
+                "marker": "CLI_OWNER_INTERRUPT",
+                "delayMs": 20000
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"padding\":\"\",\"result\":\"PROBE_OK\",\"marker\":\"CLI_OWNER_INTERRUPT\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "padding": "",
+                  "result": "PROBE_OK",
+                  "marker": "CLI_OWNER_INTERRUPT"
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0044",
+              "text": "CLI_OWNER_INTERRUPT"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000018",
+          "status": "interrupted",
+          "rootTurnId": "00000000-0000-4000-8000-000000000018",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0045",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000019",
+              "server": "observability_probe",
+              "tool": "echo",
+              "status": "completed",
+              "error": null,
+              "arguments": {
+                "marker": "CLI_INTERRUPT_RETRY",
+                "delayMs": 20000
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"padding\":\"\",\"result\":\"PROBE_OK\",\"marker\":\"CLI_INTERRUPT_RETRY\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "padding": "",
+                  "result": "PROBE_OK",
+                  "marker": "CLI_INTERRUPT_RETRY"
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000020",
+          "status": "inProgress",
+          "rootTurnId": "00000000-0000-4000-8000-000000000020",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0046",
+              "text": "[model prose omitted]"
+            }
+          ]
+        }
+      ]
+    },
+    "id": 7
+  },
+  "childResponse": {
+    "result": {
+      "nextCursor": null,
+      "data": [
+        {
+          "id": "00000000-0000-4000-8000-000000000003",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000004",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0030",
+              "text": "CHILD_FIRST"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000005",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000004",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0031",
+              "text": "CHILD_SECOND"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000006",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000007",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0032",
+              "text": "[model prose omitted]"
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000008",
+              "server": "observability_probe",
+              "tool": "echo",
+              "status": "completed",
+              "error": null,
+              "arguments": {
+                "marker": "CHILD_MCP_OK"
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"marker\":\"CHILD_MCP_OK\",\"result\":\"PROBE_OK\",\"padding\":\"\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "marker": "CHILD_MCP_OK",
+                  "result": "PROBE_OK",
+                  "padding": ""
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "mcpToolCall",
+              "id": "exec-00000000-0000-4000-8000-000000000009",
+              "server": "observability_probe",
+              "tool": "fail",
+              "status": "failed",
+              "error": null,
+              "arguments": {
+                "marker": "CHILD_MCP_FAIL"
+              },
+              "result": {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"marker\":\"CHILD_MCP_FAIL\",\"result\":\"PROBE_ERROR\",\"padding\":\"\"}"
+                  }
+                ],
+                "structuredContent": {
+                  "marker": "CHILD_MCP_FAIL",
+                  "result": "PROBE_ERROR",
+                  "padding": ""
+                },
+                "_meta": {
+                  "origin": "synthetic-server",
+                  "evidenceVersion": 1
+                }
+              }
+            },
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0033",
+              "text": "[model prose omitted]"
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000029",
+          "status": "completed",
+          "rootTurnId": "00000000-0000-4000-8000-000000000023",
+          "itemsView": "full",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "synthetic-item-0055",
+              "text": "CHILD_AFTER_RECONNECT"
+            }
+          ]
+        }
+      ]
+    },
+    "id": 7
+  },
+  "origin": "research6.5 sanitized history excerpts",
+  "childThreadId": "00000000-0000-4000-8000-000000000002"
+}

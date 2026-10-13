@@ -48,7 +48,8 @@ public static class PostgresExecutionServices
             "20261013190506_RuntimeLifecycleFacts",
             "20261013191550_RuntimeSourceHealth",
             "20261013220002_DurableRuntimeProcessing",
-            "20261013221151_RuntimeActivityEvidence"
+            "20261013221151_RuntimeActivityEvidence",
+            "20261013221732_AgentEvidenceReprocessing"
         ];
         if (pending.Any(id => !approved.Contains(id, StringComparer.Ordinal)))
         {

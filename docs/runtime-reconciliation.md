@@ -101,3 +101,24 @@ Verification 11: solution restore/build/format-check, 213 tests and the isolated
 hook probe passed. Includes sanitized research MCP history, explicit command/file
 terminal conflicts, replay ordering/duplicates, namespace isolation and immutable
 PostgreSQL evidence batches.
+
+## Identity and segments (12)
+
+`codex.evidence/2` composes the frozen activity interpreter with explicit agent,
+turn-segment and relation evidence. Version 1 stays available. Agent keys contain
+namespace/thread; segment keys add turn. A completed segment never marks the
+agent permanently complete, so later turns reuse the same identity. Agent lifetime
+remains Unknown. Contradictory metadata remains unresolved with conflict visible.
+
+History parentThreadId and subAgentActivity.agentThreadId support explicit
+parent/child relations. Delegation evidence keeps the parent turn and call ID,
+but childTurnId and ParentTaskTurnId stay unknown without a proven explicit
+mapping. Hook session_id is conversation context, not proof of direct parentage.
+Empty collab receiver arrays, source/originator strings and rootTurnId alone do
+not establish frontend ownership or task assignment. No legacy execution is
+reopened or changed. Upgrade requeues immutable raw evidence for version 2.
+
+Verification 12: solution restore/build/format-check, 216 tests and hook probe
+passed. Research child reuse, three-child/four-segment identity, empty receivers,
+unknown task assignment, hook lifetime limits and coexisting PostgreSQL versions
+are covered; legacy execution invariants remain unchanged.

@@ -24,7 +24,11 @@ public sealed class RuntimeEvidenceTests(PostgresFixture fixture) : IClassFixtur
         Assert.Empty(await store.ReadAsync(capture.Source.RuntimeNamespaceId, "future"));
         await Assert.ThrowsAsync<InvalidOperationException>(() => store.AppendAsync(batch with { Outcome = "changed" }));
         await store.AppendAsync(batch with { NormalizerVersion = "future" });
-        Assert.Equal(2, await db.Set<RuntimeEvidenceRow>().CountAsync());
+        var agents = new Aigenterra.Adapters.Codex.Normalization.CodexAgentEvidenceNormalizer().Normalize(capture, null);
+        await store.AppendAsync(agents);
+        var current = Assert.Single(await store.ReadAsync(capture.Source.RuntimeNamespaceId, "codex.evidence/2"));
+        Assert.Single(RuntimeAgentProjector.Project([current]).Agents);
+        Assert.Equal(3, await db.Set<RuntimeEvidenceRow>().CountAsync());
         await Assert.ThrowsAsync<Npgsql.PostgresException>(() => db.Database.ExecuteSqlRawAsync("DELETE FROM runtime_evidence"));
         Assert.Empty(await db.Tasks.ToListAsync());
     }
