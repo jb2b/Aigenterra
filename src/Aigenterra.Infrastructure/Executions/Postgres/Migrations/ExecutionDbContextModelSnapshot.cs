@@ -137,6 +137,32 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.ToTable("capture_outcomes", (string)null);
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", b =>
+                {
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<string>("Envelope")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("envelope");
+
+                    b.Property<long>("IngestPosition")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("ingest_position");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<long>("IngestPosition"));
+
+                    b.HasKey("CaptureId");
+
+                    b.HasIndex("IngestPosition")
+                        .IsUnique();
+
+                    b.ToTable("capture_sources", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.ConversationRow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -584,6 +610,15 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         .WithMany()
                         .HasForeignKey("TaskExecutionId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.RawCaptureRow", null)
+                        .WithOne()
+                        .HasForeignKey("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", "CaptureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationAttemptRow", b =>

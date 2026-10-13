@@ -25,6 +25,13 @@ internal sealed class CaptureOutcomeRow
     public Guid? ObservationId { get; set; }
 }
 
+internal sealed class CaptureSourceRow
+{
+    public Guid CaptureId { get; set; }
+    public long IngestPosition { get; set; }
+    public string Envelope { get; set; } = null!;
+}
+
 internal static class CaptureRows
 {
     public static void Configure(ModelBuilder modelBuilder)
@@ -35,6 +42,14 @@ internal static class CaptureRows
         raw.Property(x => x.CaptureId).ValueGeneratedNever();
         raw.Property(x => x.Payload).HasColumnType("bytea");
         raw.Property(x => x.RepositoryContext).HasColumnType("jsonb");
+        var source = modelBuilder.Entity<CaptureSourceRow>();
+        source.ToTable("capture_sources");
+        source.HasKey(x => x.CaptureId);
+        source.Property(x => x.CaptureId).ValueGeneratedNever();
+        source.Property(x => x.IngestPosition).UseIdentityAlwaysColumn();
+        source.HasIndex(x => x.IngestPosition).IsUnique();
+        source.Property(x => x.Envelope).HasColumnType("jsonb");
+        source.HasOne<RawCaptureRow>().WithOne().HasForeignKey<CaptureSourceRow>(x => x.CaptureId).OnDelete(DeleteBehavior.Restrict);
         var outcome = modelBuilder.Entity<CaptureOutcomeRow>();
         outcome.ToTable("capture_outcomes");
         outcome.HasKey(x => x.CaptureId);

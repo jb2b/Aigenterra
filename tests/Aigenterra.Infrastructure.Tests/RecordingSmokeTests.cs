@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using Aigenterra.Application.Executions;
@@ -12,6 +13,40 @@ namespace Aigenterra.Infrastructure.Tests;
 /// <summary>Real processes and two real worktrees; no model, user repository, or user database required.</summary>
 public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture<PostgresFixture>
 {
+    [Fact]
+    public async Task Runtime_ingress_acknowledges_raw_bytes_rejects_conflicts_and_enforces_size_without_false_ack()
+    {
+        var connection = await fixture.CreateDatabaseAsync();
+        var solution = FindSolution();
+        var configuration = new DirectoryInfo(AppContext.BaseDirectory).Parent!.Name;
+        var apiDll = Path.Combine(solution, "src", "Aigenterra.Api", "bin", configuration, "net10.0", "Aigenterra.Api.dll");
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var origin = $"http://127.0.0.1:{((IPEndPoint)listener.LocalEndpoint).Port}";
+        listener.Stop();
+        using var api = StartApi(apiDll, solution, origin, connection, maxPayloadBytes: 1024);
+        try
+        {
+            await Ready(origin);
+            using var http = new HttpClient();
+            var capture = RuntimeCaptureTests.Capture([0xff, 0, 13, 10]);
+            var url = origin + "/ingest/runtime/captures/v2";
+            using var first = await http.PostAsJsonAsync(url, capture);
+            Assert.Equal(HttpStatusCode.OK, first.StatusCode);
+            using var retry = await http.PostAsJsonAsync(url, capture);
+            Assert.True((await retry.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("duplicate").GetBoolean());
+            using var conflict = await http.PostAsJsonAsync(url, capture with { CapturedAt = capture.CapturedAt.AddTicks(1) });
+            Assert.Equal(HttpStatusCode.Conflict, conflict.StatusCode);
+            using var invalid = await http.PostAsJsonAsync(url, capture with { PayloadLength = 99 });
+            Assert.Equal(HttpStatusCode.BadRequest, invalid.StatusCode);
+            using var oversized = await http.PostAsJsonAsync(url, RuntimeCaptureTests.Capture(new byte[1025]));
+            Assert.Equal(HttpStatusCode.RequestEntityTooLarge, oversized.StatusCode);
+            await using var db = PostgresFixture.Context(connection);
+            Assert.Equal(capture.Payload, (await db.Set<RawCaptureRow>().SingleAsync()).Payload);
+        }
+        finally { StopApi(api); }
+    }
+
     [Fact]
     public async Task Two_worktrees_round_trip_through_collector_and_api_after_outage_and_restart()
     {
@@ -112,13 +147,14 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         }
     }
 
-    private static Process StartApi(string dll, string cwd, string origin, string connection)
+    private static Process StartApi(string dll, string cwd, string origin, string connection, int? maxPayloadBytes = null)
     {
         var start = Info("dotnet", cwd, [dll]);
         start.Environment["ASPNETCORE_URLS"] = origin;
         start.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
         start.Environment["ConnectionStrings__aigenterra"] = connection;
         start.Environment["Database__ApplyMigrationsOnStartup"] = "true";
+        if (maxPayloadBytes is not null) start.Environment["Capture__MaxPayloadBytes"] = maxPayloadBytes.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         start.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
         var process = Process.Start(start)!;
         _ = process.StandardOutput.BaseStream.CopyToAsync(Stream.Null);

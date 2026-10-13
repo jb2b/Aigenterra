@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Security.Cryptography;
 using System.Text.Json;
 using Aigenterra.Adapters.Codex;
 using Aigenterra.Application.Recording;
@@ -11,8 +12,16 @@ public sealed class CaptureSpool(string root, int maxPayloadBytes = 16 * 1024 * 
     public static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private string DirectoryFor(string kind) => Path.Combine(Path.GetFullPath(root), kind);
 
-    public async Task<Guid> CaptureAsync(Stream input, DateTimeOffset capturedAt,
-        IRepositoryContextReader contextReader, CancellationToken cancellationToken = default)
+    public Task<Guid> CaptureAsync(Stream input, DateTimeOffset capturedAt,
+        IRepositoryContextReader contextReader, CancellationToken cancellationToken = default) =>
+        CaptureCoreAsync(input, capturedAt, contextReader, null, cancellationToken);
+
+    public Task<Guid> CaptureRuntimeAsync(Stream input, DateTimeOffset capturedAt,
+        IRepositoryContextReader contextReader, RuntimeCaptureSource source, CancellationToken cancellationToken = default) =>
+        CaptureCoreAsync(input, capturedAt, contextReader, source, cancellationToken);
+
+    private async Task<Guid> CaptureCoreAsync(Stream input, DateTimeOffset capturedAt,
+        IRepositoryContextReader contextReader, RuntimeCaptureSource? source, CancellationToken cancellationToken)
     {
         var id = Guid.NewGuid();
         var name = $"{capturedAt.UtcTicks:D19}-{id:N}";
@@ -35,8 +44,19 @@ public sealed class CaptureSpool(string root, int maxPayloadBytes = 16 * 1024 * 
             if (phase is not null && request.WorkingDirectory is { } cwd)
                 context = await contextReader.ReadAsync(cwd, cancellationToken);
         }
-        var envelope = new CaptureEnvelope(1, id, capturedAt.ToUniversalTime(), [], phase, context);
-        await WriteDurableJsonAsync(Path.Combine(staging, "record.json"), envelope, cancellationToken);
+        if (source is null)
+        {
+            var envelope = new CaptureEnvelope(1, id, capturedAt.ToUniversalTime(), [], phase, context);
+            await WriteDurableJsonAsync(Path.Combine(staging, "record.json"), envelope, cancellationToken);
+        }
+        else
+        {
+            await using var original = File.OpenRead(payloadPath);
+            var hash = Convert.ToHexString(await SHA256.HashDataAsync(original, cancellationToken));
+            var envelope = new RuntimeCaptureEnvelope(2, id, capturedAt.ToUniversalTime(), capturedAt.ToUniversalTime(),
+                source, "application/json", original.Length, hash, [], phase, context);
+            await WriteDurableJsonAsync(Path.Combine(staging, "record.json"), envelope, cancellationToken);
+        }
         var oversized = new FileInfo(payloadPath).Length > maxPayloadBytes;
         if (oversized) await WriteDurableJsonAsync(Path.Combine(staging, "failure.json"), new { reason = "payload_too_large" }, cancellationToken);
         var destination = DirectoryFor(oversized ? "retained" : "pending");
@@ -61,21 +81,48 @@ public sealed class CaptureSpool(string root, int maxPayloadBytes = 16 * 1024 * 
                 cancellationToken.ThrowIfCancellationRequested();
                 try
                 {
-                    var record = JsonSerializer.Deserialize<CaptureEnvelope>(
-                        await File.ReadAllBytesAsync(Path.Combine(directory, "record.json"), cancellationToken), JsonOptions)
-                        ?? throw new JsonException();
+                    var metadata = await File.ReadAllBytesAsync(Path.Combine(directory, "record.json"), cancellationToken);
+                    using var document = JsonDocument.Parse(metadata);
+                    var version = document.RootElement.ValueKind == JsonValueKind.Object
+                        && document.RootElement.TryGetProperty("version", out var versionValue)
+                        && versionValue.TryGetInt32(out var parsedVersion) ? parsedVersion : 0;
+                    if (version is not (1 or 2))
+                    {
+                        await RetainAsync(directory, "unsupported_envelope_version", cancellationToken);
+                        continue;
+                    }
                     var payloadPath = Path.Combine(directory, "payload.bin");
                     if (new FileInfo(payloadPath).Length > maxPayloadBytes)
                     {
                         await RetainAsync(directory, "payload_too_large", cancellationToken);
                         continue;
                     }
-                    record = record with { Payload = await File.ReadAllBytesAsync(payloadPath, cancellationToken) };
-                    using var response = await client.PostAsJsonAsync(endpoint, record, JsonOptions, cancellationToken);
+                    var payload = await File.ReadAllBytesAsync(payloadPath, cancellationToken);
+                    Guid captureId;
+                    HttpResponseMessage delivery;
+                    if (version == 1)
+                    {
+                        var record = JsonSerializer.Deserialize<CaptureEnvelope>(metadata, JsonOptions)! with { Payload = payload };
+                        captureId = record.CaptureId;
+                        delivery = await client.PostAsJsonAsync(endpoint, record, JsonOptions, cancellationToken);
+                    }
+                    else
+                    {
+                        var record = JsonSerializer.Deserialize<RuntimeCaptureEnvelope>(metadata, JsonOptions)! with { Payload = payload };
+                        captureId = record.CaptureId;
+                        if (record.PayloadLength != payload.LongLength || record.PayloadSha256 != Convert.ToHexString(SHA256.HashData(payload)))
+                        {
+                            await RetainAsync(directory, "payload_integrity_failed", cancellationToken);
+                            continue;
+                        }
+                        var runtimeEndpoint = new Uri(endpoint, "/ingest/runtime/captures/v2");
+                        delivery = await client.PostAsJsonAsync(runtimeEndpoint, record, JsonOptions, cancellationToken);
+                    }
+                    using var response = delivery;
                     if (response.IsSuccessStatusCode)
                     {
                         var receipt = await response.Content.ReadFromJsonAsync<ArchiveAcknowledgement>(JsonOptions, cancellationToken);
-                        if (receipt is not { Archived: true } || receipt.CaptureId != record.CaptureId)
+                        if (receipt is not { Archived: true } || receipt.CaptureId != captureId)
                             throw new JsonException("Missing archive acknowledgement.");
                         // Remove acknowledged records atomically from pending before cleaning their files.
                         var acknowledged = DirectoryFor("acknowledged");

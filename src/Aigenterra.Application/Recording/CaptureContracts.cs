@@ -41,6 +41,8 @@ public sealed record CaptureOutcome(
 public interface IRawCaptureStore
 {
     Task<CaptureArchiveResult> ArchiveAsync(CaptureEnvelope capture, CancellationToken cancellationToken = default);
+    Task<CaptureArchiveResult> ArchiveAsync(RuntimeCaptureEnvelope capture, CancellationToken cancellationToken = default);
+    Task<ArchivedRuntimeCapture?> ReadRuntimeAsync(Guid captureId, CancellationToken cancellationToken = default);
     Task<CaptureOutcome?> FindOutcomeAsync(Guid captureId, CancellationToken cancellationToken = default);
     Task CompleteAsync(CaptureOutcome outcome, CancellationToken cancellationToken = default);
 }

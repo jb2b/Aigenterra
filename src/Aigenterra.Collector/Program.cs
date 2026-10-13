@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Aigenterra.Adapters.Git;
 using Aigenterra.Collector;
+using Aigenterra.Application.Recording;
 
 var spoolPath = Environment.GetEnvironmentVariable("AIGENTERRA_SPOOL_PATH")
     ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aigenterra", "spool");
@@ -44,7 +45,17 @@ if (args.FirstOrDefault() == "drain")
 
 try
 {
-    await spool.CaptureAsync(Console.OpenStandardInput(), DateTimeOffset.UtcNow, new GitRepositoryContextReader());
+    if (Environment.GetEnvironmentVariable("AIGENTERRA_CAPTURE_VERSION") == "2")
+    {
+        var runtimeNamespace = Guid.Parse(Environment.GetEnvironmentVariable("AIGENTERRA_RUNTIME_NAMESPACE") ?? "");
+        var sourceId = Guid.Parse(Environment.GetEnvironmentVariable("AIGENTERRA_SOURCE_ID") ?? "");
+        if (runtimeNamespace == Guid.Empty || sourceId == Guid.Empty) throw new InvalidOperationException("Explicit enrollment IDs required.");
+        await spool.CaptureRuntimeAsync(Console.OpenStandardInput(), DateTimeOffset.UtcNow, new GitRepositoryContextReader(),
+            new RuntimeCaptureSource(runtimeNamespace, sourceId, Guid.NewGuid(), "codex", "hook", "HookVisible", "hook_stdin",
+                RuntimeVersion: Environment.GetEnvironmentVariable("AIGENTERRA_RUNTIME_VERSION")));
+    }
+    else
+        await spool.CaptureAsync(Console.OpenStandardInput(), DateTimeOffset.UtcNow, new GitRepositoryContextReader());
 }
 catch (Exception)
 {

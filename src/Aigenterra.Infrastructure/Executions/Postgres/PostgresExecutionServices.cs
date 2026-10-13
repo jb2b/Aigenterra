@@ -38,7 +38,8 @@ public static class PostgresExecutionServices
             "20260907145324_RecentTaskExecutionsIndex",
             "20260908000000_CompleteStoppedCodexTurns",
             "20260909161028_EvidenceBackedEvaluations",
-            "20260916150255_RecordingHardening"
+            "20260916150255_RecordingHardening",
+            "20261013185755_VersionedRuntimeEvidence"
         ];
         if (pending.Any(id => !approved.Contains(id, StringComparer.Ordinal)))
         {

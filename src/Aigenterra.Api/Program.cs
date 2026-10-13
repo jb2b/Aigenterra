@@ -5,6 +5,7 @@ using Aigenterra.Api.Health;
 using Aigenterra.Api.Evaluations;
 using Aigenterra.Application.Evaluations;
 using Aigenterra.Application.Executions;
+using Aigenterra.Application.Recording;
 using Aigenterra.Infrastructure.Executions.Postgres;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,7 @@ builder.Services.AddTransient<ResolveExecutionRuntimeReference>();
 builder.Services.AddTransient<GetTaskExecutionTimelineByRuntimeReference>();
 builder.Services.AddTransient<ICodexHookIngestor, CodexHookIngestor>();
 builder.Services.AddTransient<CodexCaptureIngestor>();
+builder.Services.AddTransient<ArchiveRuntimeCapture>();
 builder.Services.AddTransient<CodexCommandResultIngestor>();
 builder.Services.AddTransient<ICommandEvidenceDecoder, CodexCommandEvidenceDecoder>();
 builder.Services.AddTransient<EvaluateTaskExecution>();
@@ -51,6 +53,7 @@ app.MapGet("/status", () => Results.Ok(new { status = "ok" }));
 app.MapExecutionEndpoints();
 app.MapCodexIngestEndpoints();
 app.MapCaptureEndpoints();
+app.MapRuntimeCaptureEndpoints();
 app.MapEvaluationEndpoints();
 
 app.Run();
