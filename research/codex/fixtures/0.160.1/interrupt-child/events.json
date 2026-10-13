@@ -1,0 +1,1945 @@
+{
+  "diagnostics": {
+    "threadId": "00000000-0000-4000-8000-000000000001",
+    "turnId": "00000000-0000-4000-8000-000000000002",
+    "itemId": "exec-00000000-0000-4000-8000-000000000003",
+    "request": {
+      "id": 7,
+      "result": {}
+    },
+    "terminalStatus": "interrupted"
+  },
+  "hooks": [
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PostToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationspawn_agent",
+      "tool_input": {
+        "task_name": "probe",
+        "fork_turns": "all",
+        "message": "gAAAAABqzjijS3zYytl3q31fI_zMHZRtPnwaM8HWq2q1feBUTAumfljCnOHrfFavVptzJgWMeecVm2WVew-GY52phOnpYmusado-LoG4GwQEZHXTCUSW0lUSckEGbUqJHjCf9Alsm9lChmnubvYOTylU8O5oDZEx0nxAn5SsoAtHhj_SCDx5TEHedv7yQ_XvuynpB-AEeie6G-hmeK3kB9mhQUHUIdAd7dKyuRjL70h0oVwndljvL09YT3SNVRYUDCh9JCOfaP5za6EZc_j-OE0piKXqOUjyFtmTCl-HijHkeGfDR9le4Z8wzbH2TxujSq0btkD7UTbJi6d5mD1geo9qQtkn83XHXV2PioYJUt3XQnchFYOlczvNqsfOa5AA8O-2GZyvEpSJ5CesUl67L8imMdjv2C48-Ap-D-cAaPa51e1fDucFuOCWfngSaKZFSpLfjBak-ZGOehom3YzJmufkCGSM95XvLLYdINtl1MaoivHSy22BYVfLi-ri10N_wmy2E4GGhwZ17OWcPU6JNW0hsBiTibf4x5KWMTV11vmz_9qaPL1gI1x_Ztft05QI0XGXof-9kVSyNkUj05R16obRvHzinjzRzynke1XMRlXJor4RwLqOsi7aTmjGuincZ8RuS3V_mN-u"
+      },
+      "tool_response": "{\"task_name\":\"/root/probe\"}",
+      "tool_use_id": "call_f8d37a9a17d74dc7ad9ba2530370853f"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationwait_agent",
+      "tool_input": {
+        "timeout_ms": 60000
+      },
+      "tool_use_id": "call_6523ed3755494b1fad304eb14a262220"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationspawn_agent",
+      "tool_input": {
+        "task_name": "probe",
+        "fork_turns": "all",
+        "message": "gAAAAABqzjijS3zYytl3q31fI_zMHZRtPnwaM8HWq2q1feBUTAumfljCnOHrfFavVptzJgWMeecVm2WVew-GY52phOnpYmusado-LoG4GwQEZHXTCUSW0lUSckEGbUqJHjCf9Alsm9lChmnubvYOTylU8O5oDZEx0nxAn5SsoAtHhj_SCDx5TEHedv7yQ_XvuynpB-AEeie6G-hmeK3kB9mhQUHUIdAd7dKyuRjL70h0oVwndljvL09YT3SNVRYUDCh9JCOfaP5za6EZc_j-OE0piKXqOUjyFtmTCl-HijHkeGfDR9le4Z8wzbH2TxujSq0btkD7UTbJi6d5mD1geo9qQtkn83XHXV2PioYJUt3XQnchFYOlczvNqsfOa5AA8O-2GZyvEpSJ5CesUl67L8imMdjv2C48-Ap-D-cAaPa51e1fDucFuOCWfngSaKZFSpLfjBak-ZGOehom3YzJmufkCGSM95XvLLYdINtl1MaoivHSy22BYVfLi-ri10N_wmy2E4GGhwZ17OWcPU6JNW0hsBiTibf4x5KWMTV11vmz_9qaPL1gI1x_Ztft05QI0XGXof-9kVSyNkUj05R16obRvHzinjzRzynke1XMRlXJor4RwLqOsi7aTmjGuincZ8RuS3V_mN-u"
+      },
+      "tool_use_id": "call_f8d37a9a17d74dc7ad9ba2530370853f"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "SessionEnd",
+      "reason": "other"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-48-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "SubagentStart",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "agent_id": "00000000-0000-4000-8000-000000000001",
+      "agent_type": "default"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PostToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationwait_agent",
+      "tool_input": {
+        "timeout_ms": 60000
+      },
+      "tool_response": "{\"message\":\"Wait timed out.\",\"timed_out\":true}",
+      "tool_use_id": "call_6523ed3755494b1fad304eb14a262220"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "Spawn exactly one child agent. Tell it to call the observability_probe echo MCP tool exactly once with marker INTERRUPT_CHILD, delayMs 20000, size 32, and no other tools. Wait for that child. If interrupted, report that fact and finish without restarting or retrying it."
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PostToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationwait_agent",
+      "tool_input": {
+        "timeout_ms": 60000
+      },
+      "tool_response": "{\"message\":\"Wait timed out.\",\"timed_out\":true}",
+      "tool_use_id": "call_61697cde18b14c81bdd184b492c37f09"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationwait_agent",
+      "tool_input": {
+        "timeout_ms": 60000
+      },
+      "tool_use_id": "call_61697cde18b14c81bdd184b492c37f09"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationlist_agents",
+      "tool_input": {},
+      "tool_use_id": "call_cab110804f0a44c782b9cb493cc9b6c0"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "agent_id": "00000000-0000-4000-8000-000000000001",
+      "agent_type": "default",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-48-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "mcp__observability_probe__echo",
+      "tool_input": {
+        "marker": "INTERRUPT_CHILD",
+        "delayMs": 20000,
+        "size": 32
+      },
+      "tool_use_id": "exec-00000000-0000-4000-8000-000000000003"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "SessionStart",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "source": "startup"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PostToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationlist_agents",
+      "tool_input": {},
+      "tool_response": "{\"agents\":[{\"agent_name\":\"/root\",\"agent_status\":\"running\"},{\"agent_name\":\"/root/probe\",\"agent_status\":\"interrupted\"}]}",
+      "tool_use_id": "call_cab110804f0a44c782b9cb493cc9b6c0"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "Stop",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "stop_hook_active": false,
+      "last_assistant_message": "The child agent was interrupted. I did not restart or retry it."
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PostToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationwait_agent",
+      "tool_input": {
+        "timeout_ms": 60000
+      },
+      "tool_response": "{\"message\":\"Wait timed out.\",\"timed_out\":true}",
+      "tool_use_id": "call_60c878870be8434d980278e355510af3"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000005",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "collaborationwait_agent",
+      "tool_input": {
+        "timeout_ms": 60000
+      },
+      "tool_use_id": "call_60c878870be8434d980278e355510af3"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000004",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "agent_id": "00000000-0000-4000-8000-000000000001",
+      "agent_type": "default",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-48-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PostToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "mcp__observability_probe__echo",
+      "tool_input": {
+        "marker": "INTERRUPT_CHILD",
+        "delayMs": 20000,
+        "size": 32
+      },
+      "tool_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"marker\":\"INTERRUPT_CHILD\",\"result\":\"PROBE_OK\",\"padding\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}"
+          }
+        ],
+        "structuredContent": {
+          "marker": "INTERRUPT_CHILD",
+          "result": "PROBE_OK",
+          "padding": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "isError": false,
+        "_meta": {
+          "origin": "synthetic-server",
+          "evidenceVersion": 1
+        }
+      },
+      "tool_use_id": "exec-00000000-0000-4000-8000-000000000003"
+    }
+  ],
+  "appServer": [
+    {
+      "id": 1,
+      "result": {
+        "userAgent": "Codex Desktop/0.160.1 (Windows 10.0.26200; x86_64) dumb (aigenterra_spike; 1)",
+        "codexHome": "C:\\probe\\home",
+        "platformFamily": "windows",
+        "platformOs": "windows"
+      }
+    },
+    {
+      "method": "thread/started",
+      "params": {
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "environments": [
+            {
+              "environmentId": "local",
+              "cwd": "C:\\probe\\repo",
+              "runtimeWorkspaceRoots": [
+                "C:\\probe\\repo"
+              ]
+            }
+          ],
+          "extra": null,
+          "sessionId": "00000000-0000-4000-8000-000000000004",
+          "forkedFromId": null,
+          "parentThreadId": null,
+          "preview": "",
+          "ephemeral": false,
+          "section": null,
+          "sectionEnteredAt": null,
+          "projectId": null,
+          "historyMode": "paginated",
+          "modelProvider": "openai",
+          "model": "gpt-6-astra",
+          "reasoningEffort": "low",
+          "createdAt": 1791899796,
+          "updatedAt": 1791899796,
+          "recencyAt": 1791899796,
+          "status": {
+            "type": "idle"
+          },
+          "path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-56-36-00000000-0000-4000-8000-000000000004.jsonl",
+          "cwd": "C:\\probe\\repo",
+          "cliVersion": "0.160.1",
+          "originator": "Codex Desktop",
+          "source": "vscode",
+          "canAcceptDirectInput": true,
+          "threadSource": null,
+          "agentNickname": null,
+          "agentRole": null,
+          "gitInfo": null,
+          "name": null,
+          "daybreakEnabled": null,
+          "turns": []
+        }
+      },
+      "emittedAtMs": 1791899796117
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "name": "observability_probe",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899796117
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "name": "codex_apps",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899796117
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "name": "observability_probe",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899796528
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "name": "codex_apps",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899799342
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        }
+      },
+      "emittedAtMs": 1791899799906
+    },
+    {
+      "method": "turn/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000005",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "inProgress",
+          "error": null,
+          "startedAt": 1791899799,
+          "completedAt": null,
+          "durationMs": null
+        }
+      },
+      "emittedAtMs": 1791899799906
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "session-start:5:C:\\probe\\home\\hooks.json",
+          "eventName": "sessionStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 5,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899800,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899800283
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "session-start:5:C:\\probe\\home\\hooks.json",
+          "eventName": "sessionStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 5,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899800,
+          "completedAt": 1791899800,
+          "durationMs": 598,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899800871
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899800,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899800876
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899800,
+          "completedAt": 1791899801,
+          "durationMs": 597,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899801470
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000006",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Spawn exactly one child agent. Tell it to call the observability_probe echo MCP tool exactly once with marker INTERRUPT_CHILD, delayMs 20000, size 32, and no other tools. Wait for that child. If interrupted, report that fact and finish without restarting or retrying it.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899801477
+      },
+      "emittedAtMs": 1791899801477
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000006",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Spawn exactly one child agent. Tell it to call the observability_probe echo MCP tool exactly once with marker INTERRUPT_CHILD, delayMs 20000, size 32, and no other tools. Wait for that child. If interrupted, report that fact and finish without restarting or retrying it.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791899801477
+      },
+      "emittedAtMs": 1791899801488
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace389ecafc8191a82c5db0d72cba51",
+          "text": "",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899803451
+      },
+      "emittedAtMs": 1791899803452
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace389ecafc8191a82c5db0d72cba51",
+          "text": "I’ll spawn one child agent with those exact instructions and wait for it.\n",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791899804193
+      },
+      "emittedAtMs": 1791899804202
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_f8d37a9a17d74dc7ad9ba2530370853f",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899808,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899808077
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_f8d37a9a17d74dc7ad9ba2530370853f",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899808,
+          "completedAt": 1791899808,
+          "durationMs": 567,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899808640
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "idle"
+        }
+      },
+      "emittedAtMs": 1791899808874
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "subAgentActivity",
+          "id": "call_f8d37a9a17d74dc7ad9ba2530370853f",
+          "kind": "started",
+          "agentThreadId": "00000000-0000-4000-8000-000000000001",
+          "agentPath": "/root/probe"
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899808874
+      },
+      "emittedAtMs": 1791899808874
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "codex_apps",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899808880
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "subAgentActivity",
+          "id": "call_f8d37a9a17d74dc7ad9ba2530370853f",
+          "kind": "started",
+          "agentThreadId": "00000000-0000-4000-8000-000000000001",
+          "agentPath": "/root/probe"
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791899808874
+      },
+      "emittedAtMs": 1791899808883
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        }
+      },
+      "emittedAtMs": 1791899808889
+    },
+    {
+      "method": "turn/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "inProgress",
+          "error": null,
+          "startedAt": 1791899808,
+          "completedAt": null,
+          "durationMs": null
+        }
+      },
+      "emittedAtMs": 1791899808889
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_f8d37a9a17d74dc7ad9ba2530370853f",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899808,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899808890
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_f8d37a9a17d74dc7ad9ba2530370853f",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899808,
+          "completedAt": 1791899809,
+          "durationMs": 598,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899809483
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 15390,
+            "inputTokens": 15259,
+            "cachedInputTokens": 12416,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 131,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 15390,
+            "inputTokens": 15259,
+            "cachedInputTokens": 12416,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 131,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791899809500
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "subagent-start:8:C:\\probe\\home\\hooks.json",
+          "eventName": "subagentStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 8,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899810,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899810356
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "codex_apps",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899810467
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "subagent-start:8:C:\\probe\\home\\hooks.json",
+          "eventName": "subagentStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 8,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899810,
+          "completedAt": 1791899810,
+          "durationMs": 561,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899810914
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_61697cde18b14c81bdd184b492c37f09",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899812,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899812695
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_61697cde18b14c81bdd184b492c37f09",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899812,
+          "completedAt": 1791899813,
+          "durationMs": 555,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899813246
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "collabAgentToolCall",
+          "id": "call_61697cde18b14c81bdd184b492c37f09",
+          "tool": "wait",
+          "status": "inProgress",
+          "senderThreadId": "00000000-0000-4000-8000-000000000004",
+          "receiverThreadIds": [],
+          "prompt": null,
+          "model": null,
+          "reasoningEffort": null,
+          "agentsStates": {}
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899813246
+      },
+      "emittedAtMs": 1791899813246
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "observability_probe",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899815091
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "observability_probe",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791899815390
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000003",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899815,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899815396
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000003",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899815,
+          "completedAt": 1791899815,
+          "durationMs": 569,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899815961
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "mcpToolCall",
+          "id": "exec-00000000-0000-4000-8000-000000000003",
+          "server": "observability_probe",
+          "tool": "echo",
+          "status": "inProgress",
+          "arguments": {
+            "marker": "INTERRUPT_CHILD",
+            "delayMs": 20000,
+            "size": 32
+          },
+          "appContext": null,
+          "mcpAppUi": null,
+          "pluginId": null,
+          "readOnlyHint": true,
+          "result": null,
+          "error": null,
+          "durationMs": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791899815961
+      },
+      "emittedAtMs": 1791899815961
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 15231,
+            "inputTokens": 15144,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 87,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 15231,
+            "inputTokens": 15144,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 87,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791899817991
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "idle"
+        }
+      },
+      "emittedAtMs": 1791899818007
+    },
+    {
+      "method": "turn/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "interrupted",
+          "error": null,
+          "startedAt": 1791899808,
+          "completedAt": 1791899818,
+          "durationMs": 9120
+        }
+      },
+      "emittedAtMs": 1791899818007
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "mcpToolCall",
+          "id": "exec-00000000-0000-4000-8000-000000000003",
+          "server": "observability_probe",
+          "tool": "echo",
+          "status": "completed",
+          "arguments": {
+            "marker": "INTERRUPT_CHILD",
+            "delayMs": 20000,
+            "size": 32
+          },
+          "appContext": null,
+          "mcpAppUi": null,
+          "pluginId": null,
+          "readOnlyHint": true,
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"marker\":\"INTERRUPT_CHILD\",\"result\":\"PROBE_OK\",\"padding\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}"
+              }
+            ],
+            "structuredContent": {
+              "marker": "INTERRUPT_CHILD",
+              "result": "PROBE_OK",
+              "padding": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            },
+            "_meta": {
+              "origin": "synthetic-server",
+              "evidenceVersion": 1
+            }
+          },
+          "error": null,
+          "durationMs": 20023
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791899835984
+      },
+      "emittedAtMs": 1791899835992
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000003",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899835,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899835998
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000003",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899835,
+          "completedAt": 1791899836,
+          "durationMs": 566,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899836560
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "collabAgentToolCall",
+          "id": "call_61697cde18b14c81bdd184b492c37f09",
+          "tool": "wait",
+          "status": "completed",
+          "senderThreadId": "00000000-0000-4000-8000-000000000004",
+          "receiverThreadIds": [],
+          "prompt": null,
+          "model": null,
+          "reasoningEffort": null,
+          "agentsStates": {}
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791899873262
+      },
+      "emittedAtMs": 1791899873272
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_61697cde18b14c81bdd184b492c37f09",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899873,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899873277
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_61697cde18b14c81bdd184b492c37f09",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899873,
+          "completedAt": 1791899873,
+          "durationMs": 572,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899873845
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 30822,
+            "inputTokens": 30670,
+            "cachedInputTokens": 27520,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 152,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 15432,
+            "inputTokens": 15411,
+            "cachedInputTokens": 15104,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 21,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791899873861
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace38e938448191a3112f32abded49f",
+          "text": "",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899877877
+      },
+      "emittedAtMs": 1791899877877
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace38e938448191a3112f32abded49f",
+          "text": "The child hasn’t reported back yet. I’m continuing to wait.\n",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791899878199
+      },
+      "emittedAtMs": 1791899878207
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_6523ed3755494b1fad304eb14a262220",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899878,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899878886
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_6523ed3755494b1fad304eb14a262220",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899878,
+          "completedAt": 1791899879,
+          "durationMs": 551,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899879432
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "collabAgentToolCall",
+          "id": "call_6523ed3755494b1fad304eb14a262220",
+          "tool": "wait",
+          "status": "inProgress",
+          "senderThreadId": "00000000-0000-4000-8000-000000000004",
+          "receiverThreadIds": [],
+          "prompt": null,
+          "model": null,
+          "reasoningEffort": null,
+          "agentsStates": {}
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899879432
+      },
+      "emittedAtMs": 1791899879432
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "collabAgentToolCall",
+          "id": "call_6523ed3755494b1fad304eb14a262220",
+          "tool": "wait",
+          "status": "completed",
+          "senderThreadId": "00000000-0000-4000-8000-000000000004",
+          "receiverThreadIds": [],
+          "prompt": null,
+          "model": null,
+          "reasoningEffort": null,
+          "agentsStates": {}
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791899939447
+      },
+      "emittedAtMs": 1791899939457
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_6523ed3755494b1fad304eb14a262220",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899939,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899939463
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_6523ed3755494b1fad304eb14a262220",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899939,
+          "completedAt": 1791899940,
+          "durationMs": 591,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899940050
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 46330,
+            "inputTokens": 46127,
+            "cachedInputTokens": 39936,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 203,
+            "reasoningOutputTokens": 7
+          },
+          "last": {
+            "totalTokens": 15508,
+            "inputTokens": 15457,
+            "cachedInputTokens": 12416,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 51,
+            "reasoningOutputTokens": 7
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791899940066
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace392a18e4819190e4e6e487312830",
+          "text": "",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899942856
+      },
+      "emittedAtMs": 1791899942856
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace392a18e4819190e4e6e487312830",
+          "text": "I’m still waiting for the child; I haven’t restarted or retried it.\n",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791899943533
+      },
+      "emittedAtMs": 1791899943542
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_60c878870be8434d980278e355510af3",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791899944,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899944012
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_60c878870be8434d980278e355510af3",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791899944,
+          "completedAt": 1791899944,
+          "durationMs": 590,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791899944598
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "collabAgentToolCall",
+          "id": "call_60c878870be8434d980278e355510af3",
+          "tool": "wait",
+          "status": "inProgress",
+          "senderThreadId": "00000000-0000-4000-8000-000000000004",
+          "receiverThreadIds": [],
+          "prompt": null,
+          "model": null,
+          "reasoningEffort": null,
+          "agentsStates": {}
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791899944598
+      },
+      "emittedAtMs": 1791899944598
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "collabAgentToolCall",
+          "id": "call_60c878870be8434d980278e355510af3",
+          "tool": "wait",
+          "status": "completed",
+          "senderThreadId": "00000000-0000-4000-8000-000000000004",
+          "receiverThreadIds": [],
+          "prompt": null,
+          "model": null,
+          "reasoningEffort": null,
+          "agentsStates": {}
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791900004605
+      },
+      "emittedAtMs": 1791900004613
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_60c878870be8434d980278e355510af3",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900004,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900004620
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_60c878870be8434d980278e355510af3",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900004,
+          "completedAt": 1791900005,
+          "durationMs": 556,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900005171
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 61922,
+            "inputTokens": 61660,
+            "cachedInputTokens": 55168,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 262,
+            "reasoningOutputTokens": 19
+          },
+          "last": {
+            "totalTokens": 15592,
+            "inputTokens": 15533,
+            "cachedInputTokens": 15232,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 59,
+            "reasoningOutputTokens": 12
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791900005187
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_cab110804f0a44c782b9cb493cc9b6c0",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900007,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900007959
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:call_cab110804f0a44c782b9cb493cc9b6c0",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900007,
+          "completedAt": 1791900008,
+          "durationMs": 548,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900008503
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_cab110804f0a44c782b9cb493cc9b6c0",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900008,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900008509
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:call_cab110804f0a44c782b9cb493cc9b6c0",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900008,
+          "completedAt": 1791900009,
+          "durationMs": 576,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900009081
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 77554,
+            "inputTokens": 77277,
+            "cachedInputTokens": 70528,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 277,
+            "reasoningOutputTokens": 19
+          },
+          "last": {
+            "totalTokens": 15632,
+            "inputTokens": 15617,
+            "cachedInputTokens": 15360,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 15,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791900009098
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace396f7ee08191b93a3c4c22d9a04b",
+          "text": "",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "startedAtMs": 1791900012166
+      },
+      "emittedAtMs": 1791900012166
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_084ae9bb2af3631c016ace396f7ee08191b93a3c4c22d9a04b",
+          "text": "The child agent was interrupted. I did not restart or retry it.",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "completedAtMs": 1791900012562
+      },
+      "emittedAtMs": 1791900012569
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 93246,
+            "inputTokens": 92951,
+            "cachedInputTokens": 82944,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 295,
+            "reasoningOutputTokens": 19
+          },
+          "last": {
+            "totalTokens": 15692,
+            "inputTokens": 15674,
+            "cachedInputTokens": 12416,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 18,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791900012610
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900012,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900012615
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turnId": "00000000-0000-4000-8000-000000000005",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900012,
+          "completedAt": 1791900013,
+          "durationMs": 575,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900013186
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "status": {
+          "type": "idle"
+        }
+      },
+      "emittedAtMs": 1791900013195
+    },
+    {
+      "method": "turn/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000004",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000005",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "msg_084ae9bb2af3631c016ace396f7ee08191b93a3c4c22d9a04b",
+              "text": "The child agent was interrupted. I did not restart or retry it.",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "summary",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1791899799,
+          "completedAt": 1791900013,
+          "durationMs": 213456
+        }
+      },
+      "emittedAtMs": 1791900013195
+    },
+    {
+      "method": "deprecationNotice",
+      "params": {
+        "summary": "Full-history hydration is deprecated for paginated threads; omit `includeTurns` or set it to `false`, then page with `thread/turns/list` and `thread/items/list`.",
+        "details": null
+      },
+      "emittedAtMs": 1791900013199
+    }
+  ],
+  "externalMcp": [
+    {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "_meta": {
+          "origin": "synthetic-server",
+          "evidenceVersion": 1
+        },
+        "structuredContent": {
+          "marker": "INTERRUPT_CHILD",
+          "result": "PROBE_OK",
+          "padding": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "content": [
+          {
+            "text": "{\"marker\":\"INTERRUPT_CHILD\",\"result\":\"PROBE_OK\",\"padding\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ]
+}

@@ -91,3 +91,25 @@ echo/fail tools are read-only; delay is bounded to 20 seconds and padding to
 128 KiB. Test-SyntheticMcp.ps1 verifies its exact external response evidence.
 Pass a synthetic prompt and scenario name as the optional fourth/fifth spike
 arguments. The committed correlation report records the prompts' outcomes.
+
+Scenario `recovery` starts additional isolated observers, reads history across
+a disconnect, and deliberately attempts resume/unsubscribe on its own disposable
+thread. `interrupt-tool` waits for a root MCP item; `interrupt-child` waits for a
+child MCP item, then interrupts only that item's explicit thread/turn. Use an
+echo delayMs of 20000. The parent may continue waiting after a child interrupt;
+the overall completion wait remains bounded. Never pass an existing user's home.
+Scenario `code-mode` enables that feature for the owned process and tests hook
+inventory reload by changing/restoring only the disposable SessionStart command.
+Use two parallel synthetic echo calls. Each marker should be unique within a
+workspace; external MCP export matches controlled test markers, not production IDs.
+
+For Code Mode, the exporter additionally selects function/custom tool-call
+records from the owned transcript to prove which execution path was exercised.
+This is a separate RuntimeTranscriptVisible stage. No reasoning records are
+selected. Recovery diagnostics summarize separate observer archives; they are
+derived test results rather than original wire events.
+
+`Measure-Probe.ps1 -Workspace ... -Evidence ...` reports sizes, receive rates,
+one-second bucket peaks and hook timings without emitting payloads. It is a
+small-sample measurement, not a production load test. Build the spike before
+starting experiments: Windows locks its apphost while a probe is running.

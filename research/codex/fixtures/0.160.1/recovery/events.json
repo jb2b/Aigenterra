@@ -1,0 +1,1167 @@
+{
+  "appServer": [
+    {
+      "id": 1,
+      "result": {
+        "userAgent": "Codex Desktop/0.160.1 (Windows 10.0.26200; x86_64) dumb (aigenterra_spike; 1)",
+        "codexHome": "C:\\probe\\home",
+        "platformFamily": "windows",
+        "platformOs": "windows"
+      }
+    },
+    {
+      "method": "thread/started",
+      "params": {
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "environments": [
+            {
+              "environmentId": "local",
+              "cwd": "C:\\probe\\repo",
+              "runtimeWorkspaceRoots": [
+                "C:\\probe\\repo"
+              ]
+            }
+          ],
+          "extra": null,
+          "sessionId": "00000000-0000-4000-8000-000000000001",
+          "forkedFromId": null,
+          "parentThreadId": null,
+          "preview": "",
+          "ephemeral": false,
+          "section": null,
+          "sectionEnteredAt": null,
+          "projectId": null,
+          "historyMode": "paginated",
+          "modelProvider": "openai",
+          "model": "gpt-6-astra",
+          "reasoningEffort": "low",
+          "createdAt": 1791900068,
+          "updatedAt": 1791900068,
+          "recencyAt": 1791900068,
+          "status": {
+            "type": "idle"
+          },
+          "path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+          "cwd": "C:\\probe\\repo",
+          "cliVersion": "0.160.1",
+          "originator": "Codex Desktop",
+          "source": "vscode",
+          "canAcceptDirectInput": true,
+          "threadSource": null,
+          "agentNickname": null,
+          "agentRole": null,
+          "gitInfo": null,
+          "name": null,
+          "daybreakEnabled": null,
+          "turns": []
+        }
+      },
+      "emittedAtMs": 1791900068677
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "codex_apps",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791900068677
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "observability_probe",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791900068677
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "observability_probe",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791900069037
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "codex_apps",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791900071144
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        }
+      },
+      "emittedAtMs": 1791900071509
+    },
+    {
+      "method": "turn/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "inProgress",
+          "error": null,
+          "startedAt": 1791900071,
+          "completedAt": null,
+          "durationMs": null
+        }
+      },
+      "emittedAtMs": 1791900071509
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "session-start:5:C:\\probe\\home\\hooks.json",
+          "eventName": "sessionStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 5,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900071,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900071855
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "session-start:5:C:\\probe\\home\\hooks.json",
+          "eventName": "sessionStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 5,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900071,
+          "completedAt": 1791900072,
+          "durationMs": 640,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900072485
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900072,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900072491
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900072,
+          "completedAt": 1791900073,
+          "durationMs": 583,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900073070
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000003",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Reply exactly AIGENTERRA_RECOVERY. Do not use tools.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791900073077
+      },
+      "emittedAtMs": 1791900073077
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000003",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Reply exactly AIGENTERRA_RECOVERY. Do not use tools.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791900073077
+      },
+      "emittedAtMs": 1791900073087
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_0d1c12b4b0a6b8ca016ace39b0c70881918e4287ec68b720d8",
+          "text": "",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791900077472
+      },
+      "emittedAtMs": 1791900077472
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_0d1c12b4b0a6b8ca016ace39b0c70881918e4287ec68b720d8",
+          "text": "AIGENTERRA_RECOVERY",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791900077762
+      },
+      "emittedAtMs": 1791900077770
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 15223,
+            "inputTokens": 15213,
+            "cachedInputTokens": 12416,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 10,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 15223,
+            "inputTokens": 15213,
+            "cachedInputTokens": 12416,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 10,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791900077837
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900077,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900077842
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900077,
+          "completedAt": 1791900078,
+          "durationMs": 553,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900078392
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "idle"
+        }
+      },
+      "emittedAtMs": 1791900078400
+    },
+    {
+      "method": "turn/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "msg_0d1c12b4b0a6b8ca016ace39b0c70881918e4287ec68b720d8",
+              "text": "AIGENTERRA_RECOVERY",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "summary",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1791900071,
+          "completedAt": 1791900078,
+          "durationMs": 7062
+        }
+      },
+      "emittedAtMs": 1791900078400
+    },
+    {
+      "method": "deprecationNotice",
+      "params": {
+        "summary": "Full-history hydration is deprecated for paginated threads; omit `includeTurns` or set it to `false`, then page with `thread/turns/list` and `thread/items/list`.",
+        "details": null
+      },
+      "emittedAtMs": 1791900078404
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        }
+      },
+      "emittedAtMs": 1791900078498
+    },
+    {
+      "method": "turn/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "inProgress",
+          "error": null,
+          "startedAt": 1791900078,
+          "completedAt": null,
+          "durationMs": null
+        }
+      },
+      "emittedAtMs": 1791900078498
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900078,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900078525
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900078,
+          "completedAt": 1791900079,
+          "durationMs": 588,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900079108
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000005",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Reply exactly AIGENTERRA_OBSERVER_CONNECTED. Do not use tools.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "startedAtMs": 1791900079116
+      },
+      "emittedAtMs": 1791900079116
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000005",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Reply exactly AIGENTERRA_OBSERVER_CONNECTED. Do not use tools.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "completedAtMs": 1791900079116
+      },
+      "emittedAtMs": 1791900079125
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_0d1c12b4b0a6b8ca016ace39b86a708191a9076131ac6d3325",
+          "text": "",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "startedAtMs": 1791900085091
+      },
+      "emittedAtMs": 1791900085091
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_0d1c12b4b0a6b8ca016ace39b86a708191a9076131ac6d3325",
+          "text": "AIGENTERRA_OBSERVER_CONNECTED",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "completedAtMs": 1791900085297
+      },
+      "emittedAtMs": 1791900085307
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 30478,
+            "inputTokens": 30457,
+            "cachedInputTokens": 27392,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 21,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 15255,
+            "inputTokens": 15244,
+            "cachedInputTokens": 14976,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 11,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791900085387
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900085,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900085392
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000004",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900085,
+          "completedAt": 1791900085,
+          "durationMs": 566,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900085954
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "idle"
+        }
+      },
+      "emittedAtMs": 1791900085964
+    },
+    {
+      "method": "turn/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "msg_0d1c12b4b0a6b8ca016ace39b86a708191a9076131ac6d3325",
+              "text": "AIGENTERRA_OBSERVER_CONNECTED",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "summary",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1791900078,
+          "completedAt": 1791900085,
+          "durationMs": 7473
+        }
+      },
+      "emittedAtMs": 1791900085964
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        }
+      },
+      "emittedAtMs": 1791900086020
+    },
+    {
+      "method": "turn/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000006",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "inProgress",
+          "error": null,
+          "startedAt": 1791900086,
+          "completedAt": null,
+          "durationMs": null
+        }
+      },
+      "emittedAtMs": 1791900086020
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900086,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900086046
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900086,
+          "completedAt": 1791900086,
+          "durationMs": 563,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900086605
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000007",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Reply exactly AIGENTERRA_OBSERVER_DISCONNECTED. Do not use tools.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "startedAtMs": 1791900086613
+      },
+      "emittedAtMs": 1791900086613
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000007",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Reply exactly AIGENTERRA_OBSERVER_DISCONNECTED. Do not use tools.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "completedAtMs": 1791900086613
+      },
+      "emittedAtMs": 1791900086622
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_0d1c12b4b0a6b8ca016ace39be0bf08191b92927dcb2233509",
+          "text": "",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "startedAtMs": 1791900090723
+      },
+      "emittedAtMs": 1791900090723
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_0d1c12b4b0a6b8ca016ace39be0bf08191b92927dcb2233509",
+          "text": "AIGENTERRA_OBSERVER_DISCONNECTED.",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "completedAtMs": 1791900091111
+      },
+      "emittedAtMs": 1791900091120
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 45768,
+            "inputTokens": 45734,
+            "cachedInputTokens": 42496,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 34,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 15290,
+            "inputTokens": 15277,
+            "cachedInputTokens": 15104,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 13,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791900091187
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791900091,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900091192
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000006",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791900091,
+          "completedAt": 1791900091,
+          "durationMs": 545,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791900091734
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "idle"
+        }
+      },
+      "emittedAtMs": 1791900091742
+    },
+    {
+      "method": "turn/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000006",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "msg_0d1c12b4b0a6b8ca016ace39be0bf08191b92927dcb2233509",
+              "text": "AIGENTERRA_OBSERVER_DISCONNECTED.",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "summary",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1791900086,
+          "completedAt": 1791900091,
+          "durationMs": 5728
+        }
+      },
+      "emittedAtMs": 1791900091742
+    }
+  ],
+  "externalMcp": [],
+  "hooks": [
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000006",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "Reply exactly AIGENTERRA_OBSERVER_DISCONNECTED. Do not use tools."
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000004",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "Reply exactly AIGENTERRA_OBSERVER_CONNECTED. Do not use tools."
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "Stop",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "stop_hook_active": false,
+      "last_assistant_message": "AIGENTERRA_RECOVERY"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "Reply exactly AIGENTERRA_RECOVERY. Do not use tools."
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "SessionStart",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "source": "startup"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "SessionEnd",
+      "reason": "other"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000004",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "Stop",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "stop_hook_active": false,
+      "last_assistant_message": "AIGENTERRA_OBSERVER_CONNECTED"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000006",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T16-01-08-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "Stop",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "stop_hook_active": false,
+      "last_assistant_message": "AIGENTERRA_OBSERVER_DISCONNECTED."
+    }
+  ],
+  "diagnostics": {
+    "loadedBeforeRead": {
+      "id": 2,
+      "result": {
+        "data": [],
+        "nextCursor": null
+      }
+    },
+    "readBefore": {
+      "succeeded": true,
+      "threadId": "00000000-0000-4000-8000-000000000001"
+    },
+    "loadedAfterRead": {
+      "id": 4,
+      "result": {
+        "data": [],
+        "nextCursor": null
+      }
+    },
+    "historyWhileConnected": {
+      "succeeded": true,
+      "turns": [
+        {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "status": "completed"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "status": "completed"
+        }
+      ],
+      "nextCursor": null
+    },
+    "observerLifecycleNotifications": 0,
+    "loadedOnReconnect": {
+      "id": 2,
+      "result": {
+        "data": [],
+        "nextCursor": null
+      }
+    },
+    "historyAfterReconnect": {
+      "succeeded": true,
+      "turns": [
+        {
+          "id": "00000000-0000-4000-8000-000000000006",
+          "status": "completed"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "status": "completed"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "status": "completed"
+        }
+      ],
+      "nextCursor": null
+    },
+    "itemsRead": {
+      "succeeded": true,
+      "count": 6
+    },
+    "loadedAfterHistory": {
+      "id": 5,
+      "result": {
+        "data": [],
+        "nextCursor": null
+      }
+    },
+    "observerLifecycleNotificationsAfterReconnect": 0,
+    "resumeSucceeded": false,
+    "resumeError": {
+      "code": -32600,
+      "message": "thread 00000000-0000-4000-8000-000000000001 already has an active writer"
+    },
+    "loadedAfterResume": {
+      "id": 7,
+      "result": {
+        "data": [],
+        "nextCursor": null
+      }
+    },
+    "unsubscribe": {
+      "id": 8,
+      "result": {
+        "status": "notLoaded"
+      }
+    },
+    "loadedAfterUnsubscribe": {
+      "id": 9,
+      "result": {
+        "data": [],
+        "nextCursor": null
+      }
+    },
+    "ownerUnsubscribe": {
+      "id": 11,
+      "result": {
+        "status": "unsubscribed"
+      }
+    },
+    "ownerLoadedAfterUnsubscribe": {
+      "id": 12,
+      "result": {
+        "data": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "nextCursor": null
+      }
+    },
+    "resumeAfterUnsubscribeSucceeded": false,
+    "resumeAfterUnsubscribeError": {
+      "code": -32600,
+      "message": "thread 00000000-0000-4000-8000-000000000001 already has an active writer"
+    },
+    "loadedAfterSecondResume": {
+      "id": 3,
+      "result": {
+        "data": [],
+        "nextCursor": null
+      }
+    }
+  }
+}

@@ -19,6 +19,13 @@ $hooks = @(Get-ChildItem -LiteralPath (Join-Path $Workspace 'evidence\hooks') -F
     })
 $markers = @($selected | ForEach-Object { $_.params.item.arguments.marker } | Where-Object { $null -ne $_ })
 $externalMcp = @()
+$modelToolCalls = @()
+if ($summary.scenario -eq 'code-mode') {
+    $modelToolCalls = @(Get-Content -LiteralPath $summary.threadStart.result.thread.path | ForEach-Object {
+        $entry = $_ | ConvertFrom-Json -Depth 100
+        if ($entry.type -eq 'response_item' -and $entry.payload.type -in @('function_call','custom_tool_call')) { $entry.payload }
+    })
+}
 $mcpPath = Join-Path $Workspace 'evidence\mcp'
 if (Test-Path -LiteralPath $mcpPath) {
     $externalMcp = @(Get-ChildItem -LiteralPath $mcpPath -Filter '*.responses.ndjson' | ForEach-Object {
@@ -30,7 +37,10 @@ if (Test-Path -LiteralPath $mcpPath) {
 }
 $ids = @{}
 # One sanitization pass across BOTH streams preserves explicit equality between IDs.
-$json = @{ appServer = $selected; hooks = $hooks; externalMcp = $externalMcp } | ConvertTo-Json -Depth 100
+$json = @{ appServer = $selected; hooks = $hooks; externalMcp = $externalMcp; modelToolCalls = $modelToolCalls; diagnostics = $summary.scenarioEvidence } | ConvertTo-Json -Depth 100
+# Early probe summaries called the second resume 'offline', but unsubscribe
+# demonstrably did NOT unload the owner. Correct the diagnostic label only.
+$json = $json.Replace('offlineResumeSucceeded','resumeAfterUnsubscribeSucceeded').Replace('offlineResumeError','resumeAfterUnsubscribeError').Replace('loadedAfterOfflineResume','loadedAfterSecondResume')
 $json = $json.Replace($Workspace.Replace('\','\\'),'C:\\probe').Replace($Workspace,'C:\probe')
 $json = $json.Replace($env:USERPROFILE.Replace('\','\\'),'C:\\user').Replace($env:USERPROFILE,'C:\user')
 $json = [regex]::Replace($json, '(?i)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', {
@@ -42,6 +52,7 @@ $json = [regex]::Replace($json, '(?i)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f
 [IO.File]::WriteAllText((Join-Path $Destination 'events.json'), $json)
 $stages = @('AppServerVisible','HookVisible')
 if ($externalMcp.Count) { $stages += 'ExternalRaw' }
+if ($modelToolCalls.Count) { $stages += 'RuntimeTranscriptVisible' }
 @{ userAgent = $summary.initialize.result.userAgent; model = $summary.model; turnStatus = $summary.turnStatus; runStatus = $summary.status; sourceSha256 = (Get-FileHash -LiteralPath (Join-Path $Evidence 'received.ndjson')).Hash; sourceBytes = (Get-Item -LiteralPath (Join-Path $Evidence 'received.ndjson')).Length; totalMessages = $messages.Count; selectedMessages = $selected.Count; selectedHooks = $hooks.Count; externalResults = $externalMcp.Count; stages = $stages; sanitized = $true; note = 'Jointly pseudonymized subset. Account, reasoning, token deltas and unrelated response payloads are deliberately omitted. Original stream is retained locally.' } |
     ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Destination 'manifest.json') -Encoding utf8NoBOM
 Write-Output "Exported $($selected.Count) protocol messages and $($hooks.Count) matching hooks. Review strings before commit."

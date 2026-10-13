@@ -8,6 +8,95 @@ public sealed class GoldenFixtureTests
     [Theory]
     [InlineData("0.153.4")]
     [InlineData("0.160.1")]
+    public void History_recovery_is_not_a_live_subscription_or_a_replayed_event_stream(string version)
+    {
+        using var document = Load(version, "recovery");
+        var evidence = document.RootElement.GetProperty("diagnostics");
+        foreach (var key in new[] { "loadedBeforeRead", "loadedAfterRead", "loadedOnReconnect", "loadedAfterHistory" })
+            Assert.Empty(evidence.GetProperty(key).GetProperty("result").GetProperty("data").EnumerateArray());
+        Assert.True(evidence.GetProperty("readBefore").GetProperty("succeeded").GetBoolean());
+        Assert.Equal(0, evidence.GetProperty("observerLifecycleNotifications").GetInt32());
+        Assert.Equal(0, evidence.GetProperty("observerLifecycleNotificationsAfterReconnect").GetInt32());
+        Assert.Equal(2, evidence.GetProperty("historyWhileConnected").GetProperty("turns").GetArrayLength());
+        Assert.Equal(3, evidence.GetProperty("historyAfterReconnect").GetProperty("turns").GetArrayLength());
+        Assert.False(evidence.GetProperty("resumeSucceeded").GetBoolean());
+        Assert.Contains("active writer", evidence.GetProperty("resumeError").GetProperty("message").GetString());
+        // Unsubscribe does not unload the owning thread or release its writer.
+        Assert.Single(evidence.GetProperty("ownerLoadedAfterUnsubscribe").GetProperty("result").GetProperty("data").EnumerateArray());
+    }
+
+    [Theory]
+    [InlineData("0.153.4")]
+    [InlineData("0.160.1")]
+    public void Interrupted_root_has_no_success_evidence_for_its_unfinished_MCP_item(string version)
+    {
+        using var document = Load(version, "interrupt-tool");
+        var root = document.RootElement;
+        var evidence = root.GetProperty("diagnostics");
+        Assert.Equal("interrupted", evidence.GetProperty("terminalStatus").GetString());
+        var id = evidence.GetProperty("itemId").GetString();
+        Assert.DoesNotContain(root.GetProperty("appServer").EnumerateArray(), x => Method(x) == "item/completed"
+            && x.GetProperty("params").GetProperty("item").GetProperty("id").GetString() == id);
+        Assert.DoesNotContain(root.GetProperty("hooks").EnumerateArray(), x => x.GetProperty("hook_event_name").GetString() == "PostToolUse");
+        Assert.Single(root.GetProperty("hooks").EnumerateArray(), x => x.GetProperty("hook_event_name").GetString() == "Interrupt");
+    }
+
+    [Theory]
+    [InlineData("0.153.4")]
+    [InlineData("0.160.1")]
+    public void Late_child_tool_success_does_not_erase_interrupted_turn_and_has_explicit_owner(string version)
+    {
+        using var document = Load(version, "interrupt-child");
+        var root = document.RootElement;
+        var evidence = root.GetProperty("diagnostics");
+        var childId = evidence.GetProperty("threadId").GetString();
+        var itemId = evidence.GetProperty("itemId").GetString();
+        var messages = root.GetProperty("appServer").EnumerateArray().ToArray();
+        var terminal = Assert.Single(messages, x => Method(x) == "turn/completed" && x.GetProperty("params").GetProperty("threadId").GetString() == childId);
+        var tool = Assert.Single(messages, x => Method(x) == "item/completed" && x.GetProperty("params").GetProperty("item").GetProperty("id").GetString() == itemId);
+        Assert.Equal("interrupted", terminal.GetProperty("params").GetProperty("turn").GetProperty("status").GetString());
+        Assert.Equal("completed", tool.GetProperty("params").GetProperty("item").GetProperty("status").GetString());
+        Assert.True(tool.GetProperty("emittedAtMs").GetInt64() > terminal.GetProperty("emittedAtMs").GetInt64());
+        var hooks = root.GetProperty("hooks").EnumerateArray().ToArray();
+        Assert.DoesNotContain(hooks, x => x.GetProperty("hook_event_name").GetString() == "SubagentStop");
+        var pre = Assert.Single(hooks, x => x.GetProperty("hook_event_name").GetString() == "PreToolUse" && x.GetProperty("tool_use_id").GetString() == itemId);
+        Assert.Equal(childId, pre.GetProperty("agent_id").GetString());
+        Assert.NotEqual(childId, pre.GetProperty("session_id").GetString());
+        Assert.Equal(evidence.GetProperty("turnId").GetString(), pre.GetProperty("turn_id").GetString());
+    }
+
+    [Theory]
+    [InlineData("0.153.4")]
+    [InlineData("0.160.1")]
+    public void Code_Mode_parallel_calls_have_per_call_hooks_and_reload_rechecks_trust(string version)
+    {
+        using var document = Load(version, "code-mode");
+        var root = document.RootElement;
+        var inventory = root.GetProperty("diagnostics");
+        JsonElement SessionStart(string key) => inventory.GetProperty(key).EnumerateArray().Single(x => x.GetProperty("eventName").GetString() == "sessionStart");
+        Assert.Equal("trusted", SessionStart("before").GetProperty("trustStatus").GetString());
+        Assert.Equal("modified", SessionStart("changed").GetProperty("trustStatus").GetString());
+        Assert.NotEqual(SessionStart("before").GetProperty("currentHash").GetString(), SessionStart("changed").GetProperty("currentHash").GetString());
+        Assert.True(Equal(SessionStart("before"), SessionStart("restored")));
+        Assert.Contains(root.GetProperty("modelToolCalls").EnumerateArray(), x => x.GetProperty("name").GetString() == "exec"
+            && x.GetProperty("input").GetString()!.Contains("Promise.all", StringComparison.Ordinal));
+        var messages = root.GetProperty("appServer").EnumerateArray().Where(x => Method(x) is "item/started" or "item/completed"
+            && x.GetProperty("params").GetProperty("item").GetProperty("type").GetString() == "mcpToolCall").ToArray();
+        var starts = messages.Where(x => Method(x) == "item/started").ToArray();
+        var finishes = messages.Where(x => Method(x) == "item/completed").ToArray();
+        Assert.Equal(2, starts.Length);
+        Assert.Equal(2, finishes.Length);
+        Assert.True(starts.Max(x => x.GetProperty("emittedAtMs").GetInt64()) < finishes.Min(x => x.GetProperty("emittedAtMs").GetInt64()));
+        // Correlation remains exact when evidence delivery is reversed/duplicated.
+        var ids = starts.Reverse().Concat(starts).Select(x => x.GetProperty("params").GetProperty("item").GetProperty("id").GetString()).ToHashSet();
+        Assert.Equal(2, ids.Count);
+        foreach (var id in ids)
+            Assert.Equal(2, root.GetProperty("hooks").EnumerateArray().Count(x => x.TryGetProperty("tool_use_id", out var hookId) && hookId.GetString() == id));
+    }
+
+    [Theory]
+    [InlineData("0.153.4")]
+    [InlineData("0.160.1")]
     public void MCP_identity_is_explicit_and_error_state_survives_missing_PostToolUse(string version)
     {
         using var document = Load(version, "mcp-comparison");
