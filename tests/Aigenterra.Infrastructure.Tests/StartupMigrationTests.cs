@@ -18,7 +18,7 @@ public sealed class StartupMigrationTests(PostgresFixture fixture) : IClassFixtu
         await services.MigrateExecutionDatabaseAsync();
         await using var db = PostgresFixture.Context(connection);
         var applied = (await db.Database.GetAppliedMigrationsAsync()).ToArray();
-        Assert.Equal(11, applied.Length);
+        Assert.Equal(12, applied.Length);
         Assert.Empty(await db.Database.GetPendingMigrationsAsync());
         Assert.False(db.Database.HasPendingModelChanges());
 
@@ -39,7 +39,7 @@ public sealed class StartupMigrationTests(PostgresFixture fixture) : IClassFixtu
         Assert.Contains("Unapproved execution migrations", failure.Message, StringComparison.Ordinal);
         await using var db = PostgresFixture.Context(connection);
         Assert.Empty(await db.Database.GetAppliedMigrationsAsync());
-        Assert.Equal(11, (await db.Database.GetPendingMigrationsAsync()).Count());
+        Assert.Equal(12, (await db.Database.GetPendingMigrationsAsync()).Count());
     }
 
     // Present a future migration alongside the real migrations. Execution must be rejected

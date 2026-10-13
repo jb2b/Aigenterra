@@ -11,6 +11,8 @@ public static class CodexReconcileCommand
     {
         try
         {
+            if (args.Length == 3 && args[0] == "--enrollment" && args[2] == "--watch")
+                return await CodexReconciliationWatch.ExecuteAsync(args[1], true, spool, output, token);
             var options = new Dictionary<string, string>(StringComparer.Ordinal);
             for (var i = 0; i < args.Length; i++)
                 if (args[i] is not ("--executable" or "--home" or "--namespace" or "--source" or "--thread" or "--cursor")

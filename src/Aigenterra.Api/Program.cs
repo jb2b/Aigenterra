@@ -39,6 +39,8 @@ builder.Services.AddTransient<IRuntimeCaptureNormalizer, CodexHistoryNormalizer>
 builder.Services.AddTransient<NormalizeRuntimeCapture>();
 builder.Services.AddTransient<IRuntimeRequestContextDecoder, CodexRequestContextDecoder>();
 builder.Services.AddTransient<IRuntimeEvidenceNormalizer, CodexAgentEvidenceNormalizer>();
+builder.Services.AddTransient<IRuntimeReconciliationDecoder, CodexReconciliationDecoder>();
+builder.Services.AddTransient<GetRuntimeReconciliationTargets>();
 builder.Services.AddTransient<ProcessRuntimeCapture>();
 builder.Services.AddHostedService<RuntimeProcessingWorker>();
 builder.Services.AddTransient<GetRuntimeTurn>();
@@ -69,6 +71,7 @@ app.MapCodexIngestEndpoints();
 app.MapCaptureEndpoints();
 app.MapRuntimeCaptureEndpoints();
 app.MapRuntimeHealthEndpoints();
+app.MapRuntimeReconciliationEndpoints();
 app.MapEvaluationEndpoints();
 
 app.Run();

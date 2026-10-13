@@ -74,6 +74,7 @@ public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> opti
         RuntimeHealthRows.Configure(modelBuilder);
         RuntimeProcessingRows.Configure(modelBuilder);
         PostgresRuntimeEvidenceStore.Configure(modelBuilder);
+        PostgresRuntimeReconciliationStore.Configure(modelBuilder);
 
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {

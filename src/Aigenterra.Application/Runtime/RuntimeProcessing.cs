@@ -43,12 +43,20 @@ public static class RuntimeIdentity
 public sealed class ProcessRuntimeCapture(IRawCaptureStore archive, IRuntimeFactStore facts,
     IRuntimeCaptureNormalizer normalizer, IRuntimeRequestContextDecoder decoder,
     IRuntimeRequestStore requests, RecordRuntimeSourceHealth health,
-    IRuntimeEvidenceNormalizer evidenceNormalizer, IRuntimeEvidenceStore evidenceStore)
+    IRuntimeEvidenceNormalizer evidenceNormalizer, IRuntimeEvidenceStore evidenceStore,
+    IRuntimeReconciliationDecoder reconciliationDecoder, IRuntimeReconciliationStore reconciliationStore)
 {
     public async Task<string> ExecuteAsync(Guid captureId, CancellationToken token = default)
     {
         var saved = await archive.ReadRuntimeAsync(captureId, token) ?? throw new InvalidOperationException("Missing archived work input.");
         var capture = saved.Envelope;
+        if (capture.Source is { SourceKind: "diagnostic", Provenance: "reconciliation" })
+        {
+            var input = reconciliationDecoder.Decode(capture);
+            if (input is null) return "reconciliation_rejected";
+            await reconciliationStore.AppendAsync(new(captureId, capture.Source.RuntimeNamespaceId, capture.Source.SourceId, saved.IngestPosition, input), token);
+            return "reconciliation_recorded";
+        }
         if (capture.Source is { SourceKind: "diagnostic", Provenance: "inventory" })
             return (await health.ExecuteAsync(captureId, token)).IsSuccess ? "health_recorded" : "health_rejected";
         if (capture.Source is { SourceKind: "diagnostic", EvidenceStage: "RecorderDiagnostic", Provenance: "request_context" })

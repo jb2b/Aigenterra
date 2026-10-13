@@ -657,6 +657,46 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.ToTable("runtime_instances", (string)null);
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeReconciliationRow", b =>
+                {
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("fingerprint");
+
+                    b.Property<long>("IngestPosition")
+                        .HasColumnType("bigint")
+                        .HasColumnName("ingest_position");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("kind");
+
+                    b.Property<string>("Record")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("record");
+
+                    b.Property<Guid>("RuntimeNamespaceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_namespace_id");
+
+                    b.Property<Guid>("SourceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("source_id");
+
+                    b.HasKey("CaptureId");
+
+                    b.HasIndex("RuntimeNamespaceId", "SourceId", "IngestPosition");
+
+                    b.ToTable("runtime_reconciliation", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeRequestRow", b =>
                 {
                     b.Property<Guid>("ResponseCaptureId")
@@ -979,6 +1019,15 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.SourceHealthEventRow", null)
                         .WithMany()
                         .HasForeignKey("LatestCaptureId", "DetectorVersion")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeReconciliationRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", null)
+                        .WithMany()
+                        .HasForeignKey("CaptureId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

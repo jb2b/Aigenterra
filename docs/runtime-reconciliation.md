@@ -122,3 +122,63 @@ Verification 12: solution restore/build/format-check, 216 tests and hook probe
 passed. Research child reuse, three-child/four-segment identity, empty receivers,
 unknown task assignment, hook lifetime limits and coexisting PostgreSQL versions
 are covered; legacy execution invariants remain unchanged.
+
+## Scoped scheduling, recovery and source gaps (13)
+
+Use `codex reconcile --enrollment <absolute-json-path> --watch` with an explicitly
+prepared local enrollment. Example (paths/IDs must be chosen by the operator):
+
+```json
+{
+  "version": 1,
+  "runtimeNamespaceId": "11111111-1111-4111-8111-111111111111",
+  "sourceId": "22222222-2222-4222-8222-222222222222",
+  "executable": "C:/tools/codex.exe",
+  "codexHome": "C:/enrolled/codex-home",
+  "apiBaseUrl": "http://127.0.0.1:5248",
+  "stateDirectory": "C:/enrolled/aigenterra-reader-state",
+  "hookSourceIds": ["33333333-3333-4333-8333-333333333333"],
+  "threadIds": ["explicitly-selected-thread"]
+}
+```
+
+The API must have `Runtime:NormalizeCaptures=true`. The watcher spools its
+enrollment and diagnostics through the existing v2 archive, drains the spool,
+and obtains eligible targets from
+`GET /runtime/reconciliation/targets?runtimeNamespaceId=<uuid>&sourceId=<uuid>`.
+Pages use optional `after` (thread ID) and `limit` (1–500); this discovery feed is
+not a consistent inspection snapshot. Enrollment fingerprint must match locally.
+Only explicitly selected roots, owners in the enrolled hook sources, and children
+connected by explicit identity evidence are eligible. No thread/list or home-wide
+chat scan occurs. Hook source IDs belong to this enrolled home/namespace; the
+operator must not reuse them across homes. Reader identity is not owner identity.
+
+Scheduling coalesces new semantic evidence for one second, refreshes target
+discovery every five seconds, and aims at five seconds for active/unresolved
+threads or sixty seconds for idle threads. Two independent readers maximum;
+oldest due first. These are scheduling intervals, not delivery-latency guarantees.
+Cursor/checkpoint writes are durable and atomically replaced. An interrupted
+cycle is retried through a new reader; it never resumes Codex work. Changed local
+enrollment requires a new state directory, preventing accidental home/ID mixing.
+Watch owns spool delivery; do not run a competing drain worker on that spool.
+
+Pending >=10,000 or any retained evidence pauses history reads and records spool
+pressure. Existing hook capture remains independent and fail-open. A missing API,
+target discovery failure, reader restart, read failure or exhausted page/time
+budget becomes immutable recorder evidence. Successful reconciliation cannot
+erase earlier gaps or reconstruct missing deltas. Original diagnostic inputs are
+replayable; source age never implies idle failure.
+
+`GET /runtime/sources/{sourceId}/reconciliation?runtimeNamespaceId=<uuid>` exposes
+reader state, latest evidence, total gap count and the latest 100 gaps, with
+no-store caching. OwnerState remains Unknown, Coverage Partial and Gate
+KEEP_GATE_BLOCKED. Existing inventory health remains a separate contract.
+Interrupted turns leave unfinished activities TerminalUnknown; late explicit
+completed/failed activity evidence does not change the interrupted turn outcome.
+
+Verification 13: solution restore/build/format-check, 220 tests and hook probe
+passed. `research/codex/Test-ReconciliationRecovery.ps1` additionally exercised
+the real installed CLI reader in the isolated copied-history home, API outage,
+restart and persistent gaps against a disposable PostgreSQL database. Original
+logs/checkpoints/spool remain local; the temporary database was removed. No
+production sessions, configuration, trust or database were changed.
