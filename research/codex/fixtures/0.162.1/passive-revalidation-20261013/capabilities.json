@@ -1,0 +1,39 @@
+{
+  "runtimeVersion": "0.162.1",
+  "owner": "normal interactive CLI",
+  "model": "gpt-6-astra",
+  "classification": "UNKNOWN",
+  "gate": "KEEP_GATE_BLOCKED",
+  "topology": "same managed App Server; independent Unix WebSocket client",
+  "daemonVersion": "0.162.1",
+  "features": {
+    "daemon_auto_start": true,
+    "multi_agent": true,
+    "multi_agent_v2": false,
+    "hooks": true,
+    "code_mode": false
+  },
+  "liveDelivery": {
+    "existingRootStatus": "observed",
+    "existingRootTurnItemMcp": "not delivered in test",
+    "childCreatedWhileConnectedTurnItemMcp": "observed",
+    "existingChildTurnItemAfterReconnect": "not delivered in test",
+    "newChildAfterReconnectTurnItem": "observed"
+  },
+  "passiveHistory": "observed for root and child; not event replay",
+  "ownerContinuityAfterDisconnect": "verified during active MCP and subsequent work",
+  "rootApprovalRouting": "owner prompted both attached and disconnected; zero observer server requests",
+  "childApprovalRouting": "not tested",
+  "lifecycleNeutrality": "unknown; connection subscription lifetime not proven neutral",
+  "modelInputOutputNeutrality": "not proven generally; observer sent no model-visible context",
+  "disconnect": "owner survived; peer omitted WebSocket close handshake",
+  "reconnect": "connection and history restored; existing child event coverage lost",
+  "sourceGapRequired": true,
+  "observerMutatingRpcCount": 0,
+  "ownerInterrupt": "verified by CLI Escape and interrupted history",
+  "hooks": "not configured for this new isolated CLI; no hook events captured",
+  "initialFailures": [
+    "Long disposable home exceeded control socket SUN_LEN; owner setup retried at short path.",
+    "NDJSON sent through raw app-server proxy caused invalid WebSocket upgrade; corrected Unix WebSocket framing succeeded."
+  ]
+}

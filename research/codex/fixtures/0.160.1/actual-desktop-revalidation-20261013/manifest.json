@@ -1,0 +1,16 @@
+{
+  "runtimeVersion": "0.160.1",
+  "sanitized": true,
+  "note": "Allowlisted subset; joined pseudonyms across connections/history/MCP. No account, reasoning, user instruction bodies, paths, or public lookup result text. Originals remain in the private archive.",
+  "schemaHashes": [
+    {
+      "bundle": "0.160.1-ordinary",
+      "hash": "8683F6FD9FBB994FA2BFB704AB5B02C9890238FA507A4C0FF33FF45884CD0A2E"
+    },
+    {
+      "bundle": "0.160.1-experimental",
+      "hash": "7243BA241962AF92CA60581F1A81808EBDA4212A800F8B205F54703BCFD508C5"
+    }
+  ],
+  "executableSha256": "3B8F6E33CAA75F232558A3CF76FF9B87BB5EF6DBCF4996372F24E55C78B1B916"
+}

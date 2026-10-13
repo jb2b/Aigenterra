@@ -1,0 +1,29 @@
+{
+  "runtimeVersion": "0.160.1",
+  "applicationVersionFromAbout": "26.930.61225",
+  "applicationBuildFromUpdateDiagnostic": "13232",
+  "installedWindowsPackageVersion": "26.930.7945.0",
+  "updateStatus": "restart_required; not restarted",
+  "owner": "actual Desktop UI; new projectless chat",
+  "classification": "PASSIVE_HISTORY_ONLY",
+  "gate": "KEEP_GATE_BLOCKED",
+  "topology": "Desktop-owned stdio runtime plus separate history-reading App Server",
+  "sameRuntimeConnection": "not established",
+  "defaultUnixSocketError": {
+    "windowsCode": 10050,
+    "message": "A socket operation encountered a dead network. <user-home>/app-server-control/app-server-control.sock"
+  },
+  "passiveHistory": "root and reused child readable without loading or resuming",
+  "rootTurnCounts": { "firstSnapshot": 1, "beforeDisconnect": 4, "afterReconnect": 5 },
+  "liveThreadTurnItemEvents": 0,
+  "loadedThreadsInHistoryReader": 0,
+  "mcp": "Context7 success/failure in App Server history; owner transcript preserves isError:true, history projects failed status and error:null without isError",
+  "childReuse": "one explicit child ID with two completed turns",
+  "ownerInterrupt": "Desktop Stop button; history interrupted; active-tool cancellation not established",
+  "ownerUsabilityAfterReaderDisconnect": "verified; subsequent baseline completed; owning runtime PID unchanged",
+  "approvalRoutingWithLiveAttachment": "not tested; no live attachment",
+  "modelInputOutputNeutrality": "not proven generally",
+  "hooks": "existing configuration untouched; no hook lifecycle delivered to reader",
+  "sourceGapRequired": true,
+  "observerMutatingRpcCount": 0
+}

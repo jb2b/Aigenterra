@@ -1,0 +1,984 @@
+{
+  "fixtureVersion": 1,
+  "scenario": "passive-revalidation-20261013",
+  "runtimeVersion": "0.160.1",
+  "surface": "desktop",
+  "classification": "PASSIVE_HISTORY_ONLY",
+  "classificationScope": "Required complete passive runtime observation, including neutrality; partial live delivery is itemized separately.",
+  "gate": "KEEP_GATE_BLOCKED",
+  "connections": {
+    "history-1": {
+      "summary": {
+        "transport": "history",
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "startedAt": "2026-10-13T17:13:11.1604141+02:00",
+        "finishedAt": "2026-10-13T17:21:05.4550162+02:00",
+        "failure": null,
+        "messageCount": 9,
+        "serverRequests": 0
+      },
+      "notificationCounts": [
+        {
+          "count": 1,
+          "method": "account/updated"
+        },
+        {
+          "count": 1,
+          "method": "remoteControl/status/changed"
+        }
+      ],
+      "sent": [
+        {
+          "id": 1,
+          "method": "initialize",
+          "params": {
+            "clientInfo": {
+              "name": "aigenterra_passive_revalidation",
+              "version": "6.5"
+            },
+            "capabilities": {
+              "experimentalApi": true
+            }
+          }
+        },
+        {
+          "method": "initialized"
+        },
+        {
+          "id": 2,
+          "method": "thread/loaded/list",
+          "params": {}
+        },
+        {
+          "id": 3,
+          "method": "thread/read",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "includeTurns": false
+          }
+        },
+        {
+          "id": 4,
+          "method": "thread/turns/list",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "limit": 100,
+            "itemsView": "full",
+            "sortDirection": "asc"
+          }
+        },
+        {
+          "id": 5,
+          "method": "thread/loaded/list",
+          "params": {}
+        },
+        {
+          "id": 6,
+          "method": "thread/read",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "includeTurns": false
+          }
+        },
+        {
+          "id": 7,
+          "method": "thread/turns/list",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "limit": 100,
+            "itemsView": "full",
+            "sortDirection": "asc"
+          }
+        }
+      ],
+      "events": [],
+      "snapshots": [
+        {
+          "id": 2,
+          "method": "thread/loaded/list",
+          "result": {
+            "data": [],
+            "nextCursor": null
+          }
+        },
+        {
+          "id": 3,
+          "method": "thread/read",
+          "result": {
+            "thread": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "source": "vscode",
+              "originator": "Codex Desktop",
+              "status": {
+                "type": "notLoaded"
+              }
+            }
+          }
+        },
+        {
+          "id": 4,
+          "method": "thread/turns/list",
+          "result": {
+            "nextCursor": null,
+            "data": [
+              {
+                "id": "00000000-0000-4000-8000-000000000002",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0012",
+                    "text": "DESKTOP_BASELINE_READY"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": 5,
+          "method": "thread/loaded/list",
+          "result": {
+            "data": [],
+            "nextCursor": null
+          }
+        },
+        {
+          "id": 6,
+          "method": "thread/read",
+          "result": {
+            "thread": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "source": "vscode",
+              "originator": "Codex Desktop",
+              "status": {
+                "type": "notLoaded"
+              }
+            }
+          }
+        },
+        {
+          "id": 7,
+          "method": "thread/turns/list",
+          "result": {
+            "nextCursor": null,
+            "data": [
+              {
+                "id": "00000000-0000-4000-8000-000000000002",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0012",
+                    "text": "DESKTOP_BASELINE_READY"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000003",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0013",
+                    "text": "[model prose omitted]"
+                  },
+                  {
+                    "type": "mcpToolCall",
+                    "id": "exec-00000000-0000-4000-8000-000000000004",
+                    "server": "context7",
+                    "tool": "resolve-library-id",
+                    "status": "completed",
+                    "error": null,
+                    "arguments": {
+                      "libraryName": ".NET",
+                      "query": "Find the official .NET library documentation."
+                    },
+                    "resultOmitted": "Public documentation lookup text omitted; status retained."
+                  },
+                  {
+                    "type": "mcpToolCall",
+                    "id": "exec-00000000-0000-4000-8000-000000000005",
+                    "server": "context7",
+                    "tool": "query-docs",
+                    "status": "failed",
+                    "error": null,
+                    "arguments": {
+                      "libraryId": "/aigenterra-probe/does-not-exist",
+                      "query": "Retrieve an overview of this library."
+                    },
+                    "result": {
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Library \"/aigenterra-probe/does-not-exist\" not found. Please check the library ID or your access permissions."
+                        }
+                      ],
+                      "structuredContent": null,
+                      "_meta": null
+                    }
+                  },
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0014",
+                    "text": "DESKTOP_MCP_DONE\n\n- .NET lookup succeeded: `/dotnet/docs`.\n- `/aigenterra-probe/does-not-exist` documentation request returned “Library not found,” as intended. No retry."
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000006",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0015",
+                    "text": "[model prose omitted]"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "synthetic-item-0016",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "started"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "subagent-completed-00000000-0000-4000-8000-000000000008",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "completed"
+                  },
+                  {
+                    "type": "collabAgentToolCall",
+                    "id": "synthetic-item-0017",
+                    "tool": "wait",
+                    "status": "completed",
+                    "model": null,
+                    "reasoningEffort": null,
+                    "senderThreadId": "00000000-0000-4000-8000-000000000001",
+                    "receiverThreadIds": []
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "synthetic-item-0018",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "interacted"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "subagent-completed-00000000-0000-4000-8000-000000000009",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "completed"
+                  },
+                  {
+                    "type": "collabAgentToolCall",
+                    "id": "synthetic-item-0019",
+                    "tool": "wait",
+                    "status": "completed",
+                    "model": null,
+                    "reasoningEffort": null,
+                    "senderThreadId": "00000000-0000-4000-8000-000000000001",
+                    "receiverThreadIds": []
+                  },
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0020",
+                    "text": "[model prose omitted]"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000010",
+                "status": "interrupted",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0021",
+                    "text": "[model prose omitted]"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "sourceSha256": "37EF0B29BFDCEA2203DE74B857A10B8525CC65A8D09A0E09D57719B0FC2D4240"
+    },
+    "history-2": {
+      "summary": {
+        "transport": "history",
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "startedAt": "2026-10-13T17:24:18.362065+02:00",
+        "finishedAt": "2026-10-13T17:24:18.5531123+02:00",
+        "failure": null,
+        "messageCount": 8,
+        "serverRequests": 0
+      },
+      "notificationCounts": [
+        {
+          "count": 1,
+          "method": "remoteControl/status/changed"
+        }
+      ],
+      "sent": [
+        {
+          "id": 1,
+          "method": "initialize",
+          "params": {
+            "clientInfo": {
+              "name": "aigenterra_passive_revalidation",
+              "version": "6.5"
+            },
+            "capabilities": {
+              "experimentalApi": true
+            }
+          }
+        },
+        {
+          "method": "initialized"
+        },
+        {
+          "id": 2,
+          "method": "thread/loaded/list",
+          "params": {}
+        },
+        {
+          "id": 3,
+          "method": "thread/read",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "includeTurns": false
+          }
+        },
+        {
+          "id": 4,
+          "method": "thread/turns/list",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "limit": 100,
+            "itemsView": "full",
+            "sortDirection": "asc"
+          }
+        },
+        {
+          "id": 5,
+          "method": "thread/loaded/list",
+          "params": {}
+        },
+        {
+          "id": 6,
+          "method": "thread/read",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "includeTurns": false
+          }
+        },
+        {
+          "id": 7,
+          "method": "thread/turns/list",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000001",
+            "limit": 100,
+            "itemsView": "full",
+            "sortDirection": "asc"
+          }
+        }
+      ],
+      "events": [],
+      "snapshots": [
+        {
+          "id": 2,
+          "method": "thread/loaded/list",
+          "result": {
+            "data": [],
+            "nextCursor": null
+          }
+        },
+        {
+          "id": 3,
+          "method": "thread/read",
+          "result": {
+            "thread": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "source": "vscode",
+              "originator": "Codex Desktop",
+              "status": {
+                "type": "notLoaded"
+              }
+            }
+          }
+        },
+        {
+          "id": 4,
+          "method": "thread/turns/list",
+          "result": {
+            "nextCursor": null,
+            "data": [
+              {
+                "id": "00000000-0000-4000-8000-000000000002",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0012",
+                    "text": "DESKTOP_BASELINE_READY"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000003",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0013",
+                    "text": "[model prose omitted]"
+                  },
+                  {
+                    "type": "mcpToolCall",
+                    "id": "exec-00000000-0000-4000-8000-000000000004",
+                    "server": "context7",
+                    "tool": "resolve-library-id",
+                    "status": "completed",
+                    "error": null,
+                    "arguments": {
+                      "libraryName": ".NET",
+                      "query": "Find the official .NET library documentation."
+                    },
+                    "resultOmitted": "Public documentation lookup text omitted; status retained."
+                  },
+                  {
+                    "type": "mcpToolCall",
+                    "id": "exec-00000000-0000-4000-8000-000000000005",
+                    "server": "context7",
+                    "tool": "query-docs",
+                    "status": "failed",
+                    "error": null,
+                    "arguments": {
+                      "libraryId": "/aigenterra-probe/does-not-exist",
+                      "query": "Retrieve an overview of this library."
+                    },
+                    "result": {
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Library \"/aigenterra-probe/does-not-exist\" not found. Please check the library ID or your access permissions."
+                        }
+                      ],
+                      "structuredContent": null,
+                      "_meta": null
+                    }
+                  },
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0014",
+                    "text": "DESKTOP_MCP_DONE\n\n- .NET lookup succeeded: `/dotnet/docs`.\n- `/aigenterra-probe/does-not-exist` documentation request returned “Library not found,” as intended. No retry."
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000006",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0015",
+                    "text": "[model prose omitted]"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "synthetic-item-0016",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "started"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "subagent-completed-00000000-0000-4000-8000-000000000008",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "completed"
+                  },
+                  {
+                    "type": "collabAgentToolCall",
+                    "id": "synthetic-item-0017",
+                    "tool": "wait",
+                    "status": "completed",
+                    "model": null,
+                    "reasoningEffort": null,
+                    "senderThreadId": "00000000-0000-4000-8000-000000000001",
+                    "receiverThreadIds": []
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "synthetic-item-0018",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "interacted"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "subagent-completed-00000000-0000-4000-8000-000000000009",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "completed"
+                  },
+                  {
+                    "type": "collabAgentToolCall",
+                    "id": "synthetic-item-0019",
+                    "tool": "wait",
+                    "status": "completed",
+                    "model": null,
+                    "reasoningEffort": null,
+                    "senderThreadId": "00000000-0000-4000-8000-000000000001",
+                    "receiverThreadIds": []
+                  },
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0020",
+                    "text": "[model prose omitted]"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000010",
+                "status": "interrupted",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0021",
+                    "text": "[model prose omitted]"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000011",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0022",
+                    "text": "DESKTOP_BASELINE_READY"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": 5,
+          "method": "thread/loaded/list",
+          "result": {
+            "data": [],
+            "nextCursor": null
+          }
+        },
+        {
+          "id": 6,
+          "method": "thread/read",
+          "result": {
+            "thread": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "source": "vscode",
+              "originator": "Codex Desktop",
+              "status": {
+                "type": "notLoaded"
+              }
+            }
+          }
+        },
+        {
+          "id": 7,
+          "method": "thread/turns/list",
+          "result": {
+            "nextCursor": null,
+            "data": [
+              {
+                "id": "00000000-0000-4000-8000-000000000002",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0012",
+                    "text": "DESKTOP_BASELINE_READY"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000003",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0013",
+                    "text": "[model prose omitted]"
+                  },
+                  {
+                    "type": "mcpToolCall",
+                    "id": "exec-00000000-0000-4000-8000-000000000004",
+                    "server": "context7",
+                    "tool": "resolve-library-id",
+                    "status": "completed",
+                    "error": null,
+                    "arguments": {
+                      "libraryName": ".NET",
+                      "query": "Find the official .NET library documentation."
+                    },
+                    "resultOmitted": "Public documentation lookup text omitted; status retained."
+                  },
+                  {
+                    "type": "mcpToolCall",
+                    "id": "exec-00000000-0000-4000-8000-000000000005",
+                    "server": "context7",
+                    "tool": "query-docs",
+                    "status": "failed",
+                    "error": null,
+                    "arguments": {
+                      "libraryId": "/aigenterra-probe/does-not-exist",
+                      "query": "Retrieve an overview of this library."
+                    },
+                    "result": {
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Library \"/aigenterra-probe/does-not-exist\" not found. Please check the library ID or your access permissions."
+                        }
+                      ],
+                      "structuredContent": null,
+                      "_meta": null
+                    }
+                  },
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0014",
+                    "text": "DESKTOP_MCP_DONE\n\n- .NET lookup succeeded: `/dotnet/docs`.\n- `/aigenterra-probe/does-not-exist` documentation request returned “Library not found,” as intended. No retry."
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000006",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0015",
+                    "text": "[model prose omitted]"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "synthetic-item-0016",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "started"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "subagent-completed-00000000-0000-4000-8000-000000000008",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "completed"
+                  },
+                  {
+                    "type": "collabAgentToolCall",
+                    "id": "synthetic-item-0017",
+                    "tool": "wait",
+                    "status": "completed",
+                    "model": null,
+                    "reasoningEffort": null,
+                    "senderThreadId": "00000000-0000-4000-8000-000000000001",
+                    "receiverThreadIds": []
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "synthetic-item-0018",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "interacted"
+                  },
+                  {
+                    "type": "subAgentActivity",
+                    "id": "subagent-completed-00000000-0000-4000-8000-000000000009",
+                    "agentThreadId": "00000000-0000-4000-8000-000000000007",
+                    "agentPath": "/root/desktop_child",
+                    "kind": "completed"
+                  },
+                  {
+                    "type": "collabAgentToolCall",
+                    "id": "synthetic-item-0019",
+                    "tool": "wait",
+                    "status": "completed",
+                    "model": null,
+                    "reasoningEffort": null,
+                    "senderThreadId": "00000000-0000-4000-8000-000000000001",
+                    "receiverThreadIds": []
+                  },
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0020",
+                    "text": "[model prose omitted]"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000010",
+                "status": "interrupted",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0021",
+                    "text": "[model prose omitted]"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000011",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0022",
+                    "text": "DESKTOP_BASELINE_READY"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "sourceSha256": "F460DD9484CA9EAB9F0093D14D70AE9373A023F726D990CFB472309F2648736A"
+    },
+    "child-history": {
+      "summary": {
+        "transport": "history",
+        "threadId": "00000000-0000-4000-8000-000000000007",
+        "startedAt": "2026-10-13T17:26:18.8047448+02:00",
+        "finishedAt": "2026-10-13T17:26:18.963155+02:00",
+        "failure": null,
+        "messageCount": 8,
+        "serverRequests": 0
+      },
+      "notificationCounts": [
+        {
+          "count": 1,
+          "method": "remoteControl/status/changed"
+        }
+      ],
+      "sent": [
+        {
+          "id": 1,
+          "method": "initialize",
+          "params": {
+            "clientInfo": {
+              "name": "aigenterra_passive_revalidation",
+              "version": "6.5"
+            },
+            "capabilities": {
+              "experimentalApi": true
+            }
+          }
+        },
+        {
+          "method": "initialized"
+        },
+        {
+          "id": 2,
+          "method": "thread/loaded/list",
+          "params": {}
+        },
+        {
+          "id": 3,
+          "method": "thread/read",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000007",
+            "includeTurns": false
+          }
+        },
+        {
+          "id": 4,
+          "method": "thread/turns/list",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000007",
+            "limit": 100,
+            "itemsView": "full",
+            "sortDirection": "asc"
+          }
+        },
+        {
+          "id": 5,
+          "method": "thread/loaded/list",
+          "params": {}
+        },
+        {
+          "id": 6,
+          "method": "thread/read",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000007",
+            "includeTurns": false
+          }
+        },
+        {
+          "id": 7,
+          "method": "thread/turns/list",
+          "params": {
+            "threadId": "00000000-0000-4000-8000-000000000007",
+            "limit": 100,
+            "itemsView": "full",
+            "sortDirection": "asc"
+          }
+        }
+      ],
+      "events": [],
+      "snapshots": [
+        {
+          "id": 2,
+          "method": "thread/loaded/list",
+          "result": {
+            "data": [],
+            "nextCursor": null
+          }
+        },
+        {
+          "id": 3,
+          "method": "thread/read",
+          "result": {
+            "thread": {
+              "id": "00000000-0000-4000-8000-000000000007",
+              "source": {
+                "subAgent": {
+                  "thread_spawn": {
+                    "parent_thread_id": "00000000-0000-4000-8000-000000000001",
+                    "depth": 1,
+                    "agent_path": "/root/desktop_child",
+                    "agent_nickname": "Locke",
+                    "agent_role": null
+                  }
+                }
+              },
+              "originator": "Codex Desktop",
+              "status": {
+                "type": "notLoaded"
+              }
+            }
+          }
+        },
+        {
+          "id": 4,
+          "method": "thread/turns/list",
+          "result": {
+            "nextCursor": null,
+            "data": [
+              {
+                "id": "00000000-0000-4000-8000-000000000008",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0023",
+                    "text": "DESKTOP_CHILD_FIRST"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000009",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0024",
+                    "text": "DESKTOP_CHILD_SECOND"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": 5,
+          "method": "thread/loaded/list",
+          "result": {
+            "data": [],
+            "nextCursor": null
+          }
+        },
+        {
+          "id": 6,
+          "method": "thread/read",
+          "result": {
+            "thread": {
+              "id": "00000000-0000-4000-8000-000000000007",
+              "source": {
+                "subAgent": {
+                  "thread_spawn": {
+                    "parent_thread_id": "00000000-0000-4000-8000-000000000001",
+                    "depth": 1,
+                    "agent_path": "/root/desktop_child",
+                    "agent_nickname": "Locke",
+                    "agent_role": null
+                  }
+                }
+              },
+              "originator": "Codex Desktop",
+              "status": {
+                "type": "notLoaded"
+              }
+            }
+          }
+        },
+        {
+          "id": 7,
+          "method": "thread/turns/list",
+          "result": {
+            "nextCursor": null,
+            "data": [
+              {
+                "id": "00000000-0000-4000-8000-000000000008",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0023",
+                    "text": "DESKTOP_CHILD_FIRST"
+                  }
+                ]
+              },
+              {
+                "id": "00000000-0000-4000-8000-000000000009",
+                "status": "completed",
+                "itemsView": "full",
+                "items": [
+                  {
+                    "type": "agentMessage",
+                    "id": "synthetic-item-0024",
+                    "text": "DESKTOP_CHILD_SECOND"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "sourceSha256": "A6F87FD7FC4B930BA08D5CEEE3CED01CD776A5679FD10E180AD2AE8B1D618AFC"
+    }
+  },
+  "externalMcp": []
+}
