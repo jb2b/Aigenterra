@@ -20,6 +20,8 @@
     <ProjectReference Include="..\..\src\Aigenterra.Infrastructure\Aigenterra.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Aigenterra.Application\Aigenterra.Application.csproj" />
     <ProjectReference Include="..\..\src\Aigenterra.Adapters.Codex\Aigenterra.Adapters.Codex.csproj" />
+    <ProjectReference Include="..\..\src\Aigenterra.Api\Aigenterra.Api.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\src\Aigenterra.Collector\Aigenterra.Collector.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>

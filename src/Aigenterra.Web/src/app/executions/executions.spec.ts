@@ -8,6 +8,8 @@ import { ExecutionList } from './execution-list';
 import { ExecutionDetail } from './execution-detail';
 import { AgentList } from './agent-list';
 import { ObservationTimeline } from './observation-timeline';
+import { EvaluationApi } from './evaluation-api';
+import { of } from 'rxjs';
 import { AgentExecution, ExecutionTimeline, Observation, RecentExecution } from './execution-api';
 
 const id = '00000000-0000-0000-0000-000000000001';
@@ -53,7 +55,12 @@ describe('Execution screens', () => {
   let http: HttpTestingController;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes), provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter(routes),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: EvaluationApi, useValue: { list: () => of({ items: [], nextCursor: null }) } },
+      ],
     });
     http = TestBed.inject(HttpTestingController);
   });
@@ -81,6 +88,7 @@ describe('Execution screens', () => {
     http.expectOne(`/api/task-executions/${id}/timeline`).flush(timeline);
     await harness.fixture.whenStable();
     expect(harness.routeNativeElement!.textContent).toContain('Observation timeline');
+    expect(harness.routeNativeElement!.textContent).toContain('No repository context recorded');
     const agentLink =
       harness.routeNativeElement!.querySelector<HTMLAnchorElement>('.observation-meta a')!;
     expect(agentLink.getAttribute('href')).toBe(`/executions/${id}#agent-${id}`);
@@ -88,6 +96,41 @@ describe('Execution screens', () => {
     await harness.fixture.whenStable();
     expect(TestBed.inject(Router).url).toBe(`/executions/${id}#agent-${id}`);
     http.expectNone((request) => request.url.includes('/timeline'));
+  });
+
+  it('shows a short title and keeps the full plan in a closed disclosure', async () => {
+    const harness = await RouterTestingHarness.create(`/executions/${id}`);
+    const prompt = 'Detailed plan\n' + 'Implement one step.\n'.repeat(100);
+    http.expectOne(`/api/task-executions/${id}/timeline`).flush({ ...timeline, objective: prompt });
+    await harness.fixture.whenStable();
+    const element = harness.routeNativeElement!;
+    expect(element.querySelector('.full-objective')!.textContent!.length).toBeLessThanOrEqual(181);
+    const disclosure = element.querySelector<HTMLDetailsElement>('.prompt-details')!;
+    expect(disclosure.open).toBe(false);
+    disclosure.querySelector('summary')!.click();
+    expect(disclosure.open).toBe(true);
+    expect(disclosure.querySelector('pre')!.textContent).toBe(prompt);
+  });
+
+  it('passes recorded repository snapshots through the existing timeline response', async () => {
+    const harness = await RouterTestingHarness.create(`/executions/${id}`);
+    http.expectOne(`/api/task-executions/${id}/timeline`).flush({
+      ...timeline,
+      startContext: {
+        status: 'captured',
+        branch: 'recorded-branch',
+        headSha: 'a'.repeat(40),
+        isDirty: false,
+      },
+      endContext: { status: 'timeout' },
+    });
+    await harness.fixture.whenStable();
+    const element = harness.routeNativeElement!;
+    expect(element.querySelector('app-repository-context')!.textContent).toContain(
+      'recorded-branch',
+    );
+    expect(element.querySelector('app-repository-context')!.textContent).toContain('Timed out');
+    expect(element.querySelector('a[href$="#repository-heading"]')).not.toBeNull();
   });
 
   it('keeps previous data when refresh fails, and retries successfully', async () => {
@@ -209,7 +252,7 @@ describe('Recorded facts presentation', () => {
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelectorAll('.observation').length).toBe(100);
     expect(fixture.nativeElement.querySelector('script')).toBeNull();
-    fixture.nativeElement.querySelector('.text-button').click();
+    fixture.nativeElement.querySelector('.summary-toggle').click();
     await fixture.whenStable();
     expect(
       fixture.nativeElement.querySelector('.observation-summary').classList.contains('clamped'),

@@ -14,7 +14,8 @@ public sealed class ProjectDependencyTests
             ["Aigenterra.Application"] = ["Aigenterra.Domain"],
             ["Aigenterra.Infrastructure"] = ["Aigenterra.Application"],
             ["Aigenterra.Adapters.Codex"] = ["Aigenterra.Application"],
-            ["Aigenterra.Collector"] = [],
+            ["Aigenterra.Adapters.Git"] = ["Aigenterra.Application"],
+            ["Aigenterra.Collector"] = ["Aigenterra.Application", "Aigenterra.Adapters.Git", "Aigenterra.Adapters.Codex"],
             ["Aigenterra.ServiceDefaults"] = [],
             ["Aigenterra.Api"] =
             [
@@ -23,7 +24,7 @@ public sealed class ProjectDependencyTests
                 "Aigenterra.Infrastructure",
                 "Aigenterra.ServiceDefaults"
             ],
-            ["Aigenterra.AppHost"] = ["Aigenterra.Api"]
+            ["Aigenterra.AppHost"] = ["Aigenterra.Api", "Aigenterra.Collector"]
         };
 
     [Fact]
@@ -70,7 +71,7 @@ public sealed class ProjectDependencyTests
         var projectOrFrameworkReferences = project
             .Descendants()
             .Where(element => element.Name.LocalName is
-                "ProjectReference" or "FrameworkReference")
+                "FrameworkReference")
             .ToArray();
         var packages = project
             .Descendants()

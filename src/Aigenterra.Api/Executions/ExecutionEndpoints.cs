@@ -14,6 +14,17 @@ internal static class ExecutionEndpoints
     public static IEndpointRouteBuilder MapExecutionEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet("/task-executions", GetRecentAsync);
+        endpoints.MapGet("/observations/{observationId:guid}/evidence", async (Guid observationId,
+            Aigenterra.Application.Executions.Ports.IObservationEvidenceReader reader,
+            HttpResponse response, CancellationToken cancellationToken) =>
+        {
+            response.Headers.CacheControl = "no-store";
+            response.Headers.XContentTypeOptions = "nosniff";
+            var evidence = await reader.GetEvidenceAsync(observationId, cancellationToken);
+            // Download opaque bytes; never serve recorded HTML or scripts as executable content.
+            return evidence is null ? Results.NotFound() : Results.File(evidence.Content.ToArray(),
+                "application/octet-stream", $"observation-{observationId}.bin");
+        });
         endpoints.MapPost("/conversations", CreateConversationAsync);
         endpoints.MapPost(
             "/conversations/{conversationId:guid}/task-executions",
@@ -308,7 +319,7 @@ internal static class ExecutionEndpoints
                 observation.Kind,
                 observation.Summary,
                 ToResponse(observation.RuntimeReference),
-                observation.HasRawEvidence)).ToArray());
+                observation.HasRawEvidence)).ToArray(), timeline.StartContext, timeline.EndContext);
 }
 
 internal sealed record RecentTaskExecutionsResponse(IReadOnlyList<RecentTaskExecutionResponse> Items);
@@ -429,7 +440,9 @@ internal sealed record TaskExecutionTimelineResponse(
     DateTimeOffset? EndedAt,
     RuntimeReferenceResponse? RuntimeReference,
     IReadOnlyList<AgentExecutionTimelineResponse> Agents,
-    IReadOnlyList<ObservationTimelineResponse> Observations);
+    IReadOnlyList<ObservationTimelineResponse> Observations,
+    Application.Recording.RepositoryContext? StartContext,
+    Application.Recording.RepositoryContext? EndContext);
 
 /// <summary>
 /// Represents an agent within an HTTP timeline response.

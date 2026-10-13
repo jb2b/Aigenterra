@@ -36,6 +36,18 @@ export interface Observation {
   runtimeReference: RuntimeReference | null;
   hasRawEvidence: boolean;
 }
+export interface RepositoryContext {
+  capturedAt?: string | null;
+  status?: string | null;
+  repositoryRoot?: string | null;
+  commonGitDirectory?: string | null;
+  worktreePath?: string | null;
+  branch?: string | null;
+  headSha?: string | null;
+  isDirty?: boolean | null;
+  changedFiles?: string[] | null;
+  untrackedFiles?: string[] | null;
+}
 export interface ExecutionTimeline {
   taskExecutionId: string;
   conversationId: string;
@@ -46,6 +58,8 @@ export interface ExecutionTimeline {
   runtimeReference: RuntimeReference | null;
   agents: AgentExecution[];
   observations: Observation[];
+  startContext?: RepositoryContext | null;
+  endContext?: RepositoryContext | null;
 }
 @Injectable({ providedIn: 'root' })
 export class ExecutionApi {

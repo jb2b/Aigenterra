@@ -12,7 +12,9 @@ public sealed record TaskExecutionTimeline(
     DateTimeOffset? EndedAt,
     RuntimeReferenceModel? RuntimeReference,
     IReadOnlyList<AgentExecutionTimelineItem> Agents,
-    IReadOnlyList<ObservationTimelineItem> Observations);
+    IReadOnlyList<ObservationTimelineItem> Observations,
+    Recording.RepositoryContext? StartContext = null,
+    Recording.RepositoryContext? EndContext = null);
 
 /// <summary>
 /// Represents one agent in a task-execution timeline.

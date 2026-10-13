@@ -1,6 +1,6 @@
 #requires -Version 7.0
 [CmdletBinding()]
-param()
+param([switch] $RealCodex)
 
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
@@ -10,7 +10,7 @@ $composeArgs = @('compose', '--project-directory', $repositoryRoot,
     '-f', (Join-Path $repositoryRoot 'docker-compose.yml'), '-p', $project)
 $previousEnvironment = @{}
 $resourcesMayExist = $false
-foreach ($key in @('POSTGRES_PASSWORD', 'WEB_PORT', 'WEB_BIND_HOST')) {
+foreach ($key in @('POSTGRES_PASSWORD', 'WEB_PORT', 'WEB_BIND_HOST', 'AIGENTERRA_INGEST_URL', 'AIGENTERRA_SPOOL_PATH', 'AIGENTERRA_CAPTURE_URL')) {
     $previousEnvironment[$key] = [Environment]::GetEnvironmentVariable($key, 'Process')
 }
 
@@ -71,6 +71,55 @@ function Get-Evidence([string] $ObservationId) {
     (Invoke-Compose exec -T postgres psql -U aigenterra -d aigenterra -Atc $sql) -join "`n"
 }
 
+function Send-Json([string] $Path, $Body) {
+    Convert-Response (Invoke-WebRequest "$script:origin$Path" -Method Post `
+        -Body ([Text.Encoding]::UTF8.GetBytes(($Body | ConvertTo-Json -Depth 30 -Compress))) `
+        -ContentType 'application/json' -Headers @{ 'X-Aigenterra-Observed-At' = [DateTimeOffset]::UtcNow.ToString('O') } `
+        -SkipHttpErrorCheck -TimeoutSec 30)
+}
+
+function Test-Evaluations([string] $TaskId, [string] $SessionId, [string] $TurnId) {
+    $path = "/api/task-executions/$TaskId/evaluations"
+    $first = Send-Json $path $null
+    Assert-That ($first.StatusCode -eq 201) 'Evaluation creation failed.'
+    $initial = $first.Content | ConvertFrom-Json
+    Assert-That (($initial.findings | Where-Object detection -ne 'NotObserved').Count -eq 0) 'Empty evidence produced a conclusion.'
+    Assert-That ((Send-Json $path $null).StatusCode -eq 200) 'Same snapshot was not reused.'
+    $fixtureRoot = Join-Path $repositoryRoot 'tests/Aigenterra.Codex.Tests/Fixtures'
+    $hooks = (Get-Content -Raw (Join-Path $fixtureRoot 'codex-0.153.4-command-hooks.json') | ConvertFrom-Json -AsHashtable).events
+    foreach ($hook in $hooks) {
+        $hook.Remove('keys'); $hook.session_id = $SessionId; $hook.turn_id = $TurnId
+        Assert-That ((Send-Json '/api/ingest/codex/hooks' $hook).StatusCode -eq 200) 'Fixture hook rejected.'
+    }
+    $hookOnly = (Send-Json $path $null).Content | ConvertFrom-Json
+    Assert-That (@($hookOnly.findings.attempts | Where-Object verdict -ne 'Unknown').Count -eq 0) 'Hook stdout was mistaken for exit evidence.'
+    $captures = Get-Content -Raw (Join-Path $fixtureRoot 'codex-0.153.4-command-results.json') | ConvertFrom-Json -AsHashtable
+    foreach ($capture in $captures) {
+        $capture.session_id = $SessionId; $capture.turn_id = $TurnId
+        $response = Send-Json '/api/ingest/codex/command-results' $capture
+        Assert-That ($response.StatusCode -eq 200) 'Terminal command capture rejected.'
+        $replay = (Send-Json '/api/ingest/codex/command-results' $capture).Content | ConvertFrom-Json
+        Assert-That ($replay.disposition -eq 'duplicate') 'Capture replay allocated new evidence.'
+    }
+    $evaluatedResponse = Send-Json $path $null
+    $evaluated = $evaluatedResponse.Content | ConvertFrom-Json
+    Assert-That ($evaluatedResponse.StatusCode -eq 201 -and $evaluated.evaluationId -ne $initial.evaluationId) 'New evidence did not create a new evaluation.'
+    foreach ($finding in $evaluated.findings) {
+        Assert-That ($finding.attempts.Count -eq 2) 'Lost a command attempt.'
+        Assert-That (@($finding.attempts | Where-Object verdict -eq 'Succeeded').Count -eq 1) 'Missing successful command.'
+        Assert-That (@($finding.attempts | Where-Object verdict -eq 'Failed').Count -eq 1) 'Missing failed command.'
+        foreach ($attempt in $finding.attempts) { Assert-That ($attempt.observationIds.Count -eq 3) 'Evidence chain incomplete.' }
+    }
+    $location = [Uri]::new([Uri]"$script:origin$path", [string]($evaluatedResponse.Headers.Location | Select-Object -First 1))
+    Assert-That ($location.AbsolutePath -eq "$path/$($evaluated.evaluationId)") 'Location is invalid behind the web proxy.'
+    Assert-That (-not ($evaluatedResponse.Content -match 'tool_response|commandActions|dotnet build|dotnet test')) 'Evaluation leaked raw evidence or commands.'
+    Assert-That (((Get-Response "$path/$($initial.evaluationId)").Content | ConvertFrom-Json).hasNewerEvidence) 'Old snapshot is not marked stale.'
+    Assert-That (((Get-Response $path).Content | ConvertFrom-Json).items.Count -eq 3) 'Evaluation history is incomplete.'
+    Assert-That ((Get-Response ($path + '?cursor=invalid')).StatusCode -eq 400) 'Invalid cursor not rejected.'
+    Assert-That ((Get-Response "/api/task-executions/$([Guid]::NewGuid())/evaluations/$($evaluated.evaluationId)").StatusCode -eq 404) 'Cross-task evaluation exposed.'
+    return "$path/$($evaluated.evaluationId)"
+}
+
 try {
     Assert-That ((Invoke-Docker info --format '{{.OSType}}') -eq 'linux') 'Docker must run Linux containers.'
     $env:POSTGRES_PASSWORD = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
@@ -112,7 +161,7 @@ try {
     })
     Assert-That ($unwanted.Count -eq 0) 'Final images contain source files, development settings or captured output.'
     $migrationCount = Invoke-Compose exec -T postgres psql -U aigenterra -d aigenterra -Atc 'SELECT count(*) FROM "__EFMigrationsHistory";'
-    Assert-That ($migrationCount -eq '3') 'Expected all three reviewed migrations.'
+    Assert-That ($migrationCount -eq '5') 'Expected all five reviewed migrations.'
 
     $page = Get-Response /executions
     Assert-That ($page.StatusCode -eq 200 -and $page.Content.Contains('<app-root')) 'SPA did not load.'
@@ -162,11 +211,46 @@ try {
     Assert-That ((Send-Hook $large $observedAt).StatusCode -eq 200) 'Valid 1 MiB payload rejected by proxy.'
     Assert-That ((Send-Hook ($large + [byte]32) $observedAt).StatusCode -eq 413) 'Oversized payload not rejected.'
 
+    $evaluationPath = Test-Evaluations $receipt.taskExecutionId $session $turn
+    $evaluationBefore = (Get-Response $evaluationPath).Content
+    $before = (Get-Response $timelinePath).Content | ConvertFrom-Json -AsHashtable
+
+    if ($RealCodex) {
+        $env:AIGENTERRA_INGEST_URL = "$script:origin/api/ingest/codex/hooks"
+        $env:AIGENTERRA_CAPTURE_URL = "$script:origin/api/ingest/codex/captures/v1"
+        $env:AIGENTERRA_SPOOL_PATH = Join-Path ([IO.Path]::GetTempPath()) $project
+        $probePrompt = 'Aigenterra real command-result acceptance. Do not edit files, use subagents, plugins or MCP. Run exactly four separate exec commands from this repository: dotnet build src/Aigenterra.Domain/Aigenterra.Domain.csproj --no-restore; dotnet build Aigenterra.Nonexistent.Probe.csproj --no-restore; dotnet test tests/Aigenterra.Infrastructure.Tests/Aigenterra.Infrastructure.Tests.csproj --no-restore; dotnet test Aigenterra.Nonexistent.Probe.csproj --no-restore. Semicolons in this instruction separate calls, not shell commands. Use yield_time_ms 1000 and poll returned sessions with write_stdin until completion. Nonexistent-project errors are expected. End with a short receipt; do not run anything else.'
+        # JSON output is kept in memory, never printed or stored alongside user data.
+        $probeOutput = & codex exec --json --sandbox read-only $probePrompt
+        Assert-That ($LASTEXITCODE -eq 0) 'Real Codex acceptance turn failed.'
+        & (Join-Path $env:LOCALAPPDATA 'Aigenterra\collector\Aigenterra.Collector.exe') drain
+        Assert-That ($LASTEXITCODE -eq 0) 'Real hook spool did not drain.'
+        $probeEvents = @($probeOutput | ForEach-Object { try { $_ | ConvertFrom-Json } catch {} })
+        $realSession = @($probeEvents | Where-Object type -eq 'thread.started')[0].thread_id
+        $execution = @(((Get-Response '/api/task-executions?limit=50').Content | ConvertFrom-Json).items | Where-Object objective -eq $probePrompt)[0]
+        Assert-That ($null -ne $execution) 'Real hooks did not record the acceptance turn.'
+        $realTurn = $execution.runtimeReference.externalId
+        & pwsh -NoProfile -File (Join-Path $PSScriptRoot 'Capture-CodexCommandResults.ps1') -SessionId $realSession -TurnId $realTurn
+        Assert-That ($LASTEXITCODE -eq 0) 'Real runtime capture failed.'
+        $realPath = "/api/task-executions/$($execution.taskExecutionId)/evaluations"
+        $realResult = (Send-Json $realPath $null).Content | ConvertFrom-Json
+        foreach ($finding in $realResult.findings) {
+            Assert-That ($finding.attempts.Count -eq 2) 'Real command attempts are incomplete.'
+            Assert-That (@($finding.attempts | Where-Object verdict -eq 'Succeeded').Count -eq 1) 'Real success not proven.'
+            Assert-That (@($finding.attempts | Where-Object verdict -eq 'Failed').Count -eq 1) 'Real failure not proven.'
+        }
+        $realEvaluationPath = "$realPath/$($realResult.evaluationId)"
+        $realEvaluationBefore = (Get-Response $realEvaluationPath).Content
+        Write-Host "Real evaluation verified: $($execution.taskExecutionId)"
+    }
+
     Invoke-Compose down | Out-Host
     Invoke-Compose up -d --wait --wait-timeout 180 | Out-Host
     $after = (Get-Response $timelinePath).Content | ConvertFrom-Json -AsHashtable
     Assert-That (($before | ConvertTo-Json -Depth 20 -Compress) -ceq ($after | ConvertTo-Json -Depth 20 -Compress)) 'Timeline changed after down/up.'
     Assert-That ((Get-Evidence $receipt.observationId) -ceq $hex) 'Evidence changed after down/up.'
+    Assert-That ((Get-Response $evaluationPath).Content -ceq $evaluationBefore) 'Evaluation changed after down/up.'
+    if ($RealCodex) { Assert-That ((Get-Response $realEvaluationPath).Content -ceq $realEvaluationBefore) 'Real evaluation changed after down/up.' }
     $detail = Get-Response "/executions/$($receipt.taskExecutionId)"
     Assert-That ($detail.StatusCode -eq 200 -and $detail.Content.Contains('<app-root')) 'Direct detail refresh failed.'
 
@@ -187,7 +271,7 @@ try {
     Assert-That (-not $logs.Contains($env:POSTGRES_PASSWORD)) 'Password was written to container logs.'
     Assert-That (-not $logs.Contains('smoke héllo')) 'Payload was written to container logs.'
     Assert-That (-not $logs.Contains($queryMarker)) 'Querystring was written to container logs.'
-    Write-Host 'PASS: Linux topology, migrations, routing, ingest, durability and outage recovery.'
+    Write-Host 'PASS: Linux topology, migrations, routing, ingest, evaluations, durability and outage recovery.'
 }
 finally {
     try {

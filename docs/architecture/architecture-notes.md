@@ -239,3 +239,57 @@ gemeld. Late observations blijven volgens de bestaande domeinregel registreerbaa
 **DDD / Clean Architecture:** Netwerkpublicatie en secrets zijn infrastructuurconfiguratie, geen Application-policy. Runtime-secrets behoren niet tot een image of browserbundle.
 
 **Trade-off:** De lokale installatie blijft klein. Publiek gebruik en sterkere scheiding van databaseprivileges vereisen latere infrastructuur- en securitykeuzes.
+
+## 2026-09-09 — Observations en evaluations zijn verschillende feiten
+
+**Status:** Accepted
+
+**Keuze:** Evaluation is een immutable, evidence-backed conclusie over een vastgelegde observation-snapshot, geen nieuwe observation of executionstatus. De evaluatorversie en watermark blijven bij het resultaat bewaard.
+
+**DDD / Clean Architecture:** Observation beschrijft wat werd waargenomen; Evaluation wat onder expliciete regels daaruit volgt. Application orkestreert; Domain bewaakt resultaatinvarianten; Infrastructure bewaakt snapshot en atomische opslag.
+
+**Trade-off:** Her-evaluatie en late evidence vragen afzonderlijke records, maar veranderen eerdere conclusies niet stilzwijgend.
+
+## 2026-09-09 — Bewijsniveau is onderdeel van de betekenis
+
+**Status:** Accepted
+
+**Keuze:** v1 rapporteert uitsluitend deterministische commandresultaten. Exitcode 0 is geen claim dat testcases zijn uitgevoerd of geslaagd. Onbekende, ontbrekende en conflicterende evidence blijft expliciet onzeker; iedere herkende poging heeft concrete ObservationId-verwijzingen.
+
+**DDD / Clean Architecture:** Verdicts drukken het ondersteunde bewijsniveau uit. UI en adapters mogen geen sterkere betekenis aan deze waarden geven. Heuristics, AI en human judgments zijn geen synoniemen voor deterministic evidence.
+
+**Trade-off:** De evaluator is bewust conservatief en ondersteunt slechts directe bekende commands; complexere shell- en testsemantiek blijft buiten v1.
+
+## 2026-09-09 — Providerdecoding en runtimecapture blijven buiten de kern
+
+**Status:** Accepted
+
+**Keuze:** Een expliciet lokaal capturecommand leest terminale Codex-commandmetadata via het app-serverprotocol. De Codex-adapter vertaalt die en bestaande hooks naar providerneutrale evaluatorinvoer; de pure commandregels blijven in Application. Bestaande hookbytes en Collector blijven ongewijzigd.
+
+**DDD / Clean Architecture:** De anti-corruptielaag schermt runtimeformats af. Een concrete Application-port rechtvaardigt de decoder; er is geen generiek pluginframework of nieuwe projectdependency nodig.
+
+**Trade-off:** Capture vereist een extra operatorstap en versiegebonden contracttests. Er is geen transcriptimport, runtimebesturing of automatische backgroundservice.
+
+## 2026-09-09 — Evaluation bestaat zonder Experiment
+
+**Status:** Accepted
+
+**Keuze:** Een zelfstandig geïdentificeerde Evaluation verwijst rechtstreeks naar TaskExecution en evidence. Experiment, Variant en Trial zijn geen eigenaar of vereiste.
+
+**DDD / Clean Architecture:** De evaluatie-use-case heeft zelfstandig productwaarde. Toekomstige experimentation kan executions en evaluaties via IDs gebruiken zonder hun lifecycle over te nemen.
+
+**Trade-off:** Experimentgebonden interpretatie en vergelijking worden later toegevoegd; nu ontstaat geen vooruitgelopen experimentmodel.
+
+## Recording-hardening fase 1
+
+Application bezit IRepositoryContextReader en provider-onafhankelijke capture/contextcontracten.
+Adapters.Git voert begrensde lokale Git-reads uit; Adapters.Codex bepaalt welke hook een
+start/end-meting vraagt en behoudt zijn bestaande normalisatie. Collector composeert deze
+adapters op de agentmachine en beheert een duurzame schijfbuffer. Hij kent geen EF/Npgsql.
+Api blijft de composition root voor databaseopslag en ingest. AppHost orchestreert de worker,
+API en Web; PostgreSQL is standaard een expliciet geconfigureerde externe service.
+
+Raw captures en normalisatie-outcomes zijn aparte insert-only tabellen. Raw bronbytes worden
+vóór providerparsing vastgelegd. Een onbekend of niet-koppelbaar event mag als archived_only
+worden bevestigd, met foutcode. Er is geen nieuwe domeininterpretatie of recovery-engine.
+De contextreadmodellen voegen alleen nullable start/end-context aan bestaande timelines toe.

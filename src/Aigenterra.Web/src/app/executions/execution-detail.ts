@@ -1,3 +1,4 @@
+import { promptSnippet } from './prompt-snippet';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -6,9 +7,18 @@ import { Subscription } from 'rxjs';
 import { ExecutionApi, ExecutionTimeline, localTimeZone, requestError } from './execution-api';
 import { AgentList } from './agent-list';
 import { ObservationTimeline } from './observation-timeline';
+import { ExecutionEvaluations } from './execution-evaluations';
+import { RepositoryContextPanel } from './repository-context';
 
 @Component({
-  imports: [DatePipe, RouterLink, AgentList, ObservationTimeline],
+  imports: [
+    DatePipe,
+    RouterLink,
+    AgentList,
+    ObservationTimeline,
+    ExecutionEvaluations,
+    RepositoryContextPanel,
+  ],
   template: `
     <a class="back-link" routerLink="/executions">← All executions</a>
     <div class="page-heading">
@@ -39,7 +49,9 @@ import { ObservationTimeline } from './observation-timeline';
     }
     @if (execution(); as task) {
       <nav class="section-links" aria-label="Execution sections">
+        <a [routerLink]="[]" fragment="repository-heading">Repository context</a>
         <a [routerLink]="[]" fragment="agents-heading">Agents ({{ task.agents.length }})</a>
+        <a [routerLink]="[]" fragment="evaluations-heading">Evaluations</a>
         <a [routerLink]="[]" fragment="timeline-heading"
           >Observation timeline ({{ task.observations.length }})</a
         >
@@ -53,7 +65,13 @@ import { ObservationTimeline } from './observation-timeline';
           <span class="badge" [attr.data-status]="task.status">{{ task.status }}</span
           ><span class="runtime">{{ task.runtimeReference?.runtime ?? 'Unknown runtime' }}</span>
         </div>
-        <h2 class="full-objective">{{ task.objective }}</h2>
+        <h2 class="full-objective">{{ snippet(task.objective) }}</h2>
+        @if (snippet(task.objective) !== task.objective) {
+          <details class="prompt-details">
+            <summary>Show full prompt</summary>
+            <pre class="full-prompt">{{ task.objective }}</pre>
+          </details>
+        }
         <p class="status-explanation">
           Each Codex execution represents one prompt turn within its conversation.
         </p>
@@ -107,7 +125,15 @@ import { ObservationTimeline } from './observation-timeline';
         ><span>Refresh to retrieve new observations.</span>
       </div>
       <div class="detail-stack">
-        <app-agent-list [agents]="task.agents" /><app-observation-timeline
+        <app-repository-context [start]="task.startContext" [end]="task.endContext" />
+        <app-agent-list [agents]="task.agents" />
+        <app-execution-evaluations
+          [taskId]="task.taskExecutionId"
+          [sequence]="watermark(task)"
+          (evidenceSelected)="timeline.reveal($event)"
+        />
+        <app-observation-timeline
+          #timeline
           [observations]="task.observations"
           [agents]="task.agents"
         />
@@ -125,6 +151,10 @@ export class ExecutionDetail {
   readonly loading = signal(false);
   readonly error = signal('');
   readonly timeZone = localTimeZone;
+  readonly snippet = promptSnippet;
+  watermark(task: ExecutionTimeline) {
+    return task.observations.reduce((highest, item) => Math.max(highest, item.sequence), 0);
+  }
   constructor() {
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
       this.id = params.get('id') ?? '';

@@ -16,7 +16,20 @@ internal static class CodexIngestEndpoints
     {
         endpoints.MapPost("/ingest/codex/hooks", IngestAsync)
             .DisableRequestTimeout();
+        endpoints.MapPost("/ingest/codex/command-results", IngestCommandResultAsync).DisableRequestTimeout();
         return endpoints;
+    }
+
+    private static async Task<IResult> IngestCommandResultAsync(HttpRequest request,
+        CodexCommandResultIngestor ingestor, CancellationToken cancellationToken)
+    {
+        if (!TryReadObservedAt(request, out var observedAt))
+            return ExecutionEndpoints.Problem(Application.Common.ApplicationErrorType.Validation,
+                "observed_at_header_invalid", "A UTC X-Aigenterra-Observed-At header is required.");
+        var payload = await ReadPayloadAsync(request.Body, cancellationToken);
+        if (payload is null) return Results.Problem(statusCode: 413, title: "Command evidence is too large");
+        return ExecutionEndpoints.ToHttpResult(await ingestor.IngestAsync(payload, observedAt, cancellationToken),
+            receipt => Results.Ok(new { disposition = receipt.Disposition.ToString().ToLowerInvariant(), receipt.TaskExecutionId, receipt.ObservationId }));
     }
 
     private static async Task<IResult> IngestAsync(

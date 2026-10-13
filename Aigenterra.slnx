@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Aigenterra.Adapters.Codex/Aigenterra.Adapters.Codex.csproj" />
+    <Project Path="src/Aigenterra.Adapters.Git/Aigenterra.Adapters.Git.csproj" />
     <Project Path="src/Aigenterra.Api/Aigenterra.Api.csproj" />
     <Project Path="src/Aigenterra.AppHost/Aigenterra.AppHost.csproj" />
     <Project Path="src/Aigenterra.Application/Aigenterra.Application.csproj" />

@@ -3,14 +3,13 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume|clear",
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
-            "timeout": 2,
-            "async": true
+            "timeout": 2
           }
         ]
       }
@@ -19,9 +18,10 @@
       {
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
             "timeout": 2
           }
         ]
@@ -31,11 +31,11 @@
       {
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
-            "timeout": 2,
-            "async": true
+            "timeout": 2
           }
         ]
       }
@@ -44,11 +44,11 @@
       {
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
-            "timeout": 2,
-            "async": true
+            "timeout": 2
           }
         ]
       }
@@ -57,11 +57,11 @@
       {
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
-            "timeout": 2,
-            "async": true
+            "timeout": 2
           }
         ]
       }
@@ -70,11 +70,11 @@
       {
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
-            "timeout": 2,
-            "async": true
+            "timeout": 2
           }
         ]
       }
@@ -83,9 +83,10 @@
       {
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
             "timeout": 2
           }
         ]
@@ -95,9 +96,10 @@
       {
         "hooks": [
           {
+            "commandWindows": "pwsh.exe -NoProfile -File \"C:\\Users\\jeroe\\AppData\\Local\\Aigenterra\\collector\\invoke-aigenterra-collector.ps1\"",
+            "async": false,
             "type": "command",
             "command": "true",
-            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/invoke-aigenterra-collector.ps1')\"",
             "timeout": 2
           }
         ]

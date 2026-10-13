@@ -1,3 +1,4 @@
+import { promptSnippet } from './prompt-snippet';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -54,7 +55,7 @@ import { ExecutionApi, localTimeZone, RecentExecution, requestError } from './ex
                 <a
                   class="objective-link"
                   [routerLink]="['/executions', execution.taskExecutionId]"
-                  >{{ execution.objective }}</a
+                  >{{ snippet(execution.objective) }}</a
                 ><span class="muted mono">{{ execution.taskExecutionId }}</span>
               </div>
               <div class="execution-meta">
@@ -98,6 +99,7 @@ export class ExecutionList {
   readonly loading = signal(false);
   readonly error = signal('');
   readonly timeZone = localTimeZone;
+  readonly snippet = promptSnippet;
   constructor() {
     this.load();
   }

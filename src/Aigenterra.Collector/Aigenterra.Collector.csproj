@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Aigenterra.Application\Aigenterra.Application.csproj" />
+    <ProjectReference Include="..\Aigenterra.Adapters.Git\Aigenterra.Adapters.Git.csproj" />
+    <ProjectReference Include="..\Aigenterra.Adapters.Codex\Aigenterra.Adapters.Codex.csproj" />
     <PackageReference Include="OpenTelemetry" Version="1.15.3" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.15.3" />
   </ItemGroup>

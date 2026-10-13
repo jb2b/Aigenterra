@@ -1,0 +1,175 @@
+{
+  "runtimeVersion": "Codex CLI 0.153.4",
+  "capturedAt": "2026-09-09",
+  "description": "Sanitized projection of actual HTTP hook payloads received through the unchanged repository Collector. keys lists every original top-level payload field; omitted field values are not needed for this contract probe. These are not complete ingest payloads.",
+  "events": [
+    {
+      "hook_event_name": "PreToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-1",
+      "tool_input": {
+        "command": "dotnet build src/Aigenterra.Domain/Aigenterra.Domain.csproj --no-restore"
+      },
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_use_id"
+      ]
+    },
+    {
+      "hook_event_name": "PostToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-1",
+      "tool_input": {
+        "command": "dotnet build src/Aigenterra.Domain/Aigenterra.Domain.csproj --no-restore"
+      },
+      "tool_response": "  Aigenterra.Domain -> C:\\workspace\\Aigenterra\\src\\Aigenterra.Domain\\bin\\Debug\\net10.0\\Aigenterra.Domain.dll\r\n\r\nBuild succeeded.\r\n    0 Warning(s)\r\n    0 Error(s)\r\n\r\nTime Elapsed 00:00:00.53\r\n",
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_response",
+        "tool_use_id"
+      ]
+    },
+    {
+      "hook_event_name": "PreToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-2",
+      "tool_input": {
+        "command": "dotnet build Aigenterra.Nonexistent.Probe.csproj --no-restore"
+      },
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_use_id"
+      ]
+    },
+    {
+      "hook_event_name": "PostToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-2",
+      "tool_input": {
+        "command": "dotnet build Aigenterra.Nonexistent.Probe.csproj --no-restore"
+      },
+      "tool_response": "MSBUILD : error MSB1009: Project file does not exist.\r\nSwitch: Aigenterra.Nonexistent.Probe.csproj\r\n",
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_response",
+        "tool_use_id"
+      ]
+    },
+    {
+      "hook_event_name": "PreToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-3",
+      "tool_input": {
+        "command": "dotnet test tests/Aigenterra.Domain.Tests/Aigenterra.Domain.Tests.csproj --no-restore"
+      },
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_use_id"
+      ]
+    },
+    {
+      "hook_event_name": "PostToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-3",
+      "tool_input": {
+        "command": "dotnet test tests/Aigenterra.Domain.Tests/Aigenterra.Domain.Tests.csproj --no-restore"
+      },
+      "tool_response": "  Aigenterra.Domain -> C:\\workspace\\Aigenterra\\src\\Aigenterra.Domain\\bin\\Debug\\net10.0\\Aigenterra.Domain.dll\r\n  Aigenterra.Domain.Tests -> C:\\workspace\\Aigenterra\\tests\\Aigenterra.Domain.Tests\\bin\\Debug\\net10.0\\Aigenterra.Domain.Tests.dll\r\nTest run for C:\\workspace\\Aigenterra\\tests\\Aigenterra.Domain.Tests\\bin\\Debug\\net10.0\\Aigenterra.Domain.Tests.dll (.NETCoreApp,Version=v10.0)\r\nA total of 1 test files matched the specified pattern.\r\n\r\nPassed!  - Failed:     0, Passed:    24, Skipped:     0, Total:    24, Duration: 200 ms - Aigenterra.Domain.Tests.dll (net10.0)\r\n",
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_response",
+        "tool_use_id"
+      ]
+    },
+    {
+      "hook_event_name": "PreToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-4",
+      "tool_input": {
+        "command": "dotnet test Aigenterra.Nonexistent.Probe.csproj --no-restore"
+      },
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_use_id"
+      ]
+    },
+    {
+      "hook_event_name": "PostToolUse",
+      "tool_name": "Bash",
+      "tool_use_id": "probe-command-4",
+      "tool_input": {
+        "command": "dotnet test Aigenterra.Nonexistent.Probe.csproj --no-restore"
+      },
+      "tool_response": "MSBUILD : error MSB1009: Project file does not exist.\r\nSwitch: Aigenterra.Nonexistent.Probe.csproj\r\n",
+      "keys": [
+        "session_id",
+        "turn_id",
+        "transcript_path",
+        "cwd",
+        "hook_event_name",
+        "model",
+        "permission_mode",
+        "tool_name",
+        "tool_input",
+        "tool_response",
+        "tool_use_id"
+      ]
+    }
+  ]
+}

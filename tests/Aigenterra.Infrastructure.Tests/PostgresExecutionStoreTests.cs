@@ -17,19 +17,35 @@ namespace Aigenterra.Infrastructure.Tests;
 
 public sealed class PostgresFixture : IAsyncLifetime
 {
-    private readonly PostgreSqlContainer container = new PostgreSqlBuilder("postgres:17.11-bookworm").Build();
+    private readonly string? externalConnection = Environment.GetEnvironmentVariable("AIGENTERRA_TEST_POSTGRES_CONNECTION");
+    private readonly PostgreSqlContainer? container = Environment.GetEnvironmentVariable("AIGENTERRA_TEST_POSTGRES_CONNECTION") is null
+        ? new PostgreSqlBuilder("postgres:17.11-bookworm").Build() : null;
+    private readonly List<string> databases = [];
+    private string ConnectionString => externalConnection ?? container!.GetConnectionString();
 
-    public Task InitializeAsync() => container.StartAsync();
-    public Task DisposeAsync() => container.DisposeAsync().AsTask();
+    public Task InitializeAsync() => externalConnection is null ? container!.StartAsync() : Task.CompletedTask;
+    public async Task DisposeAsync()
+    {
+        if (externalConnection is null) { await container!.DisposeAsync(); return; }
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        await connection.OpenAsync();
+        foreach (var database in databases)
+        {
+            // Only random databases created by this fixture, never the configured source database.
+            await using var command = new NpgsqlCommand($"DROP DATABASE {database} WITH (FORCE)", connection);
+            await command.ExecuteNonQueryAsync();
+        }
+    }
 
     public async Task<string> CreateDatabaseAsync(string? targetMigration = null)
     {
         var database = $"test_{Guid.NewGuid():N}";
-        await using var connection = new NpgsqlConnection(container.GetConnectionString());
+        await using var connection = new NpgsqlConnection(ConnectionString);
         await connection.OpenAsync();
         await using var command = new NpgsqlCommand($"CREATE DATABASE {database}", connection);
         await command.ExecuteNonQueryAsync();
-        var connectionString = new NpgsqlConnectionStringBuilder(container.GetConnectionString()) { Database = database }.ConnectionString;
+        databases.Add(database);
+        var connectionString = new NpgsqlConnectionStringBuilder(ConnectionString) { Database = database, Pooling = false }.ConnectionString;
         await using var db = Context(connectionString);
         await db.GetService<IMigrator>().MigrateAsync(targetMigration);
         if (targetMigration is null)
@@ -351,10 +367,11 @@ public sealed class PostgresExecutionStoreTests(PostgresFixture fixture) : IClas
         Assert.Equal([2L, 3L, 1L], timeline.Observations.Select(item => item.Sequence));
         Assert.Equal([false, false, true], timeline.Observations.Select(item => item.HasRawEvidence));
         Assert.Empty(read.ChangeTracker.Entries());
-        Assert.Equal(3, capture.Queries.Count);
+        Assert.Equal(4, capture.Queries.Count);
         var observationQuery = Assert.Single(capture.Queries, query => query.Contains("FROM observations", StringComparison.Ordinal));
         Assert.Contains("evidence IS NOT NULL", observationQuery);
         Assert.DoesNotContain("media_type", observationQuery);
+        Assert.DoesNotContain(".payload", string.Join('\n', capture.Queries));
         Assert.DoesNotContain("conversations", string.Join('\n', capture.Queries));
         Assert.Null(await new PostgresExecutionStore(read).GetTimelineAsync(TaskExecutionId.New()));
     }

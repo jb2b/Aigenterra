@@ -11,8 +11,15 @@ namespace Aigenterra.Infrastructure.Executions.Postgres;
 /// Implements execution capabilities with short database operations; no tracked Domain objects escape.
 /// </summary>
 public sealed class PostgresExecutionStore(ExecutionDbContext db) :
-    IExecutionWriteStore, IExecutionRuntimeReferenceReader, ITaskExecutionTimelineReader
+    IExecutionWriteStore, IExecutionRuntimeReferenceReader, ITaskExecutionTimelineReader, IObservationEvidenceReader
 {
+    public async ValueTask<SourceEvidence?> GetEvidenceAsync(Guid observationId, CancellationToken cancellationToken = default)
+    {
+        var row = await db.Observations.AsNoTracking().Where(x => x.Id == observationId && x.Evidence != null)
+            .Select(x => new { x.MediaType, x.Evidence }).SingleOrDefaultAsync(cancellationToken);
+        return row is null ? null : new SourceEvidence(row.MediaType!, row.Evidence!);
+    }
+
     public ValueTask<StoreAddResult> AddConversationAsync(Conversation conversation, CancellationToken cancellationToken = default) =>
         AddAsync(ExecutionMapping.ToRow(conversation), "conversations", cancellationToken);
 
@@ -167,10 +174,21 @@ public sealed class PostgresExecutionStore(ExecutionDbContext db) :
                 row.Kind, row.Summary,
                 row.Runtime == null ? null : new RuntimeReferenceModel(row.Runtime, row.ResourceKind!, row.ExternalId!),
                 row.Evidence != null)).ToArrayAsync(cancellationToken);
+        var contexts = await (from capture in db.Set<RawCaptureRow>().AsNoTracking()
+                              join outcome in db.Set<CaptureOutcomeRow>().AsNoTracking() on capture.CaptureId equals outcome.CaptureId
+                              where outcome.TaskExecutionId == taskExecutionId.Value && capture.RepositoryContext != null
+                              orderby capture.CapturedAtTicks, capture.CaptureId
+                              select new { capture.ContextPhase, capture.RepositoryContext }).ToArrayAsync(cancellationToken);
+        Application.Recording.RepositoryContext? ReadContext(string phase)
+        {
+            var json = contexts.FirstOrDefault(x => x.ContextPhase == phase)?.RepositoryContext;
+            return json is null ? null : System.Text.Json.JsonSerializer.Deserialize<Application.Recording.RepositoryContext>(json);
+        }
         await transaction.CommitAsync(cancellationToken);
         return new(task.Id, task.ConversationId, task.Objective, task.Status,
             ExecutionMapping.Time(task.StartedAtTicks), task.EndedAtTicks is { } end ? ExecutionMapping.Time(end) : null,
-            task.Runtime is null ? null : new(task.Runtime, task.ResourceKind!, task.ExternalId!), agents, observations);
+            task.Runtime is null ? null : new(task.Runtime, task.ResourceKind!, task.ExternalId!), agents, observations,
+            ReadContext("start"), ReadContext("end"));
     }
 
     private async ValueTask<StoreAddResult> AddAsync<T>(T row, string table, CancellationToken cancellationToken) where T : class

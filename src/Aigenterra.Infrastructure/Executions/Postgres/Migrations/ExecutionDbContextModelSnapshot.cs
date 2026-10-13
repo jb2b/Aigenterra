@@ -93,6 +93,50 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.CaptureOutcomeRow", b =>
+                {
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<Guid?>("AgentExecutionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("agent_execution_id");
+
+                    b.Property<Guid?>("ConversationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("conversation_id");
+
+                    b.Property<string>("Disposition")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("disposition");
+
+                    b.Property<Guid?>("ObservationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("observation_id");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text")
+                        .HasColumnName("reason");
+
+                    b.Property<Guid?>("TaskExecutionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("task_execution_id");
+
+                    b.HasKey("CaptureId");
+
+                    b.HasIndex("AgentExecutionId");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("ObservationId");
+
+                    b.HasIndex("TaskExecutionId");
+
+                    b.ToTable("capture_outcomes", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.ConversationRow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -133,6 +177,152 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                             t.HasCheckConstraint("ck_conversations_reference", "(runtime IS NULL AND resource_kind IS NULL AND external_id IS NULL) OR (runtime IS NOT NULL AND resource_kind IS NOT NULL AND external_id IS NOT NULL AND length(btrim(runtime)) > 0 AND length(btrim(resource_kind)) > 0 AND length(btrim(external_id)) > 0)");
 
                             t.HasCheckConstraint("ck_conversations_started_at_ticks", "started_at_ticks BETWEEN 0 AND 3155378975999999999");
+                        });
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationAttemptRow", b =>
+                {
+                    b.Property<Guid>("TaskExecutionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("task_execution_id");
+
+                    b.Property<Guid>("EvaluationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("evaluation_id");
+
+                    b.Property<string>("Check")
+                        .HasColumnType("text")
+                        .HasColumnName("check");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer")
+                        .HasColumnName("number");
+
+                    b.Property<int?>("ExitCode")
+                        .HasColumnType("integer")
+                        .HasColumnName("exit_code");
+
+                    b.Property<string>("Explanation")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("explanation");
+
+                    b.Property<string>("Verdict")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("verdict");
+
+                    b.HasKey("TaskExecutionId", "EvaluationId", "Check", "Number");
+
+                    b.ToTable("evaluation_attempts", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_evaluation_attempt", "number > 0 AND ((verdict = 'Succeeded' AND exit_code IS NOT NULL AND exit_code = 0) OR (verdict = 'Failed' AND exit_code IS NOT NULL AND exit_code <> 0) OR (verdict IN ('Unknown','RequestedOnly') AND exit_code IS NULL))");
+                        });
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationEvidenceRow", b =>
+                {
+                    b.Property<Guid>("TaskExecutionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("task_execution_id");
+
+                    b.Property<Guid>("EvaluationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("evaluation_id");
+
+                    b.Property<string>("Check")
+                        .HasColumnType("text")
+                        .HasColumnName("check");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer")
+                        .HasColumnName("number");
+
+                    b.Property<Guid>("ObservationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("observation_id");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer")
+                        .HasColumnName("position");
+
+                    b.HasKey("TaskExecutionId", "EvaluationId", "Check", "Number", "ObservationId");
+
+                    b.HasIndex("TaskExecutionId", "ObservationId");
+
+                    b.ToTable("evaluation_evidence", (string)null);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationFindingRow", b =>
+                {
+                    b.Property<Guid>("TaskExecutionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("task_execution_id");
+
+                    b.Property<Guid>("EvaluationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("evaluation_id");
+
+                    b.Property<string>("Check")
+                        .HasColumnType("text")
+                        .HasColumnName("check");
+
+                    b.Property<string>("Detection")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("detection");
+
+                    b.Property<string>("Limitations")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("limitations");
+
+                    b.HasKey("TaskExecutionId", "EvaluationId", "Check");
+
+                    b.ToTable("evaluation_findings", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_evaluation_finding", "\"check\" IN ('Build','Tests') AND detection IN ('Observed','NotObserved','Unknown')");
+                        });
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<long>("CreatedAtTicks")
+                        .HasColumnType("bigint")
+                        .HasColumnName("created_at_ticks");
+
+                    b.Property<string>("EvaluatorId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("evaluator_id");
+
+                    b.Property<Guid>("TaskExecutionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("task_execution_id");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer")
+                        .HasColumnName("version");
+
+                    b.Property<long>("Watermark")
+                        .HasColumnType("bigint")
+                        .HasColumnName("watermark");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskExecutionId", "Id")
+                        .IsDescending();
+
+                    b.HasIndex("TaskExecutionId", "EvaluatorId", "Version", "Watermark")
+                        .IsUnique();
+
+                    b.ToTable("evaluations", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_evaluation_snapshot", "watermark >= 0 AND version > 0 AND length(btrim(evaluator_id)) > 0");
                         });
                 });
 
@@ -232,6 +422,47 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RawCaptureRow", b =>
+                {
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<long>("CapturedAtTicks")
+                        .HasColumnType("bigint")
+                        .HasColumnName("captured_at_ticks");
+
+                    b.Property<string>("ContextPhase")
+                        .HasColumnType("text")
+                        .HasColumnName("context_phase");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("fingerprint");
+
+                    b.Property<byte[]>("Payload")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("payload");
+
+                    b.Property<long>("RecordedAtTicks")
+                        .HasColumnType("bigint")
+                        .HasColumnName("recorded_at_ticks");
+
+                    b.Property<string>("RepositoryContext")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("repository_context");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer")
+                        .HasColumnName("version");
+
+                    b.HasKey("CaptureId");
+
+                    b.ToTable("raw_captures", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.TaskExecutionRow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -324,6 +555,79 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         .HasForeignKey("TaskExecutionId", "ParentAgentExecutionId")
                         .HasPrincipalKey("TaskExecutionId", "Id")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.CaptureOutcomeRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.AgentExecutionRow", null)
+                        .WithMany()
+                        .HasForeignKey("AgentExecutionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.RawCaptureRow", null)
+                        .WithOne()
+                        .HasForeignKey("Aigenterra.Infrastructure.Executions.Postgres.CaptureOutcomeRow", "CaptureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.ConversationRow", null)
+                        .WithMany()
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.ObservationRow", null)
+                        .WithMany()
+                        .HasForeignKey("ObservationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.TaskExecutionRow", null)
+                        .WithMany()
+                        .HasForeignKey("TaskExecutionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationAttemptRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.EvaluationFindingRow", null)
+                        .WithMany()
+                        .HasForeignKey("TaskExecutionId", "EvaluationId", "Check")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationEvidenceRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.ObservationRow", null)
+                        .WithMany()
+                        .HasForeignKey("TaskExecutionId", "ObservationId")
+                        .HasPrincipalKey("TaskExecutionId", "Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.EvaluationAttemptRow", null)
+                        .WithMany()
+                        .HasForeignKey("TaskExecutionId", "EvaluationId", "Check", "Number")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationFindingRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.EvaluationRow", null)
+                        .WithMany()
+                        .HasForeignKey("TaskExecutionId", "EvaluationId")
+                        .HasPrincipalKey("TaskExecutionId", "Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.EvaluationRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.TaskExecutionRow", null)
+                        .WithMany()
+                        .HasForeignKey("TaskExecutionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.ObservationRow", b =>

@@ -1,3 +1,32 @@
+.evaluation-panel {
+  padding: 24px;
+  overflow-wrap: anywhere;
+}
+.evaluation-finding {
+  margin-top: 24px;
+  border-top: 1px solid #d6dfd8;
+}
+.evaluation-finding ol {
+  padding-left: 24px;
+}
+.evaluation-history {
+  list-style: none;
+  padding: 0;
+}
+.evaluation-history button {
+  text-align: left;
+  margin: 4px 0;
+}
+.evidence-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.observation.evidence-highlight {
+  outline: 3px solid #567e67;
+  outline-offset: -3px;
+  background: #edf6ee;
+}
 :root {
   color-scheme: light;
   font-family: 'Segoe UI', system-ui, sans-serif;
@@ -631,4 +660,28 @@ summary {
   .timeline-explanation {
     padding: 16px;
   }
+}
+
+.full-prompt,
+.raw-evidence pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 34rem;
+  overflow: auto;
+  padding: 16px;
+  background: #f5f6f3;
+  border: 1px solid #dce2d8;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.raw-evidence {
+  min-width: 0;
+  margin-top: 12px;
+}
+.observation-heading app-raw-evidence {
+  flex-basis: 100%;
+}
+.prompt-details {
+  margin-top: 16px;
 }

@@ -68,6 +68,9 @@ public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> opti
                 "(evidence IS NOT NULL AND octet_length(evidence) > 0 AND media_type IS NOT NULL AND length(btrim(media_type)) > 0)");
         });
 
+        EvaluationRows.Configure(modelBuilder);
+        CaptureRows.Configure(modelBuilder);
+
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {
             foreach (var property in entity.GetProperties())

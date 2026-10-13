@@ -1,11 +1,12 @@
 import { Component, computed, input, signal } from '@angular/core';
+import { RawEvidence } from './raw-evidence';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AgentExecution, agentRole, Observation } from './execution-api';
 
 @Component({
   selector: 'app-observation-timeline',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, RawEvidence],
   template: `
     <section class="panel" aria-labelledby="timeline-heading">
       <div class="section-heading">
@@ -22,12 +23,17 @@ import { AgentExecution, agentRole, Observation } from './execution-api';
       }
       <ol class="timeline">
         @for (observation of visible(); track observation.observationId) {
-          <li class="observation">
+          <li
+            class="observation"
+            [id]="'observation-' + observation.observationId"
+            tabindex="-1"
+            [class.evidence-highlight]="highlighted() === observation.observationId"
+          >
             <div class="observation-heading">
               <span class="kind">{{ observation.kind }}</span
               ><span class="muted mono">Sequence {{ observation.sequence }}</span>
               @if (observation.hasRawEvidence) {
-                <span class="evidence">Raw evidence available</span>
+                <app-raw-evidence [observationId]="observation.observationId" />
               }
             </div>
             <p
@@ -40,7 +46,7 @@ import { AgentExecution, agentRole, Observation } from './execution-api';
             </p>
             @if (isLong(observation.summary)) {
               <button
-                class="text-button"
+                class="text-button summary-toggle"
                 (click)="toggle(observation.observationId)"
                 [attr.aria-expanded]="expanded().has(observation.observationId)"
               >
@@ -118,7 +124,19 @@ export class ObservationTimeline {
   readonly agents = input.required<AgentExecution[]>();
   readonly limit = signal(100);
   readonly expanded = signal(new Set<string>());
+  readonly highlighted = signal('');
   readonly visible = computed(() => this.observations().slice(0, this.limit()));
+  reveal(id: string) {
+    const index = this.observations().findIndex((item) => item.observationId === id);
+    if (index < 0) return;
+    this.limit.update((limit) => Math.max(limit, index + 1));
+    this.highlighted.set(id);
+    requestAnimationFrame(() => {
+      const element = document.getElementById('observation-' + id);
+      element?.focus({ preventScroll: true });
+      element?.scrollIntoView?.({ block: 'center', behavior: 'smooth' });
+    });
+  }
   isLong(summary: string) {
     return summary.length > 240 || summary.includes('\n');
   }

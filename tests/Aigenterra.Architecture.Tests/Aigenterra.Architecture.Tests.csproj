@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Compile Include="..\..\src\Aigenterra.AppHost\DatabaseMode.cs" Link="DatabaseMode.cs" />
   </ItemGroup>
 
 </Project>

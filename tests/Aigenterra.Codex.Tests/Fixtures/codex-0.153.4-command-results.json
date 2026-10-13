@@ -1,0 +1,74 @@
+[
+  {
+    "source": "codex-app-server-command/v1",
+    "runtime_version": "Codex Desktop/0.153.4 (Windows 10.0.26200; x86_64) dumb (aigenterra_capture; 1)",
+    "session_id": "probe-session",
+    "turn_id": "probe-turn",
+    "item": {
+      "type": "commandExecution",
+      "id": "probe-command-1",
+      "status": "completed",
+      "exitCode": 0,
+      "commandActions": [
+        {
+          "type": "unknown",
+          "command": "dotnet build src/Aigenterra.Domain/Aigenterra.Domain.csproj --no-restore"
+        }
+      ]
+    }
+  },
+  {
+    "source": "codex-app-server-command/v1",
+    "runtime_version": "Codex Desktop/0.153.4 (Windows 10.0.26200; x86_64) dumb (aigenterra_capture; 1)",
+    "session_id": "probe-session",
+    "turn_id": "probe-turn",
+    "item": {
+      "type": "commandExecution",
+      "id": "probe-command-2",
+      "status": "failed",
+      "exitCode": 1,
+      "commandActions": [
+        {
+          "type": "unknown",
+          "command": "dotnet build Aigenterra.Nonexistent.Probe.csproj --no-restore"
+        }
+      ]
+    }
+  },
+  {
+    "source": "codex-app-server-command/v1",
+    "runtime_version": "Codex Desktop/0.153.4 (Windows 10.0.26200; x86_64) dumb (aigenterra_capture; 1)",
+    "session_id": "probe-session",
+    "turn_id": "probe-turn",
+    "item": {
+      "type": "commandExecution",
+      "id": "probe-command-3",
+      "status": "completed",
+      "exitCode": 0,
+      "commandActions": [
+        {
+          "type": "unknown",
+          "command": "dotnet test tests/Aigenterra.Domain.Tests/Aigenterra.Domain.Tests.csproj --no-restore"
+        }
+      ]
+    }
+  },
+  {
+    "source": "codex-app-server-command/v1",
+    "runtime_version": "Codex Desktop/0.153.4 (Windows 10.0.26200; x86_64) dumb (aigenterra_capture; 1)",
+    "session_id": "probe-session",
+    "turn_id": "probe-turn",
+    "item": {
+      "type": "commandExecution",
+      "id": "probe-command-4",
+      "status": "failed",
+      "exitCode": 1,
+      "commandActions": [
+        {
+          "type": "unknown",
+          "command": "dotnet test Aigenterra.Nonexistent.Probe.csproj --no-restore"
+        }
+      ]
+    }
+  }
+]
