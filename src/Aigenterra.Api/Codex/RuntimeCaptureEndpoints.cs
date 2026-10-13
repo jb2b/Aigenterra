@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Aigenterra.Api.Executions;
 using Aigenterra.Application.Recording;
+using Aigenterra.Application.Runtime;
 using Microsoft.AspNetCore.Http.Features;
 
 namespace Aigenterra.Api.Codex;
@@ -10,7 +11,7 @@ internal static class RuntimeCaptureEndpoints
     public static void MapRuntimeCaptureEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPost("/ingest/runtime/captures/v2", async (HttpRequest request, IConfiguration configuration,
-            ArchiveRuntimeCapture archive, CancellationToken cancellationToken) =>
+            ArchiveRuntimeCapture archive, NormalizeRuntimeCapture normalize, CancellationToken cancellationToken) =>
         {
             var maximum = configuration.GetValue<int?>("Capture:MaxPayloadBytes") ?? 16 * 1024 * 1024;
             if (maximum <= 0 || maximum > 256 * 1024 * 1024)
@@ -31,7 +32,12 @@ internal static class RuntimeCaptureEndpoints
             catch (JsonException) { return Results.BadRequest(new { code = "invalid_capture_envelope" }); }
             if (capture?.Payload is null) return Results.BadRequest(new { code = "invalid_capture_envelope" });
             if (capture.Payload.Length > maximum) return Results.StatusCode(413);
-            return ExecutionEndpoints.ToHttpResult(await archive.ExecuteAsync(capture, cancellationToken), Results.Ok);
+            var result = await archive.ExecuteAsync(capture, cancellationToken);
+            if (!result.IsSuccess || !configuration.GetValue<bool>("Runtime:NormalizeCaptures"))
+                return ExecutionEndpoints.ToHttpResult(result, Results.Ok);
+            // The archive transaction has already committed, even if normalization/storage fails below.
+            var attempt = await normalize.ExecuteAsync(capture.CaptureId, cancellationToken);
+            return Results.Ok(result.Value! with { Normalization = attempt.Value!.Status });
         }).DisableRequestTimeout();
     }
 }

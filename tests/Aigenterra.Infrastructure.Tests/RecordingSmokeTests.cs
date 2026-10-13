@@ -24,7 +24,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         listener.Start();
         var origin = $"http://127.0.0.1:{((IPEndPoint)listener.LocalEndpoint).Port}";
         listener.Stop();
-        using var api = StartApi(apiDll, solution, origin, connection, maxPayloadBytes: 1024);
+        using var api = StartApi(apiDll, solution, origin, connection, maxPayloadBytes: 1024, normalizeRuntime: true);
         try
         {
             await Ready(origin);
@@ -33,6 +33,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
             var url = origin + "/ingest/runtime/captures/v2";
             using var first = await http.PostAsJsonAsync(url, capture);
             Assert.Equal(HttpStatusCode.OK, first.StatusCode);
+            Assert.Equal("rejected", (await first.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("normalization").GetString());
             using var retry = await http.PostAsJsonAsync(url, capture);
             Assert.True((await retry.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("duplicate").GetBoolean());
             using var conflict = await http.PostAsJsonAsync(url, capture with { CapturedAt = capture.CapturedAt.AddTicks(1) });
@@ -147,7 +148,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         }
     }
 
-    private static Process StartApi(string dll, string cwd, string origin, string connection, int? maxPayloadBytes = null)
+    private static Process StartApi(string dll, string cwd, string origin, string connection, int? maxPayloadBytes = null, bool normalizeRuntime = false)
     {
         var start = Info("dotnet", cwd, [dll]);
         start.Environment["ASPNETCORE_URLS"] = origin;
@@ -155,6 +156,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         start.Environment["ConnectionStrings__aigenterra"] = connection;
         start.Environment["Database__ApplyMigrationsOnStartup"] = "true";
         if (maxPayloadBytes is not null) start.Environment["Capture__MaxPayloadBytes"] = maxPayloadBytes.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        start.Environment["Runtime__NormalizeCaptures"] = normalizeRuntime.ToString();
         start.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
         var process = Process.Start(start)!;
         _ = process.StandardOutput.BaseStream.CopyToAsync(Stream.Null);

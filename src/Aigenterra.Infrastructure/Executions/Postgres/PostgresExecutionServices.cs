@@ -15,6 +15,7 @@ public static class PostgresExecutionServices
         services.AddScoped<PostgresExecutionStore>();
         services.AddScoped<IObservationEvidenceReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<Application.Recording.IRawCaptureStore, PostgresRawCaptureStore>();
+        services.AddScoped<Application.Runtime.IRuntimeFactStore, PostgresRuntimeFactStore>();
         services.AddScoped<IExecutionWriteStore>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<IExecutionRuntimeReferenceReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<ITaskExecutionTimelineReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
@@ -39,7 +40,8 @@ public static class PostgresExecutionServices
             "20260908000000_CompleteStoppedCodexTurns",
             "20260909161028_EvidenceBackedEvaluations",
             "20260916150255_RecordingHardening",
-            "20261013185755_VersionedRuntimeEvidence"
+            "20261013185755_VersionedRuntimeEvidence",
+            "20261013190506_RuntimeLifecycleFacts"
         ];
         if (pending.Any(id => !approved.Contains(id, StringComparer.Ordinal)))
         {

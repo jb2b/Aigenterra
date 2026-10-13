@@ -352,6 +352,46 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.NormalizationAttemptRow", b =>
+                {
+                    b.Property<Guid>("AttemptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("attempt_id");
+
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("fingerprint");
+
+                    b.Property<string>("NormalizerVersion")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("normalizer_version");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text")
+                        .HasColumnName("reason");
+
+                    b.Property<long>("RecordedAtTicks")
+                        .HasColumnType("bigint")
+                        .HasColumnName("recorded_at_ticks");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.HasKey("AttemptId");
+
+                    b.HasIndex("CaptureId", "NormalizerVersion");
+
+                    b.ToTable("normalization_attempts", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.ObservationRow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -487,6 +527,43 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.HasKey("CaptureId");
 
                     b.ToTable("raw_captures", (string)null);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeFactRow", b =>
+                {
+                    b.Property<Guid>("AttemptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("attempt_id");
+
+                    b.Property<int>("Ordinal")
+                        .HasColumnType("integer")
+                        .HasColumnName("ordinal");
+
+                    b.Property<string>("Fact")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("fact");
+
+                    b.Property<Guid>("RuntimeNamespaceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_namespace_id");
+
+                    b.Property<string>("ThreadId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("thread_id")
+                        .UseCollation("C");
+
+                    b.Property<string>("TurnId")
+                        .HasColumnType("text")
+                        .HasColumnName("turn_id")
+                        .UseCollation("C");
+
+                    b.HasKey("AttemptId", "Ordinal");
+
+                    b.HasIndex("RuntimeNamespaceId", "ThreadId", "TurnId");
+
+                    b.ToTable("runtime_facts", (string)null);
                 });
 
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.TaskExecutionRow", b =>
@@ -665,6 +742,15 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.NormalizationAttemptRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", null)
+                        .WithMany()
+                        .HasForeignKey("CaptureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.ObservationRow", b =>
                 {
                     b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.TaskExecutionRow", null)
@@ -678,6 +764,15 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                         .HasForeignKey("TaskExecutionId", "AgentExecutionId")
                         .HasPrincipalKey("TaskExecutionId", "Id")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeFactRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.NormalizationAttemptRow", null)
+                        .WithMany()
+                        .HasForeignKey("AttemptId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.TaskExecutionRow", b =>
