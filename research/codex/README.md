@@ -58,3 +58,29 @@ and delete only their own random test databases.
 See `docs/research/codex-modernization/` for measured results and limitations.
 Running the Desktop-bundled executable in CLI mode is a binary comparison,
 not proof that the Desktop client shares a passive subscription endpoint.
+
+## Isolated .NET App Server spike
+
+`CodexResearch.slnx` is intentionally separate from `Aigenterra.slnx`. No
+production project references the spike. Its typed transport/session code is
+small and uses opaque JSON at the experimental boundary, not generated DTOs.
+
+```powershell
+dotnet test research/codex/CodexResearch.slnx
+dotnet format research/codex/CodexResearch.slnx --verify-no-changes
+dotnet run --project research/codex/AppServerProbe -- `
+  C:\runtime\codex.exe C:\path\to\isolated-hook-probe gpt-6-astra
+```
+
+The workspace must have the marker produced by Invoke-HookProbe.ps1. Each run
+records exact received NDJSON bytes, sent requests and stderr separately. The
+receipt-times sidecar contains metadata only. The spike creates a NEW test
+thread, starts a harmless turn, waits for its explicit terminal notification
+and reads its persisted state. `observed` is a capture result; inspect turnStatus
+for the runtime outcome. Timeouts/errors are recorded as incomplete. Stdin EOF
+is attempted before terminating only the process tree owned by the probe.
+
+Use Export-AppServerFixtures.ps1 with -Workspace, -Evidence and -Destination
+to export an allowlisted, jointly pseudonymized selection of BOTH sources.
+Account notifications and reasoning items are excluded. Exact original bytes
+remain local. Review strings; the exporter is not a universal secret scrubber.
