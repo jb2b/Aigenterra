@@ -182,3 +182,103 @@ the real installed CLI reader in the isolated copied-history home, API outage,
 restart and persistent gaps against a disposable PostgreSQL database. Original
 logs/checkpoints/spool remain local; the temporary database was removed. No
 production sessions, configuration, trust or database were changed.
+
+## Deterministic generations (14)
+
+Each generation freezes the namespace's committed capture IDs and original
+envelope fingerprints in a repeatable-read database transaction. It pins
+`codex.history/1`, `codex.evidence/2`, `codex.health/1`,
+`runtime.reconciliation/1` and `runtime.projection/1`. A matching binary is
+required to resume that generation. A later context/input never changes a frozen
+generation; a new generation may resolve its previously pending evidence.
+
+Processing checkpoints each input independently. Crash/retry cannot skip an
+earlier allocated archive position that commits later. Normalization reads only
+the original bytes and context included in the manifest; no Codex process,
+network, current configuration or current clock is needed. Metadata is streamed
+from archive reads one capture at a time; final normalized projection assembly
+uses memory proportional to projected facts. Canonical checksums include the
+manifest, versions and sorted projected data, excluding generation UUIDs,
+creation time, mutable health ages and processing order. Raw observation times
+remain evidence. Every health diagnostic and gap is retained in the projection.
+
+Ready generations and completed input results are immutable. Activating a ready
+generation requires the expected active generation ID. A namespace transaction
+lock commits the pointer and a contiguous revision/change record together.
+Competing publication cannot overwrite a newly activated generation silently.
+Rollback selects an older ready generation; it does not delete evidence or apply
+down-migrations. Disable automatic publication for the namespace before manual
+rollback so new inputs do not schedule another current generation.
+
+Local maintenance commands use the explicitly configured database and do not
+apply migrations automatically or start the API's HTTP listener:
+
+```text
+dotnet Aigenterra.Api.dll runtime-projection freeze <namespace-uuid>
+dotnet Aigenterra.Api.dll runtime-projection rebuild <generation-uuid>
+dotnet Aigenterra.Api.dll runtime-projection status <generation-uuid>
+dotnet Aigenterra.Api.dll runtime-projection activate <generation-uuid> <expected-active-uuid|none>
+```
+
+For optional continuous publication, explicitly configure
+`Runtime:ProjectionNamespaces` with the enrolled namespace UUIDs. The background
+worker checks for unrepresented input IDs, resumes interrupted builds and
+publishes ready generations. It shares the same rebuild path as offline
+maintenance. Default is disabled. Each changed manifest currently creates a full
+generation; long-term archive size and publication latency require capacity
+planning. Capture acknowledgement never waits for publication. No consistent
+snapshot/evidence HTTP API, SSE endpoint or UI from commits 15–20 is implemented.
+
+## Final verification and remaining acceptance limits
+
+Commit 14 passed solution restore, Debug build, format-check, 225 tests and the
+isolated hook byte-fidelity/fail-open probe. Release build also passed with zero
+warnings/errors. Test counts: Application 48, Architecture 11, Codex 80, Domain 32,
+Infrastructure 54. PostgreSQL 17.11 tests cover upgrade from previous migrations,
+frozen missing context, a lower ingestion position committing after freeze,
+per-input crash/retry, immutable generations, competing activation and rollback.
+A real API process with the opt-in publisher and a later offline maintenance
+process produced identical checksums. No Codex process was needed for rebuild.
+
+After a heavy load run, two disposable database drops exceeded the original
+30-second command timeout during PostgreSQL checkpoint I/O. Assertions had passed.
+Those databases were removed; a full clean verification with a 120-second database
+command timeout then passed. This was isolated test cleanup, not production work.
+
+Sanitized measurements are recorded in [runtime-verification-10-14.json](runtime-verification-10-14.json).
+The standard pooled configuration accepted 6,001 synthetic inputs (100/second for
+60 seconds, plus a 1 MiB burst), drained all work, and matched every original raw
+payload byte. HTTP p95 was 2.74 ms; sampled queue high-water was 50, and peak API
+working set was about 191 MiB. Subsequent offline rebuild took 5.22 seconds. An
+earlier unpooled attempt accepted all inputs but missed the two-minute processing
+catch-up deadline; that configuration is not accepted for this throughput.
+
+The existing hook process launch chain **fails the unchanged latency budget**
+(p95 <100 ms, p99 <250 ms). An isolated Release apphost through the existing outer
+PowerShell and launcher measured the following end-to-end times, including process
+startup and, for UserPromptSubmit, repository context collection:
+
+| Hook | Samples | p95 | p99 | Result |
+| --- | ---: | ---: | ---: | --- |
+| PreToolUse | 30 | 660 ms | 899 ms | Budget not met |
+| UserPromptSubmit | 30 | 914 ms | 946 ms | Budget not met |
+
+All 60 payloads and metadata files were spooled; protocol/fail-open behavior
+remains verified. This small sample establishes a performance problem, not a
+statistically robust acceptance result. Direct Debug Collector measurements also
+missed the budget. Hook startup/context optimization or an explicitly approved
+measured budget revision remains future work; no launcher or budget was changed
+to hide this result.
+
+The load result is archive/processing evidence, not proof of actual Codex event
+throughput, complete coverage, an enforced memory cap, or continuous full-generation
+publication capacity. Active-owner neutrality was not retested against running
+user sessions. CLI/Desktop history smoke, reader/API outage recovery and persistent
+gaps were verified only in isolated homes and disposable databases. Original
+evidence and the benchmark harness remain local; committed fixtures/results are
+sanitized. Full live runtime observation remains **KEEP_GATE_BLOCKED**.
+
+Execution ends at commit 14. Textual inspection and graph UI remain goals for the
+later sequence; commit 15, its snapshot API, SSE and UI have not begun. No remotes,
+push, production migration, deployment or existing hook/session configuration
+changes were performed.

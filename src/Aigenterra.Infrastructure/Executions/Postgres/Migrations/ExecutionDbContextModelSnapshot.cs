@@ -657,6 +657,143 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.ToTable("runtime_instances", (string)null);
                 });
 
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionActiveRow", b =>
+                {
+                    b.Property<Guid>("RuntimeNamespaceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_namespace_id");
+
+                    b.Property<Guid>("GenerationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("generation_id");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint")
+                        .HasColumnName("revision");
+
+                    b.HasKey("RuntimeNamespaceId");
+
+                    b.HasIndex("GenerationId");
+
+                    b.ToTable("runtime_projection_active", (string)null);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionChangeRow", b =>
+                {
+                    b.Property<Guid>("RuntimeNamespaceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_namespace_id");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint")
+                        .HasColumnName("revision");
+
+                    b.Property<Guid>("GenerationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("generation_id");
+
+                    b.Property<Guid?>("PreviousGenerationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("previous_generation_id");
+
+                    b.Property<string>("ProjectionSha256")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("projection_sha256");
+
+                    b.HasKey("RuntimeNamespaceId", "Revision");
+
+                    b.HasIndex("GenerationId");
+
+                    b.ToTable("runtime_projection_changes", (string)null);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionGenerationRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid?>("BaseGenerationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("base_generation_id");
+
+                    b.Property<long>("CreatedAtTicks")
+                        .HasColumnType("bigint")
+                        .HasColumnName("created_at_ticks");
+
+                    b.Property<string>("Document")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("document");
+
+                    b.Property<int>("InputCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("input_count");
+
+                    b.Property<string>("ManifestSha256")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("manifest_sha256");
+
+                    b.Property<string>("ProjectionSha256")
+                        .HasColumnType("text")
+                        .HasColumnName("projection_sha256");
+
+                    b.Property<Guid>("RuntimeNamespaceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("runtime_namespace_id");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("state");
+
+                    b.Property<string>("Versions")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("versions");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RuntimeNamespaceId", "State");
+
+                    b.ToTable("runtime_projection_generations", (string)null);
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionInputRow", b =>
+                {
+                    b.Property<Guid>("GenerationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("generation_id");
+
+                    b.Property<Guid>("CaptureId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("capture_id");
+
+                    b.Property<bool>("Complete")
+                        .HasColumnType("boolean")
+                        .HasColumnName("complete");
+
+                    b.Property<string>("EnvelopeFingerprint")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("envelope_fingerprint");
+
+                    b.Property<string>("Result")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("result");
+
+                    b.Property<string>("ResultSha256")
+                        .HasColumnType("text")
+                        .HasColumnName("result_sha256");
+
+                    b.HasKey("GenerationId", "CaptureId");
+
+                    b.HasIndex("CaptureId");
+
+                    b.ToTable("runtime_projection_inputs", (string)null);
+                });
+
             modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeReconciliationRow", b =>
                 {
                     b.Property<Guid>("CaptureId")
@@ -1019,6 +1156,39 @@ namespace Aigenterra.Infrastructure.Executions.Postgres.Migrations
                     b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.SourceHealthEventRow", null)
                         .WithMany()
                         .HasForeignKey("LatestCaptureId", "DetectorVersion")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionActiveRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionGenerationRow", null)
+                        .WithMany()
+                        .HasForeignKey("GenerationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionChangeRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionGenerationRow", null)
+                        .WithMany()
+                        .HasForeignKey("GenerationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionInputRow", b =>
+                {
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.CaptureSourceRow", null)
+                        .WithMany()
+                        .HasForeignKey("CaptureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Aigenterra.Infrastructure.Executions.Postgres.RuntimeProjectionGenerationRow", null)
+                        .WithMany()
+                        .HasForeignKey("GenerationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

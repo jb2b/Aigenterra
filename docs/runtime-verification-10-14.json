@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "scope": "Commits 10–14, isolated local verification; no production rollout",
+  "gate": "KEEP_GATE_BLOCKED",
+  "solution": {
+    "restore": "passed",
+    "debugBuild": "passed, zero warnings/errors",
+    "releaseBuild": "passed, zero warnings/errors",
+    "formatCheck": "passed",
+    "tests": 225,
+    "projects": {
+      "Application": 48,
+      "Architecture": 11,
+      "Codex": 80,
+      "Domain": 32,
+      "Infrastructure": 54
+    },
+    "database": "PostgreSQL 17.11, disposable databases on an isolated loopback research cluster",
+    "cleanupRetry": "An initial post-load run passed assertions but two database drops exceeded the 30-second command timeout during checkpoint I/O. The two disposable databases were removed, then the full suite passed with a 120-second database command timeout."
+  },
+  "pooledLoad": {
+    "capturedAt": "2026-10-13T22:47:13.2249981+00:00",
+    "configuration": "Debug .NET 10, local PostgreSQL 17.11, standard connection pooling, synthetic hook frames; projection worker disabled during ingestion",
+    "hooks": {
+      "PreToolUse": {
+        "samples": 100,
+        "p50Ms": 136.7354,
+        "p95Ms": 144.6431,
+        "p99Ms": 165.9603,
+        "maxMs": 519.5876,
+        "targetP95Ms": 100,
+        "targetP99Ms": 250,
+        "passed": false
+      },
+      "UserPromptSubmit": {
+        "samples": 100,
+        "p50Ms": 404.2481,
+        "p95Ms": 514.6026,
+        "p99Ms": 647.8569,
+        "maxMs": 664.181,
+        "targetP95Ms": 100,
+        "targetP99Ms": 250,
+        "passed": false
+      }
+    },
+    "load": {
+      "scheduled": 6000,
+      "intendedSeconds": 60,
+      "acknowledged": 6001,
+      "sendSeconds": 59.9930065,
+      "burstBytes": 1048576,
+      "concurrentRequestsMaximum": 14,
+      "httpP95Ms": 2.7391,
+      "acknowledgedLoss": 0,
+      "rawByteMismatches": 0,
+      "pendingAfterDrain": 0,
+      "sampledQueueHighWater": 50,
+      "apiPeakWorkingSetBytes": 200466432,
+      "rebuildSeconds": 5.2228839,
+      "generationInputs": 6001,
+      "checksum": "13373E7E77F1B70B29D28D15364C8116C0075102435004C9A24723CB2E6D0EDF"
+    },
+    "limitations": "Not actual Codex event throughput or complete live observation. Slow SSE/UI consumers are outside commits 10-14. Peak working set is a measurement, not an enforced service memory cap. Full hook process latency includes startup and, for UserPromptSubmit, repository context. No performance threshold is silently relaxed."
+  },
+  "releaseHookLauncher": {
+    "PreToolUse": {
+      "mode": "Release apphost via existing outer PowerShell + launcher in isolated LOCALAPPDATA",
+      "samples": 30,
+      "p50Ms": 609.1818,
+      "p95Ms": 660.4929,
+      "p99Ms": 899.3483,
+      "maxMs": 899.3483,
+      "targetP95Ms": 100,
+      "targetP99Ms": 250,
+      "passed": false
+    },
+    "UserPromptSubmit": {
+      "mode": "Release apphost via existing outer PowerShell + launcher in isolated LOCALAPPDATA",
+      "samples": 30,
+      "p50Ms": 890.2891,
+      "p95Ms": 914.0586,
+      "p99Ms": 946.4304,
+      "maxMs": 946.4304,
+      "targetP95Ms": 100,
+      "targetP99Ms": 250,
+      "passed": false
+    },
+    "originalPayloadFiles": 60,
+    "metadataFiles": 60,
+    "outcome": "FAIL: both event kinds exceed the unchanged p95 <100 ms and p99 <250 ms budgets; 30 samples each is exploratory, not statistically robust acceptance."
+  },
+  "initialUnpooledLoad": {
+    "configuration": "Pooling=false, Debug, synthetic 100 captures/second for 60 seconds plus 1 MiB burst",
+    "outcome": "FAIL: durable processing did not catch up within the 120-second deadline",
+    "acknowledged": 6001,
+    "pendingAtDeadline": 5369,
+    "rawByteComparison": "not completed in this failed attempt",
+    "interpretation": "The standard pooled configuration passed the repeated run. Unpooled throughput is not accepted."
+  },
+  "limitations": [
+    "No complete passive-live App Server capability is claimed.",
+    "Real runtime smoke tests used isolated copies of prior CLI/Desktop research histories, without model work or active owner sessions.",
+    "The load run is synthetic archive/processing throughput, not actual Codex event throughput.",
+    "Continuous full-generation publication under sustained load was not benchmarked; the load run measured a subsequent offline rebuild.",
+    "Projection assembly memory grows with projected facts; the sampled working-set peak is not an enforced capacity limit.",
+    "Slow SSE/UI consumers and actual frontend-wide acceptance belong to later approved work, not commits 10–14.",
+    "Hook latency remains an unresolved production acceptance item; neither budget nor scope was silently changed.",
+    "Original completed benchmark inputs, actual-runtime spool evidence, logs and benchmark harness remain local; only sanitized numeric results are committed."
+  ]
+}

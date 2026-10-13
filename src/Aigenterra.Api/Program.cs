@@ -11,7 +11,13 @@ using Aigenterra.Adapters.Codex.Normalization;
 using Aigenterra.Adapters.Codex.Diagnostics;
 using Aigenterra.Infrastructure.Executions.Postgres;
 
-var builder = WebApplication.CreateBuilder(args);
+var maintenance = args.FirstOrDefault() == "runtime-projection";
+var builder = WebApplication.CreateBuilder(maintenance ? [] : args);
+if (maintenance)
+{
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole(options => options.LogToStandardErrorThreshold = LogLevel.Trace);
+}
 
 builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
@@ -36,6 +42,9 @@ builder.Services.AddTransient<ICodexHookIngestor, CodexHookIngestor>();
 builder.Services.AddTransient<CodexCaptureIngestor>();
 builder.Services.AddTransient<ArchiveRuntimeCapture>();
 builder.Services.AddTransient<IRuntimeCaptureNormalizer, CodexHistoryNormalizer>();
+builder.Services.AddTransient<IContextualRuntimeNormalizer, CodexHistoryNormalizer>();
+builder.Services.AddTransient<RebuildRuntimeProjection>();
+builder.Services.AddHostedService<RuntimeProjectionWorker>();
 builder.Services.AddTransient<NormalizeRuntimeCapture>();
 builder.Services.AddTransient<IRuntimeRequestContextDecoder, CodexRequestContextDecoder>();
 builder.Services.AddTransient<IRuntimeEvidenceNormalizer, CodexAgentEvidenceNormalizer>();
@@ -56,6 +65,12 @@ builder.Services.AddTransient<GetTaskExecutionEvaluation>();
 
 var app = builder.Build();
 app.UseExceptionHandler();
+
+if (maintenance)
+{
+    await RuntimeProjectionCommand.ExecuteAsync(app.Services, args.Skip(1).ToArray());
+    return;
+}
 
 if (builder.Configuration.GetValue<bool?>("Database:ApplyMigrationsOnStartup")
     ?? app.Environment.IsDevelopment())

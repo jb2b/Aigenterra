@@ -15,6 +15,42 @@ namespace Aigenterra.Infrastructure.Tests;
 public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture<PostgresFixture>
 {
     [Fact]
+    public async Task Opted_in_projection_worker_and_offline_maintenance_command_produce_identical_checksums()
+    {
+        var connection = await fixture.CreateDatabaseAsync();
+        var root = FindSolution();
+        var configuration = new DirectoryInfo(AppContext.BaseDirectory).Parent!.Name;
+        var dll = Path.Combine(root, "src", "Aigenterra.Api", "bin", configuration, "net10.0", "Aigenterra.Api.dll");
+        var listener = new TcpListener(IPAddress.Loopback, 0); listener.Start();
+        var origin = $"http://127.0.0.1:{((IPEndPoint)listener.LocalEndpoint).Port}"; listener.Stop();
+        var capture = RuntimeCaptureTests.Capture("""{"hook_event_name":"UserPromptSubmit","session_id":"root","turn_id":"turn"}"""u8.ToArray());
+        capture = capture with { Source = capture.Source with { SourceKind = "hook", EvidenceStage = "HookVisible", Provenance = "hook_stdin" } };
+        var api = StartApi(dll, root, origin, connection, projectionNamespace: capture.Source.RuntimeNamespaceId);
+        string? liveHash = null;
+        try
+        {
+            await Ready(origin);
+            using var http = new HttpClient();
+            using var response = await http.PostAsJsonAsync(origin + "/ingest/runtime/captures/v2", capture);
+            response.EnsureSuccessStatusCode();
+            await using var db = PostgresFixture.Context(connection);
+            var store = new PostgresRuntimeProjectionStore(db);
+            for (var i = 0; i < 150; i++)
+            {
+                var active = await store.ReadActiveAsync(capture.Source.RuntimeNamespaceId);
+                if (active is not null && (await store.ReadGenerationAsync(active.GenerationId))!.InputCount == 1) { liveHash = active.ProjectionSha256; break; }
+                await Task.Delay(100);
+            }
+            Assert.NotNull(liveHash);
+        }
+        finally { StopApi(api); }
+        var environment = new Dictionary<string, string> { ["ConnectionStrings__aigenterra"] = connection };
+        var frozen = JsonSerializer.Deserialize<JsonElement>(await Run("dotnet", root, [dll, "runtime-projection", "freeze", capture.Source.RuntimeNamespaceId.ToString()], environment));
+        var rebuilt = JsonSerializer.Deserialize<JsonElement>(await Run("dotnet", root, [dll, "runtime-projection", "rebuild", frozen.GetProperty("id").GetString()!], environment));
+        Assert.Equal(liveHash, rebuilt.GetProperty("projectionSha256").GetString());
+    }
+
+    [Fact]
     public async Task Health_ingest_and_bounded_read_endpoints_preserve_namespace_and_unknown_fields()
     {
         var connection = await fixture.CreateDatabaseAsync();
@@ -193,7 +229,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         }
     }
 
-    private static Process StartApi(string dll, string cwd, string origin, string connection, int? maxPayloadBytes = null, bool normalizeRuntime = false, bool recordHealth = false)
+    private static Process StartApi(string dll, string cwd, string origin, string connection, int? maxPayloadBytes = null, bool normalizeRuntime = false, bool recordHealth = false, Guid? projectionNamespace = null)
     {
         var start = Info("dotnet", cwd, [dll]);
         start.Environment["ASPNETCORE_URLS"] = origin;
@@ -203,6 +239,7 @@ public sealed class RecordingSmokeTests(PostgresFixture fixture) : IClassFixture
         if (maxPayloadBytes is not null) start.Environment["Capture__MaxPayloadBytes"] = maxPayloadBytes.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         start.Environment["Runtime__NormalizeCaptures"] = normalizeRuntime.ToString();
         start.Environment["Runtime__RecordSourceHealth"] = recordHealth.ToString();
+        if (projectionNamespace is not null) start.Environment["Runtime__ProjectionNamespaces__0"] = projectionNamespace.Value.ToString();
         start.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
         var process = Process.Start(start)!;
         _ = process.StandardOutput.BaseStream.CopyToAsync(Stream.Null);

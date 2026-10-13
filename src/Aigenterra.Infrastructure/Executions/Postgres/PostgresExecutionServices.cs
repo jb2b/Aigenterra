@@ -21,6 +21,7 @@ public static class PostgresExecutionServices
         services.AddScoped<Application.Runtime.IRuntimeRequestStore, PostgresRuntimeWorkStore>();
         services.AddScoped<Application.Runtime.IRuntimeEvidenceStore, PostgresRuntimeEvidenceStore>();
         services.AddScoped<Application.Runtime.IRuntimeReconciliationStore, PostgresRuntimeReconciliationStore>();
+        services.AddScoped<Application.Runtime.IRuntimeProjectionStore, PostgresRuntimeProjectionStore>();
         services.AddScoped<IExecutionWriteStore>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<IExecutionRuntimeReferenceReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
         services.AddScoped<ITaskExecutionTimelineReader>(provider => provider.GetRequiredService<PostgresExecutionStore>());
@@ -51,7 +52,8 @@ public static class PostgresExecutionServices
             "20261013220002_DurableRuntimeProcessing",
             "20261013221151_RuntimeActivityEvidence",
             "20261013221732_AgentEvidenceReprocessing",
-            "20261013222426_ScopedRuntimeReconciliation"
+            "20261013222426_ScopedRuntimeReconciliation",
+            "20261013223328_RuntimeProjectionGenerations"
         ];
         if (pending.Any(id => !approved.Contains(id, StringComparer.Ordinal)))
         {

@@ -1,5 +1,10 @@
 # Runtime foundation: authorized commits 7–9
 
+This page records the historical 7–9 delivery. The subsequently approved scope,
+implementation and limitations for commits 10–14 are in
+[Runtime reconciliation](runtime-reconciliation.md). KEEP_GATE_BLOCKED remains
+in force for complete live runtime observation.
+
 The user approved commits 7–9 independently of the live attachment gate on
 2026-10-13. Research reports and fixtures remain historical evidence. Commit 10
 (connection/observation transport) remains blocked and outside this change.
