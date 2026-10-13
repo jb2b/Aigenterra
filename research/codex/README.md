@@ -84,3 +84,10 @@ Use Export-AppServerFixtures.ps1 with -Workspace, -Evidence and -Destination
 to export an allowlisted, jointly pseudonymized selection of BOTH sources.
 Account notifications and reasoning items are excluded. Exact original bytes
 remain local. Review strings; the exporter is not a universal secret scrubber.
+
+For controlled MCP experiments, run Add-ProbeMcp.ps1 -Workspace on a marked
+temporary workspace. It installs only the local Synthetic-Mcp.ps1 there. The
+echo/fail tools are read-only; delay is bounded to 20 seconds and padding to
+128 KiB. Test-SyntheticMcp.ps1 verifies its exact external response evidence.
+Pass a synthetic prompt and scenario name as the optional fourth/fifth spike
+arguments. The committed correlation report records the prompts' outcomes.

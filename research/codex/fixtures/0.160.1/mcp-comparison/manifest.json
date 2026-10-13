@@ -1,0 +1,19 @@
+{
+  "userAgent": "Codex Desktop/0.160.1 (Windows 10.0.26200; x86_64) dumb (aigenterra_spike; 1)",
+  "stages": [
+    "AppServerVisible",
+    "HookVisible",
+    "ExternalRaw"
+  ],
+  "model": "gpt-6-astra",
+  "selectedMessages": 36,
+  "sanitized": true,
+  "sourceSha256": "2AA6ADE73F462BEF16499019CF037BDE69E226F2BCBA386BBB8668D48DFD4BB8",
+  "note": "Jointly pseudonymized subset. Account, reasoning, token deltas and unrelated response payloads are deliberately omitted. Original stream is retained locally.",
+  "turnStatus": "completed",
+  "selectedHooks": 7,
+  "runStatus": "observed",
+  "sourceBytes": 819250,
+  "totalMessages": 121,
+  "externalResults": 2
+}

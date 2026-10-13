@@ -3,7 +3,7 @@ using Aigenterra.Research;
 
 if (args.Length < 3)
 {
-    Console.Error.WriteLine("Usage: AppServerProbe <codex.exe> <isolated-hook-probe-root> <model> [prompt]");
+    Console.Error.WriteLine("Usage: AppServerProbe <codex.exe> <isolated-hook-probe-root> <model> [prompt] [scenario]");
     return 2;
 }
 var executable = Path.GetFullPath(args[0]);
@@ -17,7 +17,7 @@ if (!string.Equals(manifest.RootElement.GetProperty("outputRoot").GetString(), w
 var evidence = Path.Combine(workspace, "evidence", "appserver-" + Guid.NewGuid().ToString("N"));
 var auth = Path.Combine(workspace, "home", "auth.json");
 var authSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".codex", "auth.json");
-var summary = new Dictionary<string, object?> { ["model"] = model, ["evidence"] = evidence, ["scenario"] = "stdio-smoke" };
+var summary = new Dictionary<string, object?> { ["model"] = model, ["evidence"] = evidence, ["scenario"] = args.Length > 4 ? args[4] : "stdio-smoke" };
 try
 {
     if (File.Exists(authSource)) File.Copy(authSource, auth, overwrite: false);
@@ -32,13 +32,14 @@ try
     summary["threadStart"] = start;
     if (start.TryGetProperty("error", out _)) throw new InvalidOperationException("thread/start rejected; inspect raw evidence.");
     var threadId = start.GetProperty("result").GetProperty("thread").GetProperty("id").GetString()!;
+    summary["mcpStatus"] = await client.CallAsync("mcpServerStatus/list", new { });
     var prompt = args.Length > 3 ? args[3] : "Reply exactly AIGENTERRA_APP_SERVER_SMOKE. Do not use tools.";
     var after = client.Messages.Length;
     var turnStart = await client.CallAsync("turn/start", new { threadId, input = new[] { new { type = "text", text = prompt } } });
     summary["turnStart"] = turnStart;
     RequireResult(turnStart);
     var completed = await client.WaitForAsync(message => message.TryGetProperty("method", out var method)
-        && method.GetString() == "turn/completed" && message.GetProperty("params").GetProperty("threadId").GetString() == threadId, after);
+        && method.GetString() == "turn/completed" && message.GetProperty("params").GetProperty("threadId").GetString() == threadId, after, timeoutSeconds: 240);
     summary["completed"] = completed;
     summary["turnStatus"] = completed.GetProperty("params").GetProperty("turn").GetProperty("status").GetString();
     summary["read"] = await client.CallAsync("thread/read", new { threadId, includeTurns = true });

@@ -1,0 +1,933 @@
+{
+  "appServer": [
+    {
+      "id": 1,
+      "result": {
+        "userAgent": "Codex Desktop/0.153.4 (Windows 10.0.26200; x86_64) dumb (aigenterra_spike; 1)",
+        "codexHome": "C:\\probe\\home",
+        "platformFamily": "windows",
+        "platformOs": "windows"
+      }
+    },
+    {
+      "method": "thread/started",
+      "params": {
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "extra": null,
+          "sessionId": "00000000-0000-4000-8000-000000000001",
+          "forkedFromId": null,
+          "parentThreadId": null,
+          "preview": "",
+          "ephemeral": false,
+          "section": null,
+          "sectionEnteredAt": null,
+          "projectId": null,
+          "historyMode": "paginated",
+          "modelProvider": "openai",
+          "model": "gpt-6-astra",
+          "reasoningEffort": "low",
+          "createdAt": 1791898622,
+          "updatedAt": 1791898622,
+          "recencyAt": 1791898622,
+          "status": {
+            "type": "idle"
+          },
+          "path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+          "cwd": "C:\\probe\\repo",
+          "cliVersion": "0.153.4",
+          "source": "vscode",
+          "canAcceptDirectInput": true,
+          "threadSource": null,
+          "agentNickname": null,
+          "agentRole": null,
+          "gitInfo": null,
+          "name": null,
+          "turns": []
+        }
+      },
+      "emittedAtMs": 1791898622109
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "observability_probe",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791898622109
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "codex_apps",
+        "status": "starting",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791898622109
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "observability_probe",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791898622477
+    },
+    {
+      "method": "mcpServer/startupStatus/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "name": "codex_apps",
+        "status": "ready",
+        "error": null,
+        "failureReason": null
+      },
+      "emittedAtMs": 1791898625926
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        }
+      },
+      "emittedAtMs": 1791898626354
+    },
+    {
+      "method": "turn/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "inProgress",
+          "error": null,
+          "startedAt": 1791898626,
+          "completedAt": null,
+          "durationMs": null
+        }
+      },
+      "emittedAtMs": 1791898626354
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "session-start:5:C:\\probe\\home\\hooks.json",
+          "eventName": "sessionStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 5,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791898627,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898627399
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "session-start:5:C:\\probe\\home\\hooks.json",
+          "eventName": "sessionStart",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "thread",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 5,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791898627,
+          "completedAt": 1791898628,
+          "durationMs": 628,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898628017
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791898628,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898628024
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "user-prompt-submit:7:C:\\probe\\home\\hooks.json",
+          "eventName": "userPromptSubmit",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 7,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791898628,
+          "completedAt": 1791898628,
+          "durationMs": 605,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898628624
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000003",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Use the observability_probe MCP server. Call echo with marker MCP_COMMIT4_OK and size 32. Then call fail with marker MCP_COMMIT4_ERROR. These are harmless read-only synthetic tools; do not substitute shell calls or other providers. Report the two tool outcomes briefly.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791898628632
+      },
+      "emittedAtMs": 1791898628632
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "userMessage",
+          "id": "00000000-0000-4000-8000-000000000003",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Use the observability_probe MCP server. Call echo with marker MCP_COMMIT4_OK and size 32. Then call fail with marker MCP_COMMIT4_ERROR. These are harmless read-only synthetic tools; do not substitute shell calls or other providers. Report the two tool outcomes briefly.",
+              "text_elements": []
+            }
+          ]
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791898628632
+      },
+      "emittedAtMs": 1791898628642
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_000c4a974316abb5016ace340b750c8191a58b148bdf318591",
+          "text": "",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791898632097
+      },
+      "emittedAtMs": 1791898632098
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_000c4a974316abb5016ace340b750c8191a58b148bdf318591",
+          "text": "I’ll locate the observability_probe tools and call them in the requested order.\n",
+          "phase": "commentary",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791898632597
+      },
+      "emittedAtMs": 1791898632605
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 14461,
+            "inputTokens": 14392,
+            "cachedInputTokens": 12288,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 69,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 14461,
+            "inputTokens": 14392,
+            "cachedInputTokens": 12288,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 69,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791898634117
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000004",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791898640,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898640010
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000004",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791898640,
+          "completedAt": 1791898640,
+          "durationMs": 567,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898640581
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "mcpToolCall",
+          "id": "exec-00000000-0000-4000-8000-000000000004",
+          "server": "observability_probe",
+          "tool": "echo",
+          "status": "inProgress",
+          "arguments": {
+            "marker": "MCP_COMMIT4_OK",
+            "size": 32
+          },
+          "appContext": null,
+          "pluginId": null,
+          "readOnlyHint": true,
+          "result": null,
+          "error": null,
+          "durationMs": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791898640577
+      },
+      "emittedAtMs": 1791898640581
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "mcpToolCall",
+          "id": "exec-00000000-0000-4000-8000-000000000004",
+          "server": "observability_probe",
+          "tool": "echo",
+          "status": "completed",
+          "arguments": {
+            "marker": "MCP_COMMIT4_OK",
+            "size": 32
+          },
+          "appContext": null,
+          "pluginId": null,
+          "readOnlyHint": true,
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"padding\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"marker\":\"MCP_COMMIT4_OK\",\"result\":\"PROBE_OK\"}"
+              }
+            ],
+            "structuredContent": {
+              "padding": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+              "marker": "MCP_COMMIT4_OK",
+              "result": "PROBE_OK"
+            },
+            "_meta": {
+              "origin": "synthetic-server",
+              "evidenceVersion": 1
+            }
+          },
+          "error": null,
+          "durationMs": 15
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791898640594
+      },
+      "emittedAtMs": 1791898640606
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000004",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791898640,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898640613
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "post-tool-use:2:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000004",
+          "eventName": "postToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 2,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791898640,
+          "completedAt": 1791898641,
+          "durationMs": 580,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898641191
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000005",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791898641,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898641200
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "pre-tool-use:0:C:\\probe\\home\\hooks.json:exec-00000000-0000-4000-8000-000000000005",
+          "eventName": "preToolUse",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 0,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791898641,
+          "completedAt": 1791898641,
+          "durationMs": 579,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898641776
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "mcpToolCall",
+          "id": "exec-00000000-0000-4000-8000-000000000005",
+          "server": "observability_probe",
+          "tool": "fail",
+          "status": "inProgress",
+          "arguments": {
+            "marker": "MCP_COMMIT4_ERROR"
+          },
+          "appContext": null,
+          "pluginId": null,
+          "readOnlyHint": true,
+          "result": null,
+          "error": null,
+          "durationMs": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791898641776
+      },
+      "emittedAtMs": 1791898641776
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "mcpToolCall",
+          "id": "exec-00000000-0000-4000-8000-000000000005",
+          "server": "observability_probe",
+          "tool": "fail",
+          "status": "failed",
+          "arguments": {
+            "marker": "MCP_COMMIT4_ERROR"
+          },
+          "appContext": null,
+          "pluginId": null,
+          "readOnlyHint": true,
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"padding\":\"\",\"marker\":\"MCP_COMMIT4_ERROR\",\"result\":\"PROBE_ERROR\"}"
+              }
+            ],
+            "structuredContent": {
+              "padding": "",
+              "marker": "MCP_COMMIT4_ERROR",
+              "result": "PROBE_ERROR"
+            },
+            "_meta": {
+              "origin": "synthetic-server",
+              "evidenceVersion": 1
+            }
+          },
+          "error": null,
+          "durationMs": 5
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791898641781
+      },
+      "emittedAtMs": 1791898641788
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 34393,
+            "inputTokens": 34267,
+            "cachedInputTokens": 26496,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 126,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 19932,
+            "inputTokens": 19875,
+            "cachedInputTokens": 14208,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 57,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791898641805
+    },
+    {
+      "method": "item/started",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_000c4a974316abb5016ace34185f348191b9b4ba2efcbc3ea6",
+          "text": "",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "startedAtMs": 1791898644984
+      },
+      "emittedAtMs": 1791898644984
+    },
+    {
+      "method": "item/completed",
+      "params": {
+        "item": {
+          "type": "agentMessage",
+          "id": "msg_000c4a974316abb5016ace34185f348191b9b4ba2efcbc3ea6",
+          "text": "- `echo`: `PROBE_OK`, marker `MCP_COMMIT4_OK`, 32 padding characters, `isError: false`.\n- `fail`: `PROBE_ERROR`, marker `MCP_COMMIT4_ERROR`, `isError: true` (expected synthetic error).",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        },
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "completedAtMs": 1791898646439
+      },
+      "emittedAtMs": 1791898646449
+    },
+    {
+      "method": "thread/tokenUsage/updated",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "tokenUsage": {
+          "total": {
+            "totalTokens": 54535,
+            "inputTokens": 54347,
+            "cachedInputTokens": 46208,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 188,
+            "reasoningOutputTokens": 0
+          },
+          "last": {
+            "totalTokens": 20142,
+            "inputTokens": 20080,
+            "cachedInputTokens": 19712,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 62,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 258400
+        }
+      },
+      "emittedAtMs": 1791898646519
+    },
+    {
+      "method": "hook/started",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "running",
+          "statusMessage": null,
+          "startedAt": 1791898646,
+          "completedAt": null,
+          "durationMs": null,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898646524
+    },
+    {
+      "method": "hook/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turnId": "00000000-0000-4000-8000-000000000002",
+        "run": {
+          "id": "stop:10:C:\\probe\\home\\hooks.json",
+          "eventName": "stop",
+          "handlerType": "command",
+          "executionMode": "sync",
+          "scope": "turn",
+          "sourcePath": "C:\\probe\\home\\hooks.json",
+          "source": "user",
+          "displayOrder": 10,
+          "status": "completed",
+          "statusMessage": null,
+          "startedAt": 1791898646,
+          "completedAt": 1791898647,
+          "durationMs": 615,
+          "entries": []
+        }
+      },
+      "emittedAtMs": 1791898647135
+    },
+    {
+      "method": "thread/status/changed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "status": {
+          "type": "idle"
+        }
+      },
+      "emittedAtMs": 1791898647144
+    },
+    {
+      "method": "turn/completed",
+      "params": {
+        "threadId": "00000000-0000-4000-8000-000000000001",
+        "turn": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "msg_000c4a974316abb5016ace34185f348191b9b4ba2efcbc3ea6",
+              "text": "- `echo`: `PROBE_OK`, marker `MCP_COMMIT4_OK`, 32 padding characters, `isError: false`.\n- `fail`: `PROBE_ERROR`, marker `MCP_COMMIT4_ERROR`, `isError: true` (expected synthetic error).",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "summary",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1791898626,
+          "completedAt": 1791898647,
+          "durationMs": 20956
+        }
+      },
+      "emittedAtMs": 1791898647144
+    },
+    {
+      "method": "deprecationNotice",
+      "params": {
+        "summary": "Full-history hydration is deprecated for paginated threads; omit `includeTurns` or set it to `false`, then page with `thread/turns/list` and `thread/items/list`.",
+        "details": null
+      },
+      "emittedAtMs": 1791898647150
+    }
+  ],
+  "externalMcp": [
+    {
+      "id": 2,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"padding\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"marker\":\"MCP_COMMIT4_OK\",\"result\":\"PROBE_OK\"}"
+          }
+        ],
+        "structuredContent": {
+          "padding": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "marker": "MCP_COMMIT4_OK",
+          "result": "PROBE_OK"
+        },
+        "_meta": {
+          "origin": "synthetic-server",
+          "evidenceVersion": 1
+        },
+        "isError": false
+      },
+      "jsonrpc": "2.0"
+    },
+    {
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"padding\":\"\",\"marker\":\"MCP_COMMIT4_ERROR\",\"result\":\"PROBE_ERROR\"}"
+          }
+        ],
+        "structuredContent": {
+          "padding": "",
+          "marker": "MCP_COMMIT4_ERROR",
+          "result": "PROBE_ERROR"
+        },
+        "_meta": {
+          "origin": "synthetic-server",
+          "evidenceVersion": 1
+        },
+        "isError": true
+      },
+      "jsonrpc": "2.0"
+    }
+  ],
+  "hooks": [
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "SessionEnd",
+      "reason": "other"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "Stop",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "stop_hook_active": false,
+      "last_assistant_message": "- `echo`: `PROBE_OK`, marker `MCP_COMMIT4_OK`, 32 padding characters, `isError: false`.\n- `fail`: `PROBE_ERROR`, marker `MCP_COMMIT4_ERROR`, `isError: true` (expected synthetic error)."
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PostToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "mcp__observability_probe__echo",
+      "tool_input": {
+        "marker": "MCP_COMMIT4_OK",
+        "size": 32
+      },
+      "tool_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"padding\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"marker\":\"MCP_COMMIT4_OK\",\"result\":\"PROBE_OK\"}"
+          }
+        ],
+        "structuredContent": {
+          "padding": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "marker": "MCP_COMMIT4_OK",
+          "result": "PROBE_OK"
+        },
+        "isError": false,
+        "_meta": {
+          "origin": "synthetic-server",
+          "evidenceVersion": 1
+        }
+      },
+      "tool_use_id": "exec-00000000-0000-4000-8000-000000000004"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "mcp__observability_probe__echo",
+      "tool_input": {
+        "marker": "MCP_COMMIT4_OK",
+        "size": 32
+      },
+      "tool_use_id": "exec-00000000-0000-4000-8000-000000000004"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "Use the observability_probe MCP server. Call echo with marker MCP_COMMIT4_OK and size 32. Then call fail with marker MCP_COMMIT4_ERROR. These are harmless read-only synthetic tools; do not substitute shell calls or other providers. Report the two tool outcomes briefly."
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "SessionStart",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "source": "startup"
+    },
+    {
+      "session_id": "00000000-0000-4000-8000-000000000001",
+      "turn_id": "00000000-0000-4000-8000-000000000002",
+      "transcript_path": "C:\\probe\\home\\sessions\\2026\\10\\13\\rollout-2026-10-13T15-37-02-00000000-0000-4000-8000-000000000001.jsonl",
+      "cwd": "C:\\probe\\repo",
+      "hook_event_name": "PreToolUse",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "tool_name": "mcp__observability_probe__fail",
+      "tool_input": {
+        "marker": "MCP_COMMIT4_ERROR"
+      },
+      "tool_use_id": "exec-00000000-0000-4000-8000-000000000005"
+    }
+  ]
+}
