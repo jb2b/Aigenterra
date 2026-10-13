@@ -37,3 +37,39 @@ tables. No production database is migrated. Existing v1 ingestion stays intact.
 Verification 10a: solution restore/build/format-check, 198 tests and the isolated
 hook byte-fidelity/fail-open probe passed. PostgreSQL tests ran only in disposable
 databases on the research loopback cluster. No production deployment occurred.
+
+## Passive reader (10b)
+
+Explicit one-shot use (spool first; delivery remains the separate `drain` command):
+
+```text
+dotnet Aigenterra.Collector.dll codex reconcile --executable <absolute-codex.exe> --home <enrolled-absolute-home> --namespace <uuid> --source <uuid> --thread <explicit-thread-id> [--cursor <cursor>]
+```
+
+The reader owns a new `codex app-server` stdio process with the explicitly selected
+home. Only initialize/initialized and passive thread reads are permitted. It reads
+thread metadata then turns with full persisted items, 100 per page, ascending.
+Maximum 100 pages/30 seconds per read cycle and 10 seconds per request. A budget
+result exposes the continuation cursor; paging is not an atomic runtime snapshot.
+Ctrl+C, timeout, EOF, malformed frames, repeated cursors and unexpected server
+requests stop this reader. No approvals are answered. Shutdown closes its stdin
+and, if necessary, terminates only its own Process object, never an owner/daemon.
+
+Each raw stdout frame (including CR/LF), outgoing request and stderr chunk is
+spooled before interpretation. Oversize evidence remains retained locally;
+partial frames survive EOF/timeout. `reader_frame` notifications remain diagnostic
+evidence, not owner-live events. The separately pinned `codex.history/1` normalizer
+uses verified request context for paginated turns. `codex.lifecycle/1` is unchanged.
+Unknown versions, unmatched context and unsupported fields never gain invented IDs.
+
+Manual smoke: installed CLI 0.162.1 and Desktop runtime 0.160.1 both read copied
+research histories successfully in separate temporary homes, without credentials,
+model work or a daemon. Executable SHA-256 values match research 6.5. Original
+wire/spool evidence remains local under `.codex/artifacts/aigenterra-production-10-14`.
+These are isolated reader tests using prior actual-frontend research histories;
+they do not retest active owner neutrality or lift KEEP_GATE_BLOCKED.
+
+Verification 10b: solution restore/build/format-check, 208 tests, isolated hook
+probe and both isolated real-runtime history reads passed. No new live capability
+is claimed. Request context, pagination, partial/oversize frames, timeout, EOF,
+malformed/unmatched responses and unexpected server requests are covered.

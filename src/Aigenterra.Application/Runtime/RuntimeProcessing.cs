@@ -28,6 +28,7 @@ public interface IRuntimeRequestStore
 }
 public interface IContextualRuntimeNormalizer : IRuntimeCaptureNormalizer
 {
+    bool RequiresRequestContext(RuntimeCaptureEnvelope capture);
     RuntimeNormalization Normalize(RuntimeCaptureEnvelope capture, VerifiedRuntimeRequest? request);
 }
 
@@ -63,7 +64,8 @@ public sealed class ProcessRuntimeCapture(IRawCaptureStore archive, IRuntimeFact
             return "context_recorded";
         }
         var linked = await requests.ReadAsync(captureId, token);
-        if (capture.Source.Provenance == "history_response" && linked is null) return "pending_context";
+        if (linked is null && (capture.Source.Provenance == "history_response"
+            || normalizer is IContextualRuntimeNormalizer contextRequired && contextRequired.RequiresRequestContext(capture))) return "pending_context";
         var result = normalizer is IContextualRuntimeNormalizer contextual ? contextual.Normalize(capture, linked) : normalizer.Normalize(capture);
         var attempt = new NormalizationAttempt(RuntimeIdentity.Id(captureId.ToString(), normalizer.Version), captureId,
             normalizer.Version, saved.RecordedAt, result.Status, result.Reason, result.Facts);

@@ -35,7 +35,7 @@ builder.Services.AddTransient<GetTaskExecutionTimelineByRuntimeReference>();
 builder.Services.AddTransient<ICodexHookIngestor, CodexHookIngestor>();
 builder.Services.AddTransient<CodexCaptureIngestor>();
 builder.Services.AddTransient<ArchiveRuntimeCapture>();
-builder.Services.AddTransient<IRuntimeCaptureNormalizer, CodexLifecycleNormalizer>();
+builder.Services.AddTransient<IRuntimeCaptureNormalizer, CodexHistoryNormalizer>();
 builder.Services.AddTransient<NormalizeRuntimeCapture>();
 builder.Services.AddTransient<IRuntimeRequestContextDecoder, CodexRequestContextDecoder>();
 builder.Services.AddTransient<ProcessRuntimeCapture>();

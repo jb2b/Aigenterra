@@ -17,7 +17,7 @@ public sealed class CodexRequestContextDecoder : IRuntimeRequestContextDecoder
         if (context.Source.Provider != "codex" || request.Source.Provider != "codex" || response.Source.Provider != "codex"
             || context.Source is not { SourceKind: "diagnostic", EvidenceStage: "RecorderDiagnostic", Provenance: "request_context" }
             || request.Source is not { SourceKind: "app_server", EvidenceStage: "RecorderDiagnostic", Provenance: "history_request" }
-            || response.Source is not { SourceKind: "app_server", EvidenceStage: "AppServerVisible", Provenance: "history_response" }
+            || response.Source is not { SourceKind: "app_server", EvidenceStage: "AppServerVisible", Provenance: "history_response" or "reader_frame" }
             || !SameScope(context.Source, request.Source) || !SameScope(context.Source, response.Source)) return null;
         try
         {

@@ -14,14 +14,14 @@ public sealed class CaptureSpool(string root, int maxPayloadBytes = 16 * 1024 * 
 
     public Task<Guid> CaptureAsync(Stream input, DateTimeOffset capturedAt,
         IRepositoryContextReader contextReader, CancellationToken cancellationToken = default) =>
-        CaptureCoreAsync(input, capturedAt, contextReader, null, cancellationToken);
+        CaptureCoreAsync(input, capturedAt, contextReader, null, cancellationToken, "application/json");
 
     public Task<Guid> CaptureRuntimeAsync(Stream input, DateTimeOffset capturedAt,
-        IRepositoryContextReader contextReader, RuntimeCaptureSource source, CancellationToken cancellationToken = default) =>
-        CaptureCoreAsync(input, capturedAt, contextReader, source, cancellationToken);
+        IRepositoryContextReader contextReader, RuntimeCaptureSource source, CancellationToken cancellationToken = default, string mediaType = "application/json") =>
+        CaptureCoreAsync(input, capturedAt, contextReader, source, cancellationToken, mediaType);
 
     private async Task<Guid> CaptureCoreAsync(Stream input, DateTimeOffset capturedAt,
-        IRepositoryContextReader contextReader, RuntimeCaptureSource? source, CancellationToken cancellationToken)
+        IRepositoryContextReader contextReader, RuntimeCaptureSource? source, CancellationToken cancellationToken, string mediaType)
     {
         var id = Guid.NewGuid();
         var name = $"{capturedAt.UtcTicks:D19}-{id:N}";
@@ -37,7 +37,7 @@ public sealed class CaptureSpool(string root, int maxPayloadBytes = 16 * 1024 * 
         }
         RepositoryContext? context = null;
         string? phase = null;
-        if (new FileInfo(payloadPath).Length <= maxPayloadBytes)
+        if ((source is null || source.SourceKind == "hook") && new FileInfo(payloadPath).Length <= maxPayloadBytes)
         {
             var request = CodexCaptureContext.Identify(await File.ReadAllBytesAsync(payloadPath, cancellationToken));
             phase = request.Phase;
@@ -54,7 +54,7 @@ public sealed class CaptureSpool(string root, int maxPayloadBytes = 16 * 1024 * 
             await using var original = File.OpenRead(payloadPath);
             var hash = Convert.ToHexString(await SHA256.HashDataAsync(original, cancellationToken));
             var envelope = new RuntimeCaptureEnvelope(2, id, capturedAt.ToUniversalTime(), capturedAt.ToUniversalTime(),
-                source, "application/json", original.Length, hash, [], phase, context);
+                source, mediaType, original.Length, hash, [], phase, context);
             await WriteDurableJsonAsync(Path.Combine(staging, "record.json"), envelope, cancellationToken);
         }
         var oversized = new FileInfo(payloadPath).Length > maxPayloadBytes;

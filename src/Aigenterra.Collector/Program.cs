@@ -10,9 +10,15 @@ var maxBytes = int.TryParse(Environment.GetEnvironmentVariable("AIGENTERRA_CAPTU
 var spool = new CaptureSpool(spoolPath, maxBytes);
 if (args.Take(2).SequenceEqual(new[] { "codex", "doctor" }))
     return await CodexDoctorCommand.ExecuteAsync(args.Skip(2).ToArray(), Console.Out, Console.Error, spool);
+if (args.Take(2).SequenceEqual(new[] { "codex", "reconcile" }))
+{
+    using var reconcileStop = new CancellationTokenSource();
+    Console.CancelKeyPress += (_, e) => { e.Cancel = true; reconcileStop.Cancel(); };
+    return await CodexReconcileCommand.ExecuteAsync(args.Skip(2).ToArray(), Console.Out, Console.Error, spool, reconcileStop.Token);
+}
 if (args.FirstOrDefault() is "codex" or "observe")
 {
-    Console.Error.WriteLine("Only codex doctor inventory is available. Runtime observation transport is not enabled.");
+    Console.Error.WriteLine("Only codex doctor and explicit codex reconcile are available. Passive live observation is not enabled.");
     return 1;
 }
 if (args.FirstOrDefault() == "status")
